@@ -1,0 +1,58 @@
+02/09/2026 ---
+ > Make Inventory Items Still Visible On Later Turns
+
+ <> Later Updates:
+ > Add Music
+ > Add Sound-Effects (Win/Die/Hit/Get-Hit/)
+ > Tracker Enemy
+ > Add High-Score Name-Character Limit (And Colored Entries For Different Score Ranges)
+-----
+
+
+
+* ========== References ========== */
+
+/* Font: 'MedievalSharp' from Google Fonts
+   https://fonts.google.com/specimen/MedievalSharp */
+
+/* https://www.freepik.com/free-vector/realistic-grainy-texture_21544410.htm#fromView=keyword&page=1&position=39&uuid=d5400e8c-4400-4e54-b254-917b174ac3fb&query=Noise+png */
+
+
+Install Pygame
+
+Install Flask or FlashAPI
+
+To get ready in your venv, you’d install either:
+
+FastAPI + Uvicorn:
+
+bash
+pip install "fastapi[standard]" uvicorn
+FastAPI docs explicitly recommend installing with the extras like that.
+
+Or Flask:
+
+bash
+pip install Flask
+(Ideally inside a virtualenv, which you’re already comfortable with.)
+
+Then you’ll expose a small /api/generate-level endpoint that takes difficulty 
+and returns JSON.
+
+
+
+Timed escape on later difficulties?
+Double-move enemy
+Dark quotes when you die?
+
+Project Idea:
+    Dungeon generation, character moves in turns around room trying to get to next door. Have set amount of lives (3?);
+    Use random number generation to decide if there is a monster on a tile, a treasure, etc.
+    Randomly generate the doors to leave the room, and the shape of the room (Maybe shape based off of a set of pre-generated options?)
+    Track score (Some amount per monster kill, treasure found, door accessed)
+    Monsters move after player (Ideas: A monster that just moves one tile at a time, a monster that moves two in a straight line, a monster that crosses room diagnolly)
+    Make it an app that opens privately on the desktop/ file explorer, tracks high-scores on current device with names
+    Add music?
+
+
+Need to install Pygame

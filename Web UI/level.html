@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Level</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap">
+  <link rel="stylesheet" href="style.css">
+
+	<script src="levelCore.js"></script>
+	<script src="highscores.js"></script>
+	<script src="uiModals.js"></script>
+	<script src="input.js"></script>
+</head>
+
+<body>
+	<div id="damage-flash" class="damage-flash"></div>
+	<!-- Top-left Menu button -->
+	<button class="menu-button" onclick="showMenuConfirm()">
+		Menu
+	</button>
+
+    <div id="menu-modal" class="modal hidden">
+	<div class="modal-content">
+		<h2>Return to Menu?</h2>
+		<p>Unsaved progress in this dungeon will be lost.</p>
+		<button id="menu-yes" class="modal-ok-button">Yes, go to Menu</button>
+		<button id="menu-no" class="modal-ok-button">Cancel</button>
+	</div>
+    </div>
+
+    <!-- Top-right Health Bar -->
+    <div class="lives-bar">
+	    <div class="life-dot"></div>
+	    <div class="life-dot"></div>
+	    <div class="life-dot"></div>
+    </div>
+
+    <div class="score-bar">
+	    <span id="score-text">Score = 0</span>
+    </div>
+
+<div id="glossary-modal" class="modal hidden">
+  <div class="modal-content glossary-modal-content">
+    <h2>Glossary</h2>
+
+    <div class="glossary-pagination">
+      <button id="glossary-prev" class="modal-ok-button">&uarr; Previous</button>
+      <span id="glossary-page-indicator"></span>
+      <button id="glossary-next" class="modal-ok-button">&darr; Next</button>
+    </div>
+
+    <div id="glossary-grid" class="glossary-grid"></div>
+
+    <div class="glossary-close-row">
+      <button id="glossary-close" class="modal-ok-button">Close</button>
+    </div>
+  </div>
+</div>
+
+	<!-- Control Config Modal (same style as setup page) -->
+	<div id="control-modal" class="modal hidden">
+		<div class="modal-content">
+			<h2>Controls</h2>
+			<p>Use WASD or Arrow Keys to move.</p>
+			<button id="control-ok" class="modal-ok-button">OK</button>
+		</div>
+	</div>
+
+	<!-- Instructions Modal -->
+	<div id="instructions-modal" class="modal hidden">
+		<div class="modal-content">
+			<h2>Instructions</h2>
+			<p>
+				Using the controls, move your avatar (Green) throughout the dungeon.
+				Your goal is to eliminate all enemies (Red) by moving onto their space.
+				Each enemy has their own movement and capabilities, so watch out!
+				Once you defeat all enemies, move to the door (White) to reach the next level.
+			</p>
+			<button id="instructions-ok" class="modal-ok-button">OK</button>
+		</div>
+	</div>
+
+	<!-- Win Modal -->
+	<div id="win-modal" class="modal hidden">
+		<div class="modal-content">
+			<h2>Dungeon Cleared!</h2>
+			<p>Another dungeon conquered! But more await beneath the sands...</p>
+			<button id="win-next" class="modal-ok-button">Press Onward</button>
+			<button id="win-menu" class="modal-ok-button">Return To Surface</button>
+		</div>
+	</div>
+
+	<!-- Death Modal -->
+	<div id="death-modal" class="modal hidden">
+		<div class="modal-content">
+			<h2>You Died</h2>
+			<p>You have fallen, but the sands give the gift of new life. Rise again.</p>
+			<button id="death-ok" class="modal-ok-button">Return to Surface</button>
+		</div>
+	</div>
+
+	<div id="highscore-modal" class="modal hidden">
+	<div class="modal-content">
+		<h2>New High Score!</h2>
+		<p>Enter your name for the records:</p>
+		<input id="highscore-name" type="text" maxlength="16" />
+		<div style="display:flex; justify-content:center; gap:12px;">
+		<button id="highscore-save" class="modal-ok-button">Save</button>
+		<button id="highscore-skip" class="modal-ok-button">Skip</button>
+		</div>
+	</div>
+	</div>
+
+	<!-- Wyrd Stone confirm modal -->
+	<div id="wyrd-modal" class="modal hidden">
+	<div class="modal-content">
+		<h2>Activate Wyrd Stone?</h2>
+		<p>
+		Folly. Pure folly. But if you insist; this stone will grant all your foes
+		speed unlike that which you've faced before. But if you're up for the challenge...
+		</p>
+		<div class="modal-buttons">
+		<button id="wyrd-confirm" class="modal-ok-button">Yes, embrace the chaos</button>
+		<button id="wyrd-cancel" class="modal-ok-button">Cancel</button>
+		</div>
+	</div>
+	</div>
+
+		<!-- Inventory Panel -->
+	<div id="inventory-panel" class="inventory-panel hidden">
+	<div class="inventory-header">
+		<span class="inventory-title">Inventory</span>
+		<button id="inventory-close" class="inventory-close-button">Close</button>
+	</div>
+	<div class="inventory-grid">
+		<!-- 3 x 7 = 21 slots -->
+		<!-- we can generate these in HTML or via JS; for now, static -->
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+		<div class="inventory-slot"></div>
+	</div>
+	</div>
+
+	<main class="level-screen">
+		<div class="level-grid" id="level-grid">
+			<!-- cells will be generated by JS -->
+		</div>
+
+		<button id="glossary-button" class="glossary-button">
+			Glossary
+		</button>
+
+		<!-- Lower-left Controls -->
+		<button class="control-button">
+			Controls
+		</button>
+
+	  <!-- Inventory button (right side, above Instructions) -->
+		<button class="inventory-button">
+			Inventory
+		</button>
+
+		<!-- Lower-right Instructions -->
+		<button class="instructions-button">
+			Instructions
+		</button>
+	</main>
+
+	<div id="inventory-tooltip" class="inventory-tooltip hidden"></div>
+
+</body>
+</html>
