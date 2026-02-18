@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Beta</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body id="index-body">
+
+  <header class="top-title">
+    <h1>Shiervale Dungeons</h1>
+  </header>
+
+  <!-- Control Config Modal -->
+  <div id="control-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Control Configuration</h2>
+      <p>Use WASD or Arrow Keys to move, I to open/close your inventory, G to open/close the glossary, E or Enter to confirm, and F to replay or quick start.</p>
+      <button id="control-ok" class="modal-ok-button">OK</button>
+    </div>
+  </div>
+
+  <!-- Instructions Modal -->
+  <div id="instructions-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Instructions</h2>
+      <p>
+        Using the controls, move your avatar (Green) throughout the dungeon.
+        Your goal is to eliminate all enemies (Red) by moving onto their space.
+        Each enemy has their own movement and capabilities, so watch out!
+        Once you defeat all enemies, move to the door (White) to reach the next level.
+      </p>
+      <button id="instructions-ok" class="modal-ok-button">OK</button>
+    </div>
+  </div>
+
+    <div class="index-audio-row">
+    <button id="music-button" class="audio-button">Music: 10</button>
+    <button id="sfx-button" class="audio-button">SFX: 10</button>
+    </div>
+<main class="main-screen">
+  <div class="center-content">
+    <button id="start-button" class="start-button">
+      Start (E)
+    </button>
+    <div class="index-extra-buttons">
+
+  <div class="bottom-buttons">
+    <button id="highscore-button" class="highscore-button">
+      High Scores
+    </button>
+    <button id="credits-button" class="highscore-button credits-button">
+      Credits
+    </button>
+  </div>
+    
+    </div>
+    <p class="tagline">
+      Venture into dungeons galore, in search of lost secrets and ancient treasures!
+    </p>
+
+    <!-- New large buttons INSIDE center-content -->
+    <div class="index-extra-buttons">
+      <button id="index-controls-button" class="start-button">
+        Controls
+      </button>
+      <button id="index-instructions-button" class="start-button">
+        Instructions
+      </button>
+      <button id="quick-start" class="start-button">
+        Quick Start (F)
+      </button>
+    </div>
+
+  </div>
+</main>
+
+  <script src="../js/audio.js"></script>
+  <script src="../js/audioUi.js"></script>
+  <script src="../js/indexPage.js"></script>
+
+</body>
+</html>

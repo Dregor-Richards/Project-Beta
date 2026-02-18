@@ -1,131 +1,9 @@
-// =================== Glossary ===================
-
-const GLOSSARY_ITEMS = [
-  {
-    id: 'player',
-    title: 'YOU',
-    iconClass: 'avatar',
-    description: 'You. Likely vital to keep safe, but who knows. Thrice may you be struck, before the floors turn crimson.'
-  },
-  {
-    id: 'door',
-    title: 'The Door',
-    iconClass: 'door',
-    description: 'Reach the door, once all foes have been slain, to delve deeper into these expansive dungeons.'
-  },
-  {
-    id: 'skip',
-    title: 'Sand Vortex',
-    iconClass: 'skip-tile',
-    description: 'This oddity of reality will cause time to move on without you, effectively delaying your movement for a turn. Now why would you want to use this...?'
-  },
-  {
-    id: 'enemy_normal',
-    title: 'Skeleton',
-    iconClass: 'enemy',
-    description: 'Yes, a skeleton. It just looks like a square. Moves one tile per turn. Deals damage if it bumps into you. STAY AWAY.'
-  },
-  {
-    id: 'enemy_fast',
-    title: 'Bat',
-    iconClass: 'fast-enemy',
-    description: 'You should spend less time thinking about the shape, and more time on how you plan to avoid it. This beast can move up to 3 tiles a turn, if it feels like it. And yes, it bites.'
-  },
-  {
-    id: 'heart',
-    title: 'Gold Heart',
-    iconClass: 'glossary-heart',
-    description: 'The one who came with this, surely does not need it any longer. Use its vigor to restore a missing life, if you have been unfortunate enough to lose one.'
-  },
-  {
-    id: 'fire_wand',
-    title: 'Fire Wand',
-    iconClass: 'inventory-fire-wand',
-    description: 'A simple twig of [wood-type here], capable of a single casting. Just point and shoot, so that the denizens of this sprawl shall know your fury.'
-  },
-  {
-    id: 'ice_wand',
-    title: 'Ice Wand',
-    iconClass: 'inventory-ice-wand',
-    description: 'Whatever wood this once was made of, has long since departed. Now only frost remains, and its lethality is minimal. But still, it may prove to slow your foes, for a time.'
-  },
-  {
-    id: 'lightning_wand',
-    title: 'Lightning Wand',
-    iconClass: 'inventory-lightning-wand',
-    description: 'Despite common sense, you will be aiming this one at yourself. It shall spark your heart, and add a spring to your step. For every stride you used to take, you will find you can take another.'
-  },
-  {
-    id: 'wyrd_stone',
-    title: 'Wyrd Stone',
-    iconClass: 'inventory-wyrd-stone',
-    description: 'A physical manifestation of the tether between body and soul. Offer it up as a challenge, and you will find your foes enthralled in frenzy. Their strides will be doubled, but so will your rewards for slaying them.'
+function showMenuConfirm() {
+  const menuModal = document.getElementById('menu-modal');
+  if (menuModal) {
+    menuModal.classList.remove('hidden');
+    playSfx('uiClick');
   }
-];
-
-const GLOSSARY_PAGE_SIZE = 5;
-let glossaryPage = 0;
-
-function renderGlossaryPage() {
-  const grid = document.getElementById('glossary-grid');
-  const indicator = document.getElementById('glossary-page-indicator');
-  if (!grid || !indicator) return;
-
-  grid.innerHTML = '';
-
-  const start = glossaryPage * GLOSSARY_PAGE_SIZE;
-  const end = Math.min(start + GLOSSARY_PAGE_SIZE, GLOSSARY_ITEMS.length);
-  const items = GLOSSARY_ITEMS.slice(start, end);
-
-  items.forEach(item => {
-    // Left icon cell
-    const iconCell = document.createElement('div');
-    iconCell.className = 'glossary-icon-cell';
-
-    const iconWrapper = document.createElement('div');
-    iconWrapper.className = 'glossary-icon-wrapper';
-
-    const icon = document.createElement('div');
-    icon.className = item.iconClass + ' glossary-icon-inner';
-
-    iconWrapper.appendChild(icon);
-    iconCell.appendChild(iconWrapper);
-
-    // Right text cell
-    const textCell = document.createElement('div');
-    textCell.className = 'glossary-text-cell';
-
-    const titleEl = document.createElement('div');
-    titleEl.className = 'glossary-item-title';
-    titleEl.textContent = item.title;
-
-    const descEl = document.createElement('div');
-    descEl.className = 'glossary-item-desc';
-    descEl.textContent = item.description;
-
-    textCell.appendChild(titleEl);
-    textCell.appendChild(descEl);
-
-    grid.appendChild(iconCell);
-    grid.appendChild(textCell);
-  });
-
-  const totalPages = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE);
-  indicator.textContent = `Page ${glossaryPage + 1} of ${totalPages}`;
-}
-
-function openGlossary() {
-  const modal = document.getElementById('glossary-modal');
-  if (!modal) return;
-  glossaryPage = 0;
-  renderGlossaryPage();
-  modal.classList.remove('hidden');
-}
-
-function closeGlossary() {
-  const modal = document.getElementById('glossary-modal');
-  if (!modal) return;
-  modal.classList.add('hidden');
 }
 
 // =================== Modal wiring ===================
@@ -142,20 +20,24 @@ window.addEventListener('DOMContentLoaded', () => {
   if (controlButton && controlModal && controlOk) {
     controlButton.addEventListener('click', () => {
       controlModal.classList.remove('hidden');
+      playSfx('uiClick');
     });
 
     controlOk.addEventListener('click', () => {
       controlModal.classList.add('hidden');
+      playSfx('uiCancel');
     });
   }
 
   if (instructionsButton && instructionsModal && instructionsOk) {
     instructionsButton.addEventListener('click', () => {
       instructionsModal.classList.remove('hidden');
+      playSfx('uiClick');
     });
 
     instructionsOk.addEventListener('click', () => {
       instructionsModal.classList.add('hidden');
+      playSfx('uiClick');
     });
   }
 
@@ -176,6 +58,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     if (closed) {
+      playSfx('uiCancel');
       event.preventDefault();
     }
   });
@@ -187,22 +70,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (menuYes && menuModal) {
     menuYes.addEventListener('click', () => {
-      sessionStorage.removeItem('playerLives');
-      sessionStorage.removeItem('playerScore');
-      sessionStorage.removeItem('currentLevel');
+      playSfx('uiConfirm');
+      setTimeout(() => {
+        sessionStorage.removeItem('playerLives');
+        sessionStorage.removeItem('playerScore');
+        sessionStorage.removeItem('currentLevel');
 
-      inventory = new Array(21).fill(null);
-      iceWandIndex = null;
-      frozenEnemyTiles = new Set();
-      sessionStorage.removeItem('inventory');
+        inventory = new Array(21).fill(null);
+        iceWandIndex = null;
+        frozenEnemyTiles = new Set();
+        sessionStorage.removeItem('inventory');
 
-      window.location.href = 'index.html';
+        window.location.href = 'index.html'; 
+      }, 250);
     });
   }
 
   if (menuNo && menuModal) {
     menuNo.addEventListener('click', () => {
       menuModal.classList.add('hidden');
+      playSfx('uiCancel');
     });
   }
 
@@ -244,7 +131,31 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  function finishAndReturnToMenu() {
+  const deathPlayAgain = document.getElementById('death-play-again');
+
+  if (deathPlayAgain) {
+    deathPlayAgain.addEventListener('click', () => {
+      playSfx('uiConfirm');
+
+      // Reset currentDifficulty back to the originally chosen difficulty
+      const base = sessionStorage.getItem('baseDifficulty');
+      if (base !== null) {
+        sessionStorage.setItem('currentDifficulty', base);
+      }
+
+      // Clear run-specific state
+      sessionStorage.removeItem('playerLives');
+      sessionStorage.removeItem('playerScore');
+      sessionStorage.removeItem('inventory');
+
+      setTimeout(() => {
+        window.location.href = 'level.html';
+      }, 250);
+    });
+  }
+
+function finishAndReturnToMenu() {
+  setTimeout(() => {
     sessionStorage.removeItem('playerLives');
     sessionStorage.removeItem('playerScore');
     sessionStorage.removeItem('currentLevel');
@@ -255,7 +166,8 @@ window.addEventListener('DOMContentLoaded', () => {
     sessionStorage.removeItem('inventory');
 
     window.location.href = 'index.html';
-  }
+  }, 250);
+}
 
   function handlePostDeath() {
     // If highscore modal is visible, wait for Save/Skip instead
@@ -267,9 +179,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (deathOk) {
     deathOk.addEventListener('click', () => {
+      playSfx('uiCancel');
       handlePostDeath();
     });
   }
+
+    // F key → Play Again when death modal is visible
+  window.addEventListener('keydown', (event) => {
+    if (event.key !== 'f' && event.key !== 'F') return;
+    if (!deathModal || deathModal.classList.contains('hidden')) return;
+
+    // Avoid firing if highscore modal is up and waiting for input
+    if (highscoreModal && !highscoreModal.classList.contains('hidden')) return;
+
+    if (deathPlayAgain) {
+      event.preventDefault();
+      deathPlayAgain.click();
+    }
+  });
 
   if (highscoreSaveBtn) {
     highscoreSaveBtn.addEventListener('click', () => {
@@ -279,6 +206,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       highscoreModal.classList.add('hidden');
       uiInputLocked = false;
+      playSfx('uiConfirm');
       finishAndReturnToMenu();
     });
   }
@@ -287,6 +215,7 @@ window.addEventListener('DOMContentLoaded', () => {
     highscoreSkipBtn.addEventListener('click', () => {
       highscoreModal.classList.add('hidden');
       uiInputLocked = false;
+      playSfx('uiCancel');
       finishAndReturnToMenu();
     });
   }
@@ -297,26 +226,36 @@ window.addEventListener('DOMContentLoaded', () => {
   const winNext = document.getElementById('win-next');
   const winMenu = document.getElementById('win-menu');
 
-  if (winNext) {
-    winNext.addEventListener('click', () => {
-      const nextSize = Math.min(20, gridSize + 1);
-      const nextLevel = levelNumber + 1;
-      sessionStorage.setItem('currentLevel', String(nextLevel));
-      window.location.href = 'level.html?size=' + nextSize;
-    });
-  }
+if (winNext) {
+  winNext.addEventListener('click', () => {
+    playSfx('uiConfirm');
+    setTimeout(() => {
+      // Read current difficulty (default 1), then bump by 1
+      const rawDiff = sessionStorage.getItem('currentDifficulty');
+      let difficulty = rawDiff !== null ? Number(rawDiff) || 1 : 1;
+      difficulty += 1;
+      sessionStorage.setItem('currentDifficulty', String(difficulty));
+      // Reload level.html; difficulty → grid/enemies via getDifficultyConfig
+      window.location.href = 'level.html';
+    }, 250);
+  });
+}
 
   if (winMenu && winModal) {
     winMenu.addEventListener('click', () => {
-      sessionStorage.removeItem('playerLives');
-      sessionStorage.removeItem('playerScore');
+      playSfx('uiCancel');
 
-      inventory = new Array(21).fill(null);
-      iceWandIndex = null;
-      frozenEnemyTiles = new Set();
-      sessionStorage.removeItem('inventory');
+      setTimeout(() => {
+        sessionStorage.removeItem('playerLives');
+        sessionStorage.removeItem('playerScore');
 
-      window.location.href = 'index.html';
+        inventory = new Array(21).fill(null);
+        iceWandIndex = null;
+        frozenEnemyTiles = new Set();
+        sessionStorage.removeItem('inventory');
+
+        window.location.href = 'index.html';
+      }, 250);
     });
   }
 
@@ -336,12 +275,14 @@ window.addEventListener('DOMContentLoaded', () => {
   if (inventoryButton && inventoryPanel) {
     inventoryButton.addEventListener('click', () => {
       inventoryPanel.classList.remove('hidden');
+      playSfx('uiInventory');
     });
   }
 
   if (inventoryClose && inventoryPanel) {
     inventoryClose.addEventListener('click', () => {
       inventoryPanel.classList.add('hidden');
+      playSfx('uiInventory');
     });
   }
 
@@ -349,6 +290,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (event.key !== 'Escape') return;
     if (inventoryPanel && !inventoryPanel.classList.contains('hidden')) {
       inventoryPanel.classList.add('hidden');
+      playSfx('uiInventory');
       event.preventDefault();
     }
   });
@@ -361,11 +303,17 @@ window.addEventListener('DOMContentLoaded', () => {
   const glossaryCloseBtn = document.getElementById('glossary-close');
 
   if (glossaryButton) {
-    glossaryButton.addEventListener('click', openGlossary);
+    glossaryButton.addEventListener('click', () => {
+      openGlossary();
+      playSfx('uiGlossary');
+    });
   }
 
   if (glossaryCloseBtn) {
-    glossaryCloseBtn.addEventListener('click', closeGlossary);
+    glossaryCloseBtn.addEventListener('click', () => {
+      closeGlossary();
+      playSfx('uiGlossary');
+    });
   }
 
   if (glossaryPrev) {
@@ -373,6 +321,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (glossaryPage > 0) {
         glossaryPage -= 1;
         renderGlossaryPage();
+        playSfx('uiGlossary');
       }
     });
   }
@@ -383,6 +332,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (glossaryPage < maxPage) {
         glossaryPage += 1;
         renderGlossaryPage();
+        playSfx('uiGlossary');
       }
     });
   }

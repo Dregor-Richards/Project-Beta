@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Level Setup</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="setup-screen">
+
+  <!-- Top-left Menu button -->
+  <button class="menu-button" onclick="showMenuConfirm()">Menu</button>
+
+  <!-- Audio buttons below Menu -->
+  <button id="music-button" class="audio-button">Music: 10</button>
+  <button id="sfx-button" class="audio-button">SFX: 10</button>
+
+  <!-- Control Config Modal -->
+  <div id="control-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Controls</h2>
+      <p>Use WASD or Arrow Keys to move, I to open/close your inventory, G to open/close the glossary, E or Enter to confirm, and F to replay or quick start.</p>
+      <button id="control-ok" class="modal-ok-button">OK</button>
+    </div>
+  </div>
+
+  <!-- Menu Confirm Modal -->
+    <div id="setup-menu-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Return to Menu?</h2>
+      <p>Unsaved changes will be lost.</p>
+      <button id="setup-menu-yes" class="modal-ok-button">Yes, go to Menu</button>
+      <button id="setup-menu-no" class="modal-ok-button">Cancel</button>
+    </div>
+  </div>
+
+  <div id="range-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Invalid Difficulty</h2>
+      <p>Please choose a difficulty between 3 and 10.</p>
+      <button id="range-ok" class="modal-ok-button">OK</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="setup-panel">
+      <label for="size-input" class="setup-label">Difficulty (1-10):</label>
+      <input
+        id="size-input"
+        class="size-input"
+        type="number"
+        min="1"
+        max="10"
+        step="1"
+        value="1"
+      >
+
+    <button id="go-button" class="go-button">
+      Begin (E)
+    </button>
+
+    </div>
+
+    <!-- Lower-left Control Config button -->
+    <button class="control-button">
+      Controls
+    </button>
+  </main>
+
+  <script src="../js/audio.js"></script>
+  <script src="../js/audioUi.js"></script>
+  <script src="../js/setupPage.js"></script>
+
+</body>
+</html>

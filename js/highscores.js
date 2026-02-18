@@ -25,6 +25,14 @@ function loadHighScores() {
   }
 }
 
+function saveHighScore(name, scoreValue) {
+  const scores = getHighScores(); // from highScorePage.js or duplicated helper
+  scores.push({ name, score: scoreValue });
+  scores.sort((a, b) => b.score - a.score);
+  const trimmed = scores.slice(0, 10);
+  localStorage.setItem(HIGHSCORE_KEY, JSON.stringify(trimmed));
+}
+
 function saveHighScores(list) {
   localStorage.setItem(HS_KEY, JSON.stringify(list));
 }
