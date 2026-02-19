@@ -21,7 +21,7 @@ function getDifficultyConfig(difficulty) {
       const sizes = [3, 4, 5];
       return {
         gridSize: sizes[randomInt(0, sizes.length - 1)],
-        normalCount: randomInt(1, 3),
+        normalCount: randomInt(1, 2),
         fastCount: 0,
         trackerCount: 0,
         mortarCount: 0,

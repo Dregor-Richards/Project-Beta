@@ -339,6 +339,14 @@ body.level-screen {
   font-size: 14px;
 }
 
+.difficulty-bar {
+  position: absolute;
+  top: 60px; /* just under lives */
+  right: 16px;
+  color: rgb(0, 255, 0);
+  font-size: 14px;
+}
+
 .damage-flash {
   position: fixed;
   inset: 0;

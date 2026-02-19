@@ -1,21 +1,73 @@
-02/09/2026 ---
- > Make Inventory Items Still Visible On Later Turns
+02/19/2026 ---
+
+ > Update Glossary With New Enemies
+ > Heart Stone (Enemy Double/Full Damage)
 
  <> Later Updates:
- > Add Music
- > Add Sound-Effects (Win/Die/Hit/Get-Hit/)
- > Tracker Enemy
- > Add High-Score Name-Character Limit (And Colored Entries For Different Score Ranges)
+
+ > Visual Assets
+
+ % Upgrade DifficultyConfig: small data table structure so adding difficulties 
+      %turns into “add one object to an array” instead of editing a big switch.
+
+ > Boss Enemy* (10/12 Points?)
+
+ > High-Score Character Limit (3-8)
+ > Character Spawn Moves With Door
+
+  > Map Is Too Zoomed Out On Larger Maps (Possible Fix)
+
+ <---> For Levels 11-20 <--->
+ > Dark Rooms (Pick-Up Lantern To Illuminate Adjecent Tiles)
+ > Summoner Enemy (Slow, Summons Basic, or Trackers? Pink Versions)
+ > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
+ % Sniper Enemy?
+ <--->                  <--->
+
+ $ Add Character Equipment
+ $ Character Customization Pages
+ $ Player Profiles (To Save Above)
+ $ Shop to buy per profile items?
+
 -----
 
+*Boss 1 - Named After God Of Magic, Has it's own map. Either a stagnate 15x15 grid, made of 5 5x5 areas that are bridged
+   by narrow walkways (To make a large plus sign out of the 5x5 areas, with a right-angle 5-tile 1-tile-thin bridge in each corner),
+   or it could have a secondary version on size 21x21, with 7x7 areas and 7x1 right-angle paths.
+   - This boss can spawn starting on level 16 (Regardless of map start size), with a 10% of that map being this fight. Each level
+   after, if he didn't spawn, the chance increases by 10% (Until by level 25, he's guaranteed).
+   - He has his own health bar at the top of the grid (5-10 lives, will need to test to determine what's balanced, leaning towards
+   5), and for moves, he can move 2-5 spaces per turn, using the tracker's method of ensuring that it does not move "away"
+   from the player. He also uses the mortar's strike (Whatever value I go with for the mortar, this guy should double).
+      % Make him slower while near player, to balance it. Perhaps he moves every other turn, so it's risky but the player has a
+      chance.
+      % Make him have stages. (6 health might be the winner), where he increases shots in future stages, speed, more tracking...
+   - Wands that usually would kill or perma-freeze (Or anything else I add), only affect one life.
+   - He spawns centered in one of the 5x5 rim areas, while the player spawns dead-center of the map. After he loses one life, this
+   resets, with him spawning in a new rim-center (Could be the same one, but it's randomly selected), and the player moving back
+   to the center.
+      % Highlight the four possible spawn points of the boss, for easy player understanding
+   - After beating (or skipping) this boss, new features (Walls, dark rooms, enemies, etc.) will be added to the rest of the levels,
+   to represent an increase in difficulty beyond the usual.
+
+*Boss 2 - Named After God Of Death, has it's own map (TBD)
+   - Will utilize the dark maps, with a lantern existing on one tile that the player must reach, to light up the regions around
+   where the boss starts. Like the first boss, once hit, the map basically resets, so new areas will darken, the boss will move,
+   and the player will have to reacquire a lantern.
+   - Should also utilize walls (If I get them working), demanding that once the player gets the lantern, they still have to
+   navigate around obstacles while being attacked.
+   - Perhaps I'll implement a summoner enemy between this boss and the first, so this one can deploy minions as a third element.
+   - While slower than the first boss, they shouldn't move only 1 tile... Perhaps 2-4 moves?
+
+ *Boss ? - Centipede
+
+-----
+
+ % Area control boss: Periodically drops zones on the grid that force you to keep moving (safe vs unsafe tiles).
+ % High-Scores: Limit: 3–8 characters tends to feel “arcade,” and prevents UI overflow.
 
 
-* ========== References ========== */
 
-/* Font: 'MedievalSharp' from Google Fonts
-   https://fonts.google.com/specimen/MedievalSharp */
-
-/* https://www.freepik.com/free-vector/realistic-grainy-texture_21544410.htm#fromView=keyword&page=1&position=39&uuid=d5400e8c-4400-4e54-b254-917b174ac3fb&query=Noise+png */
 
 
 Install Pygame
@@ -38,21 +90,5 @@ pip install Flask
 
 Then you’ll expose a small /api/generate-level endpoint that takes difficulty 
 and returns JSON.
-
-
-
-Timed escape on later difficulties?
-Double-move enemy
-Dark quotes when you die?
-
-Project Idea:
-    Dungeon generation, character moves in turns around room trying to get to next door. Have set amount of lives (3?);
-    Use random number generation to decide if there is a monster on a tile, a treasure, etc.
-    Randomly generate the doors to leave the room, and the shape of the room (Maybe shape based off of a set of pre-generated options?)
-    Track score (Some amount per monster kill, treasure found, door accessed)
-    Monsters move after player (Ideas: A monster that just moves one tile at a time, a monster that moves two in a straight line, a monster that crosses room diagnolly)
-    Make it an app that opens privately on the desktop/ file explorer, tracks high-scores on current device with names
-    Add music?
-
 
 Need to install Pygame

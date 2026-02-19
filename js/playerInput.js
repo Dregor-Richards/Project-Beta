@@ -1,4 +1,5 @@
 async function handleMove(event) {
+  if (!canPlayerMove || winOpen) return;
   if (uiInputLocked) return;
   const isConfirmKey =
     event.key === 'Enter' || event.key === 'e' || event.key === 'E';

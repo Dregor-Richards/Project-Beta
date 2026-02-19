@@ -125,7 +125,7 @@ function placeMortarEnemies(count) {
 
 
 function shouldSpawnHeart() {
-  return levelNumber % 4 === 0;
+  return levelNumber % 3 === 0;
 }
 
 function chooseFreeIndex() {
@@ -177,6 +177,20 @@ function chooseSkipTileIndex() {
 
   const idx = Math.floor(Math.random() * candidates.length);
   return candidates[idx];
+}
+
+function shouldSpawnWand() {
+  const wandChance = 0.4;
+  return Math.random() < wandChance;
+}
+
+function chooseWandSubtype() {
+  const wandOptions = [
+    { type: 'fire',      weight: 50 }, // 50%
+    { type: 'ice',       weight: 30 }, // 30%
+    { type: 'lightning', weight: 20 }, // 20%
+  ];
+  return chooseWeightedRandom(wandOptions);
 }
 
 function chooseWandIndex() {

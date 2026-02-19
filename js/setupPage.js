@@ -27,6 +27,7 @@ function goToLevel() {
   sessionStorage.setItem('currentDifficulty', String(difficulty));
   sessionStorage.removeItem('playerScore');
   sessionStorage.removeItem('playerLives');
+  resetLevelNumber();
 
   playSfx('uiConfirm');
   setTimeout(() => {

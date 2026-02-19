@@ -226,25 +226,23 @@ function finishAndReturnToMenu() {
   const winNext = document.getElementById('win-next');
   const winMenu = document.getElementById('win-menu');
 
-if (winNext) {
-  winNext.addEventListener('click', () => {
-    playSfx('uiConfirm');
-    setTimeout(() => {
-      // Read current difficulty (default 1), then bump by 1
-      const rawDiff = sessionStorage.getItem('currentDifficulty');
-      let difficulty = rawDiff !== null ? Number(rawDiff) || 1 : 1;
-      difficulty += 1;
-      sessionStorage.setItem('currentDifficulty', String(difficulty));
-      // Reload level.html; difficulty → grid/enemies via getDifficultyConfig
-      window.location.href = 'level.html';
-    }, 250);
-  });
-}
+  if (winNext) {
+    winNext.addEventListener('click', () => {
+      playSfx('uiConfirm');
+      setTimeout(() => {
+        const rawDiff = sessionStorage.getItem('currentDifficulty');
+        let difficulty = rawDiff !== null ? Number(rawDiff) || 1 : 1;
+        difficulty += 1;
+        sessionStorage.setItem('currentDifficulty', String(difficulty));
+        advanceLevel();
+        window.location.href = 'level.html';
+      }, 250);
+    });
+  }
 
   if (winMenu && winModal) {
     winMenu.addEventListener('click', () => {
       playSfx('uiCancel');
-
       setTimeout(() => {
         sessionStorage.removeItem('playerLives');
         sessionStorage.removeItem('playerScore');
@@ -261,10 +259,22 @@ if (winNext) {
 
   window.showWinModal = function () {
     winOpen = true;
+    canPlayerMove = false;
     if (winModal) {
       winModal.classList.remove('hidden');
     }
   };
+
+  // Win modal keyboard shortcut: E / Enter → Press Onward
+  window.addEventListener('keydown', (event) => {
+    if (!winModal || winModal.classList.contains('hidden')) return;
+    if (event.key === 'Enter' || event.key === 'e' || event.key === 'E') {
+      event.preventDefault();
+      if (winNext) {
+        winNext.click();
+      }
+    }
+  });
 
   // ===== Inventory panel wiring (click-based) =====
 

@@ -19,59 +19,6 @@ function damageEffect() {
 
 const ENEMY_STEP_DELAY_MS = 75; // tweak for faster/slower animations
 
-function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
-  const gameWrapper = document.getElementById('game-wrapper');
-  if (!gameWrapper) return;
-
-  const cell = document.querySelector(`.grid-cell[data-index="${index}"]`);
-  if (!cell) return;
-
-  let layer = gameWrapper.querySelector('.particle-layer');
-  if (!layer) {
-    layer = document.createElement('div');
-    layer.className = 'particle-layer';
-    gameWrapper.appendChild(layer);
-  }
-
-  const rect = cell.getBoundingClientRect();
-  const wrapperRect = gameWrapper.getBoundingClientRect();
-
-  const centerX = rect.left - wrapperRect.left + rect.width / 2;
-  const centerY = rect.top - wrapperRect.top + rect.height / 2;
-
-  let baseCount = 6;
-  if (kind === 'kill') baseCount = 10;
-  if (kind === 'pickup') baseCount = 8;
-  if (kind === 'door') baseCount = 14;
-
-  const particleCount = countOverride ?? baseCount;
-
-  for (let i = 0; i < particleCount; i++) {
-    const p = document.createElement('div');
-    p.className = `particle particle--${kind}`;
-
-    const angle = Math.random() * Math.PI * 2;
-    const distance =
-      kind === 'door'
-        ? 30 + Math.random() * 14
-        : 18 + Math.random() * 10;
-
-    const px = Math.cos(angle) * distance;
-    const py = Math.sin(angle) * distance;
-
-    p.style.left = `${centerX}px`;
-    p.style.top = `${centerY}px`;
-    p.style.setProperty('--px', `${px}px`);
-    p.style.setProperty('--py', `${py}px`);
-
-    p.addEventListener('animationend', () => {
-      p.remove();
-    });
-
-    layer.appendChild(p);
-  }
-}
-
 function checkForWin() {
   if (allEnemiesDead() && avatarIndex === doorIndex && !playerDead) {
     spawnParticlesAtCell(doorIndex, 'door');
@@ -104,6 +51,7 @@ function addScore(points) {
 // --- DOM ready: core setup ---
 
 window.addEventListener('DOMContentLoaded', () => {
+  loadLevelNumber();
   playMusic('level');
 
   // Difficulty from setup; default to 1
@@ -111,7 +59,11 @@ window.addEventListener('DOMContentLoaded', () => {
   let difficulty = storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
   if (difficulty < 1) difficulty = 1;
 
-  // Derive config from difficulty
+  const diffEl = document.getElementById('difficulty-text');
+  if (diffEl) {
+    diffEl.textContent = `Difficulty: ${difficulty}`;
+  }
+
   const config = getDifficultyConfig(difficulty);
   gridSize = config.gridSize;
 
@@ -155,6 +107,14 @@ window.addEventListener('DOMContentLoaded', () => {
   // Wands & stones
   wandIndex = null;
   currentWandSubtype = null;
+
+  if (shouldSpawnWand()) {
+    const idx = chooseWandIndex();
+    if (idx !== null) {
+      wandIndex = idx;
+      currentWandSubtype = chooseWandSubtype();
+    }
+  }
 
   stoneIndex = null;
   stonePresent = false;

@@ -39,8 +39,5 @@ let armedItem = null;
 // shared flags
 let winOpen = false;
 let deathOpen = false;
+let canPlayerMove = true;
 let uiInputLocked = false;
-
-function intDiv(a, b) {
-  return Math.floor(a / b);
-}
