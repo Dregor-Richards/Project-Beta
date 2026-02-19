@@ -26,7 +26,7 @@ Extract the ZIP somewhere on your computer.
 
 Open a terminal/command prompt in the extracted folder (or cd into it).
 
-Run a local web server
+### Run a local web server
 
 If you have Python 3 installed
 From the project folder:
@@ -68,3 +68,13 @@ You are running through http://localhost:... and not opening the file directly.
 
 
 All folders (assets, js, html etc.) are present as in the repo structure.
+
+
+### Project Structure (Folder Overview)
+
+.
+├── style.css
+├── background.png    # Not the actual name
+├── assets/
+├── html/        # contains index.html and other pages
+├── js/
