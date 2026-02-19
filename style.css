@@ -391,14 +391,19 @@ body.level-screen {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  gap: 2px;
-  background-color: #222;
-  border: 2px solid #555;
+  gap: 0;                    /* tiles touch cleanly */
+  background-color: #000;    /* dark frame behind tiles */
+  border: 6px solid #000;    /* thicker black rim */
+  box-shadow: 0 0 12px #000; /* optional soft glow */
 }
 
 .grid-cell {
-  background-color: #d0d0d0;
-  border: 1px solid red;
+  background-image: url("./assets/tiles/Flagstone Tile.png");
+  background-size: cover;       /* or 'contain' if you want full sprite visible */
+  background-repeat: no-repeat;
+  background-position: center;
+
+  border: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -406,7 +411,7 @@ body.level-screen {
 }
 
 .grid-cell--frozen {
-  background-color: #97c1e6; /* icy blue */
+  background-color: rgba(151, 193, 230, 0.4); /* icy blue */
 }
 
 /* =========================================
@@ -416,51 +421,47 @@ body.level-screen {
 .avatar,
 .enemy,
 .fast-enemy,
-.door,
+.tracker-enemy,
+.mortar-enemy,
 .heart {
   position: relative;
   z-index: 2;
 }
 
 .avatar {
-  width: 70%;
-  height: 70%;
-  border-radius: 50%;
-  background-color: #0c9260;
-  margin: auto;
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sprites/Avatar1.png');
+  background-size: contain;      /* fit inside the cell */
+  background-repeat: no-repeat;
+  background-position: center;   /* use a central frame-ish area */
 }
 
 .enemy {
-  width: 70%;
-  height: 70%;
-  background-color: #ff3333;
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sprites/Ghost.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .fast-enemy {
-  width: 70%;
-  height: 70%;
-  background-color: #ff3333;
-  position: relative;
-  margin: auto;
-  clip-path: polygon(
-    30% 0%,
-    70% 0%,
-    100% 30%,
-    100% 70%,
-    70% 100%,
-    30% 100%,
-    0% 70%,
-    0% 30%
-  );
-  box-shadow: 0 0 10px 3px rgba(255, 50, 50, 0.7);
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sprites/Bat.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .tracker-enemy {
-  width: 70%;
-  height: 70%;
-  margin: auto;
-  background-color: #ff3333;
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sprites/Wolf.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .mortar-enemy {
@@ -488,9 +489,13 @@ body.level-screen {
 }
 
 .door {
-  width: 70%;
-  height: 70%;
-  background-color: #ffffff;
+  position: absolute;
+  inset: 0%;              /* same as width/height/margin combo */
+  z-index: 1;
+  background-image: url("./assets/sprites/Door.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Heart */
@@ -1067,8 +1072,9 @@ body.level-screen {
 
 body.level-screen.credits-page {
   display: block;
-  height: 100vh;
+  min-height: 100vh;  /* allow content to be taller if needed */
   position: relative;
+  overflow-y: auto;   /* single scrollbar on the body */
 }
 
 #credits-wrapper {
@@ -1081,9 +1087,8 @@ body.level-screen.credits-page {
 
 /* Full-width scroll area so scrollbar is at viewport edge */
 #credits-scroll-container {
-  max-height: calc(100vh - 80px);
   width: 100%;
-  overflow-y: auto;
+  overflow-y: visible;
   display: flex;
   justify-content: center;
 }

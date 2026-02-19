@@ -1,11 +1,21 @@
 02/19/2026 ---
 
- > Update Glossary With New Enemies
- > Heart Stone (Enemy Double/Full Damage)
+ > Visual Assets
+   > Ice Wand Cover Of Tile Is Beneath Actual Image
+   > Tracker Enemy
+   > Mortar Enemy
+   > Mortar Strikes
+   > Sand Vortex
+   > Heart
+   > Ice Wand ?
+   > Fire Wand ?
+   > Lightning Wand ?
+   > Wyrd Stone
 
  <> Later Updates:
 
- > Visual Assets
+ > Update Glossary With New Enemies
+ > Heart Stone (Enemy Double/Full Damage)
 
  % Upgrade DifficultyConfig: small data table structure so adding difficulties 
       %turns into “add one object to an array” instead of editing a big switch.
