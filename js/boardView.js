@@ -27,14 +27,14 @@ function redrawBoard() {
   const cells = getAllCells();
   cells.forEach(c => {
     c.innerHTML = '';
-    c.classList.remove('grid-cell--frozen');
   });
 
-  // Apply frozen styling for tiles in frozenEnemyTiles
   frozenEnemyTiles.forEach(index => {
     const frozenCell = findCellByIndex(cells, index);
     if (frozenCell) {
-      frozenCell.classList.add('grid-cell--frozen');
+      const overlay = document.createElement('div');
+      overlay.className = 'frozen-overlay';
+      frozenCell.appendChild(overlay);
     }
   });
 
@@ -129,13 +129,18 @@ function redrawBoard() {
   });
 
   // mortar target tiles (red skip-tile style)
-  mortarTargets.forEach(idx => {
-    const cell = findCellByIndex(cells, idx);
-    if (!cell) return;
-    const mark = document.createElement('div');
-    mark.className = 'skip-tile mortar-target';
-    cell.appendChild(mark);
-  });
+mortarTargets.forEach(idx => {
+  const cell = findCellByIndex(cells, idx);
+  if (!cell) return;
+
+  const mark = document.createElement('div');
+
+  // 50/50 pick between A and B
+  const variantClass = Math.random() < 0.5 ? 'mortar-target-a' : 'mortar-target-b';
+  mark.className = variantClass;
+
+  cell.appendChild(mark);
+});
 
   // heart
   if (heartIndex != null) {

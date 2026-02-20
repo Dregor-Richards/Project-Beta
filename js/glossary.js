@@ -11,7 +11,7 @@ const GLOSSARY_ITEMS = [
     description: 'Yes, a skeleton. It just looks like a square. Moves one tile per turn. Deals damage if it bumps into you. STAY AWAY.' },
   { id: 'enemy_fast', title: 'Bat', iconClass: 'fast-enemy',
     description: 'You should spend less time thinking about the shape, and more time on how you plan to avoid it. This beast can move up to 3 tiles a turn, if it feels like it. And yes, it bites.' },
-  { id: 'heart', title: 'Gold Heart', iconClass: 'glossary-heart',
+  { id: 'heart', title: 'Gold Heart', iconClass: 'heart',
     description: 'The one who came with this, surely does not need it any longer. Use its vigor to restore a missing life, if you have been unfortunate enough to lose one.' },
   { id: 'fire_wand', title: 'Fire Wand', iconClass: 'inventory-fire-wand',
     description: 'A simple twig of [wood-type here], capable of a single casting. Just point and shoot, so that the denizens of this sprawl shall know your fury.' },

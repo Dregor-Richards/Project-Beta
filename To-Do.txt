@@ -1,20 +1,15 @@
 02/19/2026 ---
 
  > Visual Assets
-   > Ice Wand Cover Of Tile Is Beneath Actual Image
-   > Tracker Enemy
    > Mortar Enemy
    > Mortar Strikes
    > Sand Vortex
-   > Heart
-   > Ice Wand ?
-   > Fire Wand ?
-   > Lightning Wand ?
-   > Wyrd Stone
+ > Update Glossary With New Enemies
 
  <> Later Updates:
 
- > Update Glossary With New Enemies
+ > Need New Game Icon
+ > Add character icon beside live bar
  > Heart Stone (Enemy Double/Full Damage)
 
  % Upgrade DifficultyConfig: small data table structure so adding difficulties 
