@@ -24,6 +24,9 @@ Click the green Code button → Download ZIP.
 
 Extract the ZIP somewhere on your computer.
 
+Quick - You may try opening the html folder from your File Explorer, and double clicking the index.html file.
+This should work in most cases, but the steps below are more reliable.
+
 Open a terminal/command prompt in the extracted folder (or cd into it).
 
 ### Run a local web server
@@ -78,3 +81,4 @@ All folders (assets, js, html etc.) are present as in the repo structure.
 ├── assets/
 ├── html/        # contains index.html and other pages
 ├── js/
+
