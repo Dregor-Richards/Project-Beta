@@ -1,19 +1,8 @@
-02/19/2026 ---
+02/26/2026 ---
 
- > Visual Assets
-   > Mortar Enemy
-   > Mortar Strikes
-   > Sand Vortex
- > Update Glossary With New Enemies
+
 
  <> Later Updates:
-
- > Need New Game Icon
- > Add character icon beside live bar
- > Heart Stone (Enemy Double/Full Damage)
-
- % Upgrade DifficultyConfig: small data table structure so adding difficulties 
-      %turns into “add one object to an array” instead of editing a big switch.
 
  > Boss Enemy* (10/12 Points?)
 
@@ -26,7 +15,10 @@
  > Dark Rooms (Pick-Up Lantern To Illuminate Adjecent Tiles)
  > Summoner Enemy (Slow, Summons Basic, or Trackers? Pink Versions)
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
+ > Falling Floor? (Too Redundant Perhaps?)
  % Sniper Enemy?
+ > Wand to turn wall into walkways
+
  <--->                  <--->
 
  $ Add Character Equipment

@@ -43,7 +43,16 @@ function redrawScore() {
 }
 
 function addScore(points) {
-  score += points;
+  let final = points;
+
+  if (hasTripleEnemyTurns) {
+    final *= 2;
+  }
+  if (heartStoneActive) {
+    final *= 3;
+  }
+
+  score += final;
   sessionStorage.setItem('playerScore', String(score));
   redrawScore();
 }
@@ -118,22 +127,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
   stoneIndex = null;
   stonePresent = false;
+  stoneType = null;
   hasTripleEnemyTurns = false;
+  heartStoneActive = false;
 
   if (config.guaranteeStone) {
     const idx = chooseFreeIndex();
     if (idx !== null) {
       stoneIndex = idx;
       stonePresent = true;
+      stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart'; // boss-prep
     }
   } else {
-    // existing 5% roll
-    const wyrdRoll = Math.random();
-    if (wyrdRoll < 0.05) {
+    // 5% chance for a stone, then 50/50 Wyrd vs Heart
+    const stoneRoll = Math.random();
+    if (stoneRoll < 0.05) {
       const idx = chooseFreeIndex();
       if (idx !== null) {
         stoneIndex = idx;
         stonePresent = true;
+        stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart';
       }
     }
   }

@@ -74,12 +74,16 @@ function redrawBoard() {
     }
   }
 
-  // Wyrd Stone
-  if (stonePresent && stoneIndex != null) {
+  // Stone on board (Wyrd or Heart)
+  if (stonePresent && stoneIndex != null && stoneType) {
     const stoneCell = findCellByIndex(cells, stoneIndex);
     if (stoneCell) {
       const stone = document.createElement('div');
-      stone.className = 'wyrd-stone';
+      if (stoneType === 'wyrd') {
+        stone.className = 'wyrd-stone';
+      } else if (stoneType === 'heart') {
+        stone.className = 'heart-stone';
+      }
       stoneCell.appendChild(stone);
     }
   }

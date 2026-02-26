@@ -32,8 +32,10 @@ let wandIndex = null;
 let currentWandSubtype = null;
 let stoneIndex = null;
 let stonePresent = false;
+let stoneType = null;
 let hasDoubleMove = false;
 let hasTripleEnemyTurns = false;
+let heartStoneActive = false;
 let armedItem = null;
 
 // shared flags

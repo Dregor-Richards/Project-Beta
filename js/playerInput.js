@@ -107,13 +107,14 @@ async function handleMove(event) {
     currentWandSubtype = null;
   }
 
-  // Wyrd Stone pickup
+  // Stone pickup
   if (next === stoneIndex && stonePresent) {
-    pickupStone();
+    pickupStone(stoneType);
     spawnParticlesAtCell(next, 'pickup');
     playSfx('stonePickup');
-    stoneIndex = null;
     stonePresent = false;
+    stoneIndex = null;
+    stoneType = null;
   }
 
   const steppingOntoSkipTile = (next === skipTileIndex);

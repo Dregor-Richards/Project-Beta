@@ -347,6 +347,20 @@ body.level-screen {
   font-size: 14px;
 }
 
+/* Small avatar portrait in HUD */
+#hud-avatar {
+  position: absolute;
+  top: 16px;
+  right: 110px;  /* adjust so it sits left of lives/score/difficulty */
+  width: 48px;
+  height: 48px;
+  background-image: url('./assets/sprites/Avatar1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 16; /* above background, under modals */
+}
+
 .damage-flash {
   position: fixed;
   inset: 0;
@@ -776,6 +790,31 @@ body.level-screen {
   background-position: center;
 }
 
+/* Board Heart Stone */
+.heart-stone {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
+  background-image: url('./assets/sprites/HeartStone.png'); /* adjust path/name */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Inventory Heart Stone */
+.inventory-heart-stone {
+  position: relative;
+  width: 70%;
+  height: 70%;
+  margin: 0;
+  background-image: url('./assets/sprites/HeartStone.png'); /* same sprite */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 /* =========================================
    8. Modals (generic + Wyrd Stone + Glossary)
    ========================================= */
@@ -831,15 +870,17 @@ body.level-screen {
   gap: 12px;
 }
 
-/* Wyrd Stone modal buttons */
-#wyrd-modal .modal-buttons {
+/* Stone modal buttons */
+#wyrd-modal .modal-buttons,
+#heart-modal .modal-buttons {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   margin-top: 1rem;
 }
 
-#wyrd-modal .modal-button {
+#wyrd-modal .modal-button,
+#heart-modal .modal-button {
   flex: 1;
   text-align: center;
 }
@@ -924,8 +965,8 @@ body.level-screen {
 
 .glossary-icon-inner {
   position: relative;
-  width: 70%;
-  height: 70%;
+  width: 85%;
+  height: 85%;
   margin: 0;
   transform: none;
 }

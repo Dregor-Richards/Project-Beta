@@ -36,9 +36,11 @@ function pickupWand(subtype) {
   sessionStorage.setItem('inventory', JSON.stringify(inventory));
 }
 
-function pickupStone() {
+function pickupStone(kind) {
+  const typeKey = kind === 'heart' ? 'heart_stone' : 'wyrd_stone';
+
   const existingIndex = inventory.findIndex(
-    item => item && item.type === 'wyrd_stone' && item.count < 3
+    item => item && item.type === typeKey && item.count < 3
   );
 
   if (existingIndex !== -1) {
@@ -46,7 +48,7 @@ function pickupStone() {
   } else {
     const slot = findFirstEmptySlot();
     if (slot !== -1) {
-      inventory[slot] = { type: 'wyrd_stone', count: 1 };
+      inventory[slot] = { type: typeKey, count: 1 };
     }
   }
 
@@ -87,7 +89,18 @@ function renderInventory() {
       countLabel.textContent = String(item.count);
       countLabel.className = 'inventory-stack-count';
       slot.appendChild(countLabel);
+
+    } else if (item.type === 'heart_stone') {
+      const icon = document.createElement('div');
+      icon.className = 'inventory-heart-stone';
+      slot.appendChild(icon);
+
+      const countLabel = document.createElement('div');
+      countLabel.textContent = String(item.count);
+      countLabel.className = 'inventory-stack-count';
+      slot.appendChild(countLabel);
     }
+
   });
 }
 
@@ -101,6 +114,9 @@ function getInventoryItemName(item) {
   }
   if (item.type === 'wyrd_stone') {
     return 'Wyrd Stone';
+  }
+  if (item.type === 'heart_stone') {
+    return 'Heart Stone';
   }
   return 'Item';
 }
@@ -126,6 +142,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const wyrdModal = document.getElementById('wyrd-modal');
   const wyrdConfirmBtn = document.getElementById('wyrd-confirm');
   const wyrdCancelBtn = document.getElementById('wyrd-cancel');
+  const heartModal = document.getElementById('heart-modal');
+  const heartConfirmBtn = document.getElementById('heart-confirm');
+  const heartCancelBtn = document.getElementById('heart-cancel');
   const tooltip = document.getElementById('inventory-tooltip');
 
   const slots = document.querySelectorAll('.inventory-slot');
@@ -183,6 +202,21 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         return;
       }
+
+      if (item.type === 'heart_stone') {
+        armedItem = { type: 'heart_stone', slotIndex: currentIndex };
+
+        document.querySelectorAll('.inventory-slot')
+          .forEach((s, i) => {
+            s.classList.toggle('inventory-selected', i === currentIndex);
+          });
+
+        if (heartModal) {
+          heartModal.classList.remove('hidden');
+        }
+        return;
+      }
+
     });
 
     // Tooltip
@@ -248,4 +282,43 @@ window.addEventListener('DOMContentLoaded', () => {
       wyrdModal.classList.add('hidden');
     });
   }
+
+    // Confirm Heart Stone
+  if (heartConfirmBtn && heartModal) {
+    heartConfirmBtn.addEventListener('click', () => {
+      if (!armedItem || armedItem.type !== 'heart_stone') {
+        heartModal.classList.add('hidden');
+        return;
+      }
+
+      heartStoneActive = true;
+      playSfx('useHeartStone'); // add this in audio if you want
+
+      const slotIndex = armedItem.slotIndex;
+      const item = inventory[slotIndex];
+      if (item && item.type === 'heart_stone') {
+        item.count -= 1;
+        if (item.count <= 0) {
+          inventory[slotIndex] = null;
+        }
+      }
+
+      armedItem = null;
+      clearInventorySelection();
+      renderInventory();
+      sessionStorage.setItem('inventory', JSON.stringify(inventory));
+
+      heartModal.classList.add('hidden');
+    });
+  }
+
+  // Cancel Heart Stone
+  if (heartCancelBtn && heartModal) {
+    heartCancelBtn.addEventListener('click', () => {
+      armedItem = null;
+      clearInventorySelection();
+      heartModal.classList.add('hidden');
+    });
+  }
+
 });
