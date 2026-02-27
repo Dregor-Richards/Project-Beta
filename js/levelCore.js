@@ -1,3 +1,10 @@
+function applyCameraTransform() {
+  const wrapper = document.querySelector('.level-grid-wrapper');
+  if (!wrapper) return;
+  wrapper.style.transform =
+    `translate(${cameraOffsetX}px, ${cameraOffsetY}px) scale(${cameraZoom})`;
+}
+
 function damageEffect() {
   const overlay = document.getElementById('damage-flash');
   const gameWrapper = document.getElementById('game-wrapper');
@@ -63,7 +70,6 @@ window.addEventListener('DOMContentLoaded', () => {
   loadLevelNumber();
   playMusic('level');
 
-  // Difficulty from setup; default to 1
   const storedDifficulty = sessionStorage.getItem('currentDifficulty');
   let difficulty = storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
   if (difficulty < 1) difficulty = 1;
@@ -74,9 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const config = getDifficultyConfig(difficulty);
-  gridSize = config.gridSize;
 
-  // Existing lives/score/inventory loading...
   const storedLives = sessionStorage.getItem('playerLives');
   lives = storedLives !== null ? Number(storedLives) || 3 : 3;
 
@@ -95,65 +99,71 @@ window.addEventListener('DOMContentLoaded', () => {
 
   renderInventory();
 
-  avatarIndex = gridSize * gridSize - gridSize + 1;
-
-  // Place enemies according to config
-  placeNormalEnemies(config.normalCount);
-  placeFastEnemies(config.fastCount);
-  placeTrackerEnemies(config.trackerCount);
-  placeMortarEnemies(config.mortarCount);
-
-  doorIndex = chooseDoorIndex();
-
-  if (shouldSpawnHeart()) {
-    heartIndex = chooseHeartIndex();
+  if (difficulty === 10) {
+    // Boss arena setup instead of normal generation
+    setupBossLevel();
   } else {
-    heartIndex = null;
-  }
+    // Normal levels
+    gridSize = config.gridSize;
 
-  skipTileIndex = chooseSkipTileIndex();
+    // Default spawn in lower-left row (your existing logic)
+    avatarIndex = gridSize * gridSize - gridSize + 1;
 
-  // Wands & stones
-  wandIndex = null;
-  currentWandSubtype = null;
+    placeNormalEnemies(config.normalCount);
+    placeFastEnemies(config.fastCount);
+    placeTrackerEnemies(config.trackerCount);
+    placeMortarEnemies(config.mortarCount);
 
-  if (shouldSpawnWand()) {
-    const idx = chooseWandIndex();
-    if (idx !== null) {
-      wandIndex = idx;
-      currentWandSubtype = chooseWandSubtype();
+    doorIndex = chooseDoorIndex();
+
+    if (shouldSpawnHeart()) {
+      heartIndex = chooseHeartIndex();
+    } else {
+      heartIndex = null;
     }
-  }
 
-  stoneIndex = null;
-  stonePresent = false;
-  stoneType = null;
-  hasTripleEnemyTurns = false;
-  heartStoneActive = false;
+    skipTileIndex = chooseSkipTileIndex();
 
-  if (config.guaranteeStone) {
-    const idx = chooseFreeIndex();
-    if (idx !== null) {
-      stoneIndex = idx;
-      stonePresent = true;
-      stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart'; // boss-prep
+    wandIndex = null;
+    currentWandSubtype = null;
+
+    if (shouldSpawnWand()) {
+      const idx = chooseWandIndex();
+      if (idx !== null) {
+        wandIndex = idx;
+        currentWandSubtype = chooseWandSubtype();
+      }
     }
-  } else {
-    // 5% chance for a stone, then 50/50 Wyrd vs Heart
-    const stoneRoll = Math.random();
-    if (stoneRoll < 0.05) {
+
+    stoneIndex = null;
+    stonePresent = false;
+    stoneType = null;
+    hasTripleEnemyTurns = false;
+    heartStoneActive = false;
+
+    if (config.guaranteeStone) {
       const idx = chooseFreeIndex();
       if (idx !== null) {
         stoneIndex = idx;
         stonePresent = true;
         stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart';
       }
+    } else {
+      const stoneRoll = Math.random();
+      if (stoneRoll < 0.05) {
+        const idx = chooseFreeIndex();
+        if (idx !== null) {
+          stoneIndex = idx;
+          stonePresent = true;
+          stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart';
+        }
+      }
     }
+
+    buildGrid(gridSize);
+    redrawBoard();
   }
 
-  buildGrid(gridSize);
-  redrawBoard();
   redrawLives();
   redrawScore();
 });
-

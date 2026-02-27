@@ -132,19 +132,25 @@ function redrawBoard() {
     cell.appendChild(enemy);
   });
 
+  // === Difficulty (for mortars and boss) ===
+  const storedDifficulty = sessionStorage.getItem('currentDifficulty');
+  const difficulty =
+    storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
+
   // mortar target tiles (red skip-tile style)
-mortarTargets.forEach(idx => {
-  const cell = findCellByIndex(cells, idx);
-  if (!cell) return;
+  const targetsToDraw =
+    difficulty === 10 ? bossMortarTargets : mortarTargets;
 
-  const mark = document.createElement('div');
+  targetsToDraw.forEach(idx => {
+    const cell = findCellByIndex(cells, idx);
+    if (!cell) return;
 
-  // 50/50 pick between A and B
-  const variantClass = Math.random() < 0.5 ? 'mortar-target-a' : 'mortar-target-b';
-  mark.className = variantClass;
-
-  cell.appendChild(mark);
-});
+    const mark = document.createElement('div');
+    const variantClass =
+      Math.random() < 0.5 ? 'mortar-target-a' : 'mortar-target-b';
+    mark.className = variantClass;
+    cell.appendChild(mark);
+  });
 
   // heart
   if (heartIndex != null) {
@@ -155,31 +161,49 @@ mortarTargets.forEach(idx => {
       heartCell.appendChild(heart);
     }
   }
+
+  // === Boss (difficulty 10) ===
+  if (difficulty === 10 && typeof bossIndex === 'number' && bossHealth > 0) {
+    const bossCell = findCellByIndex(cells, bossIndex + 1);
+    if (bossCell) {
+      const boss = document.createElement('div');
+      boss.className = 'boss-enemy';
+      bossCell.appendChild(boss);
+    }
+  }
 }
 
-function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
-  const gameWrapper = document.getElementById('game-wrapper');
-  if (!gameWrapper) return;
 
-  const cell = document.querySelector(`.grid-cell[data-index="${index}"]`);
+function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
+  const grid = document.getElementById('level-grid');
+  if (!grid) return;
+
+  const cells = getAllCells();
+  const cell = findCellByIndex(cells, index);
   if (!cell) return;
 
-  // Make sure we have or create a particle layer
-  let layer = gameWrapper.querySelector('.particle-layer');
+  // Ensure particle-layer lives inside the grid
+  let layer = grid.querySelector('.particle-layer');
   if (!layer) {
     layer = document.createElement('div');
     layer.className = 'particle-layer';
-    gameWrapper.appendChild(layer);
+    grid.appendChild(layer);
   }
 
-  const rect = cell.getBoundingClientRect();
-  const wrapperRect = gameWrapper.getBoundingClientRect();
+  // Derive grid size and tile coordinates from index (1-based)
+  const totalCells = cells.length;
+  const size = Math.sqrt(totalCells);      // assumes square grid
+  const zeroBased = index - 1;
+  const row = Math.floor(zeroBased / size);
+  const col = zeroBased % size;
 
-  // Center in the cell, relative to wrapper
-  const centerX = rect.left - wrapperRect.left + rect.width / 2;
-  const centerY = rect.top - wrapperRect.top + rect.height / 2;
+  // Center of that tile in grid space (percent)
+  const tileWidthPct = 100 / size;
+  const tileHeightPct = 100 / size;
 
-  // Different “weights” per kind
+  const centerXPct = (col + 0.5) * tileWidthPct;
+  const centerYPct = (row + 0.5) * tileHeightPct;
+
   let baseCount = 6;
   if (kind === 'kill') baseCount = 10;
   if (kind === 'pickup') baseCount = 8;
@@ -191,22 +215,21 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
     const p = document.createElement('div');
     p.className = `particle particle--${kind}`;
 
-    // Random direction and distance (softer overall)
     const angle = Math.random() * Math.PI * 2;
     const distance =
       kind === 'door'
         ? 26 + Math.random() * 10
-        : 16 + Math.random() * 8; // hits/pickups smaller
+        : 16 + Math.random() * 8;
 
     const px = Math.cos(angle) * distance;
     const py = Math.sin(angle) * distance;
 
-    p.style.left = `${centerX}px`;
-    p.style.top = `${centerY}px`;
+    // Place particle at tile center in grid coordinate space
+    p.style.left = `${centerXPct}%`;
+    p.style.top = `${centerYPct}%`;
     p.style.setProperty('--px', `${px}px`);
     p.style.setProperty('--py', `${py}px`);
 
-    // Remove when animation ends
     p.addEventListener('animationend', () => {
       p.remove();
     });
@@ -214,3 +237,149 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
     layer.appendChild(p);
   }
 }
+
+function clampCameraToGrid() {
+  const viewport = document.querySelector('.level-viewport');
+  const grid = document.getElementById('level-grid');
+  if (!viewport || !grid) return;
+
+  const viewportRect = viewport.getBoundingClientRect();
+  const viewportWidth = viewportRect.width;
+  const viewportHeight = viewportRect.height;
+
+  const nativeGridWidth = grid.offsetWidth;
+  const nativeGridHeight = grid.offsetHeight;
+
+  const scaledGridWidth = nativeGridWidth * cameraZoom;
+  const scaledGridHeight = nativeGridHeight * cameraZoom;
+
+  // How much extra "void" we allow around the grid (0.5 = up to half a grid offscreen)
+  const overscrollFactor = 0.5;
+
+  // Offsets = grid top-left relative to viewport top-left
+  const minOffsetX = viewportWidth - scaledGridWidth - scaledGridWidth * overscrollFactor;
+  const maxOffsetX = scaledGridWidth * overscrollFactor;
+
+  const minOffsetY = viewportHeight - scaledGridHeight - scaledGridHeight * overscrollFactor;
+  const maxOffsetY = scaledGridHeight * overscrollFactor;
+
+  cameraOffsetX = Math.max(minOffsetX, Math.min(maxOffsetX, cameraOffsetX));
+  cameraOffsetY = Math.max(minOffsetY, Math.min(maxOffsetY, cameraOffsetY));
+}
+
+
+function applyCameraTransform() {
+  const wrapper = document.querySelector('.level-grid-wrapper');
+  if (!wrapper) return;
+  wrapper.style.transform =
+    `translate(${cameraOffsetX}px, ${cameraOffsetY}px) scale(${cameraZoom})`;
+}
+
+function centerCameraOnPlayer() {
+  const viewport = document.querySelector('.level-viewport');
+  const grid = document.getElementById('level-grid');
+  if (!viewport || !grid) return;
+
+  const cells = getAllCells();
+  const playerCell = findCellByIndex(cells, avatarIndex);
+  if (!playerCell) return;
+
+  const viewportRect = viewport.getBoundingClientRect();
+  const gridRect = grid.getBoundingClientRect();
+  const cellRect = playerCell.getBoundingClientRect();
+
+  // Player center in *grid* coordinates
+  const playerCenterX = (cellRect.left - gridRect.left) + cellRect.width / 2;
+  const playerCenterY = (cellRect.top - gridRect.top) + cellRect.height / 2;
+
+  // We want the player at the center of the viewport
+  const targetOffsetX = (viewportRect.width / 2) - playerCenterX;
+  const targetOffsetY = (viewportRect.height / 2) - playerCenterY;
+
+  cameraOffsetX = targetOffsetX;
+  cameraOffsetY = targetOffsetY;
+
+  // Respect current clamp / overscroll
+  clampCameraToGrid();
+  applyCameraTransform();
+}
+
+document.addEventListener('keydown', (e) => {
+  const zoomStep = 0.1;
+
+  if (e.key === '=' || e.key === '+') {
+    cameraZoom = Math.min(2.0, cameraZoom + zoomStep);
+    clampCameraToGrid();
+    applyCameraTransform();
+  } else if (e.key === '-' || e.key === '_') {
+    cameraZoom = Math.max(0.5, cameraZoom - zoomStep);
+    clampCameraToGrid();
+    applyCameraTransform();
+  } else if (e.key === 'c' || e.key === 'C') {
+    centerCameraOnPlayer();
+  }
+});
+
+const viewport = document.querySelector('.level-viewport');
+const gridWrapper = document.querySelector('.level-grid-wrapper');
+const gridEl = document.getElementById('level-grid');
+
+// Mouse wheel zoom on viewport
+if (viewport) {
+  viewport.addEventListener('wheel', (e) => {
+    e.preventDefault();
+
+    console.log('wheel event');
+    const zoomFactor = 0.1;
+    const oldZoom = cameraZoom;
+    const zoomDir = e.deltaY < 0 ? 1 : -1;
+    const newZoom = Math.min(2.0, Math.max(0.5, cameraZoom + zoomDir * zoomFactor));
+
+    if (newZoom === oldZoom) return;
+
+    const rect = viewport.getBoundingClientRect();
+    const cx = e.clientX - rect.left;
+    const cy = e.clientY - rect.top;
+
+    cameraOffsetX = cx - (cx - cameraOffsetX) * (newZoom / oldZoom);
+    cameraOffsetY = cy - (cy - cameraOffsetY) * (newZoom / oldZoom);
+
+    cameraZoom = newZoom;
+    clampCameraToGrid();
+    applyCameraTransform();
+  }, { passive: false });
+
+  // Block context menu so right-drag feels clean
+  viewport.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
+// Use the grid itself for panning
+if (gridEl) {
+  gridEl.addEventListener('mousedown', (e) => {
+    if (e.button !== 2) return; // right button only
+    e.preventDefault();
+    isPanning = true;
+        console.log('panning start', e.button);
+    if (viewport) viewport.classList.add('is-panning');
+    panStartX = e.clientX;
+    panStartY = e.clientY;
+    panOriginX = cameraOffsetX;
+    panOriginY = cameraOffsetY;
+  });
+}
+
+window.addEventListener('mousemove', (e) => {
+  if (!isPanning) return;
+  const dx = e.clientX - panStartX;
+  const dy = e.clientY - panStartY;
+  cameraOffsetX = panOriginX + dx;
+  cameraOffsetY = panOriginY + dy;
+  clampCameraToGrid();
+  applyCameraTransform();
+});
+
+window.addEventListener('mouseup', () => {
+  if (!isPanning) return;
+  isPanning = false;
+  if (viewport) viewport.classList.remove('is-panning');
+});

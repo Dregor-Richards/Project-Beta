@@ -49,6 +49,18 @@ async function handleMove(event) {
 
   if (next === avatarIndex) return;
 
+  // === Boss collision (difficulty 10) ===
+  const storedDifficulty = sessionStorage.getItem('currentDifficulty');
+  const difficulty = storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
+  if (difficulty === 10 && typeof bossIndex === 'number') {
+    const bossTileIndex = bossIndex + 1; // bossIndex is 0-based, board is 1-based
+    if (next === bossTileIndex) {
+      await hitBoss(); // implement in bossLevel1.js
+      return;          // boss hit consumes the turn
+    }
+  }
+
+  // --- Normal enemies ---
   const enemyIndex = enemies.indexOf(next);
   if (enemyIndex !== -1) {
     enemies.splice(enemyIndex, 1);
@@ -81,11 +93,10 @@ async function handleMove(event) {
     playSfx('enemyDeath');
   }
 
-    // if no mortars remain, clear their targets
+  // if no mortars remain, clear their targets
   if (mortarEnemies.length === 0) {
     mortarTargets = [];
   }
-
 
   if (next === heartIndex) {
     if (lives < 3) {
@@ -124,10 +135,15 @@ async function handleMove(event) {
 
   checkForWin();
 
-  if (playerDead || allEnemiesDead()) return;
+  const storedDifficulty2 = sessionStorage.getItem('currentDifficulty');
+  const difficulty2 =
+    storedDifficulty2 !== null ? Number(storedDifficulty2) || 1 : 1;
 
-  // If we stepped on the skip tile, we force enemies to move now,
-  // and consume the rest of this “turn”.
+  // On boss level (10), we always let the boss take a turn,
+  // even if there are no regular enemies.
+  if (playerDead || (difficulty2 !== 10 && allEnemiesDead())) return;
+
+  // If we stepped on the skip tile, we force enemies to move now
   if (steppingOntoSkipTile) {
     playSfx('skipTile');
     movesThisTurn = 0;
@@ -148,6 +164,7 @@ async function handleMove(event) {
   movesThisTurn = 0;
   await endPlayerTurn();
 }
+
 
 function toggleInventory() {
   const inv = document.getElementById('inventory-panel');

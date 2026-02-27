@@ -11,6 +11,16 @@ let levelNumber = 1;
 let skipTileIndex = null;
 let skipNextTurn = false;
 
+// Camera
+let cameraZoom = 1;
+let cameraOffsetX = 0;
+let cameraOffsetY = 0;
+let isPanning = false;
+let panStartX = 0;
+let panStartY = 0;
+let panOriginX = 0;
+let panOriginY = 0;
+
 // Enemies
 let enemies = [];
 let fastEnemies = [];

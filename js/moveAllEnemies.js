@@ -4,7 +4,8 @@ async function applyPlayerHit(
   moveIntoPlayerTile = false,
   enemyArray = null,
   enemyIndex = null,
-  newEnemyPos = null
+  newEnemyPos = null,
+  skipDeathModal = false
 ) {
   if (heartStoneActive) {
     lives = 0;
@@ -26,7 +27,11 @@ async function applyPlayerHit(
     redrawBoard();
     await sleep(200);
     playSfx('death');
-    showDeathModal();
+
+    if (!skipDeathModal) {
+      showDeathModal();
+    }
+
     return true; // player died
   } else {
     playSfx('playerHit');

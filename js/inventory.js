@@ -256,6 +256,14 @@ window.addEventListener('DOMContentLoaded', () => {
       hasTripleEnemyTurns = true;
       playSfx('useWyrdStone');
 
+      // Boss level: if boss is alive and still Stage 1, double final boss score
+      if (typeof bossHealth === 'number' && bossHealth > 0 &&
+          typeof bossStage === 'number' && bossStage === 1) {
+        if (typeof bossWyrdScoreMultiplier === 'number') {
+          bossWyrdScoreMultiplier = 2;  // double score
+        }
+      }
+
       const slotIndex = armedItem.slotIndex;
       const item = inventory[slotIndex];
       if (item && item.type === 'wyrd_stone') {
@@ -292,7 +300,15 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       heartStoneActive = true;
-      playSfx('useHeartStone'); // add this in audio if you want
+      playSfx('useWyrdStone');
+
+      // Boss level: if boss is alive and still Stage 1, triple final boss score
+      if (typeof bossHealth === 'number' && bossHealth > 0 &&
+          typeof bossStage === 'number' && bossStage === 1) {
+        if (typeof bossHeartScoreMultiplier === 'number') {
+          bossHeartScoreMultiplier = 3;  // triple score
+        }
+      }
 
       const slotIndex = armedItem.slotIndex;
       const item = inventory[slotIndex];

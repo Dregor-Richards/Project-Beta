@@ -361,6 +361,70 @@ body.level-screen {
   z-index: 16; /* above background, under modals */
 }
 
+/* Boss health bar (top-center above grid) */
+.boss-health {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  z-index: 50;
+}
+
+.boss-health.hidden {
+  display: none;
+}
+
+#boss-name-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.boss-health-pips {
+  display: flex;
+  gap: 4px;
+}
+
+.boss-health-pip {
+  width: 14px;
+  height: 22px;
+  border-radius: 3px;
+  background-color: #550000;
+  border: 1px solid #aa0000;
+}
+
+.boss-health-pip.full {
+  background-color: #ff3333;
+}
+
+.level-viewport {
+  position: relative;
+  width: 75vmin;
+  height: 75vmin;
+  overflow: hidden;
+  background-color: #000;
+  border: 6px solid #000;
+  box-shadow: 0 0 12px #000;
+  cursor: grab;
+}
+
+.level-viewport.is-panning {
+  cursor: grabbing;
+}
+
+.level-grid-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+}
+
 .damage-flash {
   position: fixed;
   inset: 0;
@@ -400,15 +464,14 @@ body.level-screen {
 /* Grid */
 
 .level-grid {
-  width: 60vmin;
-  height: 60vmin;
+  width: 75vmin;
+  height: 75vmin;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  gap: 0;                    /* tiles touch cleanly */
-  background-color: #000;    /* dark frame behind tiles */
-  border: 6px solid #000;    /* thicker black rim */
-  box-shadow: 0 0 12px #000; /* optional soft glow */
+  gap: 0;
+  background-color: #000;
+  /* remove border & box-shadow here, since viewport has them now */
 }
 
 .grid-cell {
@@ -422,6 +485,12 @@ body.level-screen {
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+/* Boss arena holes: no tile here */
+.boss-hole {
+  background: transparent;
+  pointer-events: none;
 }
 
 /* =========================================
@@ -484,6 +553,16 @@ body.level-screen {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.boss-enemy {
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sprites/Boss1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 3;
 }
 
 .door {
@@ -559,6 +638,25 @@ body.level-screen {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+
+/* Stopping mouse drag upon grid features */
+
+.level-grid,
+.grid-cell,
+.avatar,
+.enemy,
+.fast-enemy,
+.tracker-enemy,
+.mortar-enemy,
+.heart,
+.door,
+.skip-tile,
+.mortar-target-a,
+.mortar-target-b {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 /* Particle system */
@@ -1008,6 +1106,31 @@ body.level-screen {
 .highscore-back-button {
   font-size: 0.7em;
   padding: 0.7em 1.4em;
+}
+
+.highscore-reset-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 10px;
+  background-color: #2ecc71;
+  color: white;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#hs-reset-modal .modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#hs-reset-modal .go-button {
+  flex: 1;
+  text-align: center;
 }
 
 /* High score rank colors */

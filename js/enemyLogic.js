@@ -82,20 +82,37 @@ function sleep(ms) {
 async function endPlayerTurn() {
   playerTurn = false;
 
-  // Base 1 enemy phase
-  await moveAllEnemies();
+  const storedDifficulty = sessionStorage.getItem('currentDifficulty');
+  const difficulty =
+    storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
 
-  // If Wyrd Stone active, add 2 more enemy phases
-  if (hasTripleEnemyTurns && !playerDead && !allEnemiesDead()) {
-    for (let i = 0; i < 2; i++) {
-      await moveAllEnemies();
-      if (playerDead || allEnemiesDead()) break;
+  if (difficulty === 10) {
+    // Boss level
+    await bossAct();
+
+    if (hasTripleEnemyTurns && !playerDead && bossHealth > 0) {
+      // 2 extra boss actions (total 3 per player move)
+      for (let i = 0; i < 2; i++) {
+        await bossAct();
+        if (playerDead || bossHealth <= 0) break;
+      }
+    }
+  } else {
+    // Normal levels
+    await moveAllEnemies();
+
+    if (hasTripleEnemyTurns && !playerDead && !allEnemiesDead()) {
+      for (let i = 0; i < 2; i++) {
+        await moveAllEnemies();
+        if (playerDead || allEnemiesDead()) break;
+      }
     }
   }
 
   movesThisTurn = 0;
   playerTurn = true;
 }
+
 
 function allEnemiesDead() {
   return (

@@ -11,6 +11,10 @@
   <div class="setup-screen">
     <div class="setup-panel">
       <h2>High Scores</h2>
+        <!-- Reset button in upper-right -->
+      <button id="highscore-reset" class="highscore-reset-button">
+        Reset Scores
+      </button>
       <table class="highscore-table">
         <thead>
           <tr>
@@ -25,6 +29,17 @@
       <button id="highscore-back" class="go-button highscore-back-button">
         Back to Title
       </button>
+    </div>
+    <!-- Reset confirmation modal -->
+    <div id="hs-reset-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Reset High Scores?</h3>
+        <p>All saved high scores will be lost. This cannot be undone.</p>
+        <div class="modal-buttons">
+          <button id="hs-reset-confirm" class="go-button">Yes, reset</button>
+          <button id="hs-reset-cancel" class="go-button">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 

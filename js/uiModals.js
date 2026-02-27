@@ -326,24 +326,63 @@ function finishAndReturnToMenu() {
     });
   }
 
+    // G key → toggle glossary (same behavior as the buttons)
+  window.addEventListener('keydown', (event) => {
+    if (event.key !== 'g' && event.key !== 'G') return;
+
+    const glossaryPanel = document.getElementById('glossary-modal'); // root of the glossary UI
+    if (!glossaryPanel) return;
+
+    const isOpen = !glossaryPanel.classList.contains('hidden');
+
+    if (isOpen) {
+      closeGlossary();        // same as clicking the close button
+    } else {
+      openGlossary();         // same as clicking the open button
+    }
+
+    playSfx('uiGlossary');
+    event.preventDefault();
+  });
+
   if (glossaryPrev) {
     glossaryPrev.addEventListener('click', () => {
-      if (glossaryPage > 0) {
-        glossaryPage -= 1;
-        renderGlossaryPage();
-        playSfx('uiGlossary');
-      }
+      const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
+      glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);  // wrap backward
+      renderGlossaryPage();
+      playSfx('uiGlossary');
     });
   }
 
   if (glossaryNext) {
     glossaryNext.addEventListener('click', () => {
       const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
-      if (glossaryPage < maxPage) {
-        glossaryPage += 1;
-        renderGlossaryPage();
-        playSfx('uiGlossary');
-      }
+      glossaryPage = (glossaryPage + 1) % (maxPage + 1);                  // wrap forward
+      renderGlossaryPage();
+      playSfx('uiGlossary');
     });
   }
+
+    window.addEventListener('keydown', (event) => {
+    const key = event.key;
+    if (key !== 'e' && key !== 'E' && key !== 'q' && key !== 'Q') return;
+
+    const glossaryPanel = document.getElementById('glossary-modal');
+    if (!glossaryPanel || glossaryPanel.classList.contains('hidden')) return;
+
+    const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
+
+    if (key === 'e' || key === 'E') {
+      // forward, wrap
+      glossaryPage = (glossaryPage + 1) % (maxPage + 1);
+    } else {
+      // backward, wrap
+      glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);
+    }
+
+    renderGlossaryPage();
+    playSfx('uiGlossary');
+    event.preventDefault();
+  });
+
 });

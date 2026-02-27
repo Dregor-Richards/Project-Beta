@@ -26,9 +26,26 @@ function handleGridClick(event) {
       return;
     }
 
-    
-
     if (armedItem.subtype === 'fire') {
+      // Boss hit by Fire wand (difficulty 10)
+      const storedDifficulty = sessionStorage.getItem('currentDifficulty');
+      const difficulty =
+        storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
+      if (difficulty === 10 && typeof bossIndex === 'number') {
+        const bossTileIndex = bossIndex + 1; // 0-based -> 1-based
+        if (tileIndex === bossTileIndex) {
+          playSfx('useFireWand');
+          consumeWandCharge(armedItem.slotIndex);
+          armedItem = null;
+          clearInventorySelection();
+          renderInventory();
+          sessionStorage.setItem('inventory', JSON.stringify(inventory));
+
+          hitBoss(); // treat as a boss hit, not a kill
+          return;
+        }
+      }
+
       let removed = false;
 
       // Normal
@@ -109,6 +126,13 @@ function handleGridClick(event) {
   renderInventory();
   sessionStorage.setItem('inventory', JSON.stringify(inventory));
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('level-grid');
+  if (grid) {
+    grid.addEventListener('click', handleGridClick);
+  }
+});
 
 
 window.addEventListener('DOMContentLoaded', () => {
