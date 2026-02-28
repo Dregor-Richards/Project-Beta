@@ -326,9 +326,14 @@ function finishAndReturnToMenu() {
     });
   }
 
-    // G key → toggle glossary (same behavior as the buttons)
+  // G key → toggle glossary (same behavior as the buttons)
   window.addEventListener('keydown', (event) => {
     if (event.key !== 'g' && event.key !== 'G') return;
+
+    // If the highscore name input is focused, ignore G so the user can type it
+    if (document.activeElement === highscoreNameInput) {
+      return;
+    }
 
     const glossaryPanel = document.getElementById('glossary-modal'); // root of the glossary UI
     if (!glossaryPanel) return;
@@ -344,6 +349,7 @@ function finishAndReturnToMenu() {
     playSfx('uiGlossary');
     event.preventDefault();
   });
+
 
   if (glossaryPrev) {
     glossaryPrev.addEventListener('click', () => {

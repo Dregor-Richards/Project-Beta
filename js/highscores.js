@@ -2,14 +2,14 @@ const HS_KEY = 'sandcrypt_highscores';
 
 const DEFAULT_HIGHSCORES = [
   { name: 'Pixel', score: 500 },
-  { name: 'Skinbones', score: 100 },
-  { name: 'Dregor', score: 90 },
-  { name: 'Eddard', score: 80 },
-  { name: 'Bobbingo', score: 70 },
-  { name: 'Talion', score: 60 },
-  { name: 'Coraline', score: 50 },
-  { name: 'Cinder', score: 40 },
-  { name: 'Val', score: 30 },
+  { name: 'Skinbones', score: 200 },
+  { name: 'Dregor', score: 150 },
+  { name: 'Eddard', score: 120 },
+  { name: 'Bobbingo', score: 100 },
+  { name: 'Talion', score: 75 },
+  { name: 'Coraline', score: 65 },
+  { name: 'Cinder', score: 50 },
+  { name: 'Val', score: 35 },
   { name: 'Dan', score: 20 }
 ];
 

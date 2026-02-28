@@ -1,6 +1,8 @@
 02/26/2026 ---
 
-
+ > Lightning Wand Ability Must Stack
+ > Ice Tiles should stop mortars, should be able to click on fire, fire can't go on those ice tiles.
+ > Allow ice to remain for boss? Maybe change to boss-unique ice, only stops mortar after life reset?
 
  <> Later Updates:
 

@@ -352,18 +352,23 @@ async function bossAct() {
   await resolveBossMortarHits();
   if (playerDead) return;
 
-  // 2) Immediately pick new tiles to mark for the next cycle
-  const validTiles = getAllValidBossTiles();
-  const count = randomInt(mortarMin, mortarMax);
-  bossMortarTargets = pickRandomTilesFrom(validTiles, count);
+  // 2) Pick new tiles to mark
+    const allValidTiles = getAllValidBossTiles();
+    const bossTileIndex = bossIndex + 1; // 1-based
 
-  redrawBoard(); // show new icons
+    // Exclude the boss's own tile from mortar targets
+    const validTiles = allValidTiles.filter(tile => tile !== bossTileIndex);
 
-  // 3) Move boss (independent of mortar)
-  if (bossMoves && !playerDead) {
-    await moveBossTowardsPlayer(stepsMin, stepsMax);
+    const count = randomInt(mortarMin, mortarMax);
+    bossMortarTargets = pickRandomTilesFrom(validTiles, count);
+
     redrawBoard();
-  }
+
+    // 3) Move boss
+    if (bossMoves && !playerDead) {
+      await moveBossTowardsPlayer(stepsMin, stepsMax);
+      redrawBoard();
+    }
 }
 
 
@@ -373,6 +378,12 @@ async function bossAct() {
 function killBossDebug() {
   bossHealth = 0;
   redrawBossHealth();
+  const finalBossScore =
+    bossScoreBase *
+    (bossWyrdScoreMultiplier || 1) *
+    (bossHeartScoreMultiplier || 1);
+
+  addScore(finalBossScore);
   // If you want some feedback:
   // spawnParticlesAtCell(bossIndex + 1, 'kill');
   // playSfx('enemyDeath');

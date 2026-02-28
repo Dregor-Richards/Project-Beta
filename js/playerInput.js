@@ -49,6 +49,20 @@ async function handleMove(event) {
 
   if (next === avatarIndex) return;
 
+  // Prevent walking into missing tiles on boss level (difficulty 10)
+const storedDifficultyBoss = sessionStorage.getItem('currentDifficulty');
+const difficultyBoss =
+  storedDifficultyBoss !== null ? Number(storedDifficultyBoss) || 1 : 1;
+
+if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
+  // BOSS_MISSING_TILES is 0-based, board indices are 1-based
+  const bossMissingSet = new Set(BOSS_MISSING_TILES.map(idx => idx + 1));
+  if (bossMissingSet.has(next)) {
+    // Illegal move: treat as hitting a wall, do nothing
+    return;
+  }
+}
+
   // === Boss collision (difficulty 10) ===
   const storedDifficulty = sessionStorage.getItem('currentDifficulty');
   const difficulty = storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
@@ -64,7 +78,7 @@ async function handleMove(event) {
   const enemyIndex = enemies.indexOf(next);
   if (enemyIndex !== -1) {
     enemies.splice(enemyIndex, 1);
-    addScore(hasTripleEnemyTurns ? 2 : 1);
+    addScore(1);
     spawnParticlesAtCell(next, 'kill');
     playSfx('enemyDeath');
   }
@@ -72,7 +86,7 @@ async function handleMove(event) {
   const fastIndex = fastEnemies.indexOf(next);
   if (fastIndex !== -1) {
     fastEnemies.splice(fastIndex, 1);
-    addScore(hasTripleEnemyTurns ? 4 : 2);
+    addScore(2);
     spawnParticlesAtCell(next, 'kill');
     playSfx('enemyDeath');
   }
@@ -80,7 +94,7 @@ async function handleMove(event) {
   const trackerIndex = trackerEnemies.indexOf(next);
   if (trackerIndex !== -1) {
     trackerEnemies.splice(trackerIndex, 1);
-    addScore(hasTripleEnemyTurns ? 2 : 1);
+    addScore(2);
     spawnParticlesAtCell(next, 'kill');
     playSfx('enemyDeath');
   }
@@ -88,7 +102,7 @@ async function handleMove(event) {
   const mortarIndex = mortarEnemies.indexOf(next);
   if (mortarIndex !== -1) {
     mortarEnemies.splice(mortarIndex, 1);
-    addScore(hasTripleEnemyTurns ? 4 : 2);
+    addScore(1);
     spawnParticlesAtCell(next, 'kill');
     playSfx('enemyDeath');
   }
