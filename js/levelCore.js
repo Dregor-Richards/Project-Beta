@@ -150,7 +150,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       const stoneRoll = Math.random();
-      if (stoneRoll < 1.00) {
+      if (stoneRoll < 0.05) {
         const idx = chooseFreeIndex();
         if (idx !== null) {
           stoneIndex = idx;
