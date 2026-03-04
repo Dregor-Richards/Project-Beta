@@ -88,10 +88,10 @@ function getDifficultyConfig(difficulty) {
   if (difficulty >= 11) {
     return {
       gridSize: 12,
-      normalCount: randomInt(3, 4),
-      fastCount: randomInt(3, 4),
-      trackerCount: randomInt(3, 4),
-      mortarCount: randomInt(3, 4),
+      normalCount: randomInt(5, 6),
+      fastCount: randomInt(5, 6),
+      trackerCount: randomInt(5, 6),
+      mortarCount: randomInt(5, 6),
       guaranteeStone: false, // we can still let normal 5% wyrd stone roll
     };
   }

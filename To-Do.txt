@@ -1,8 +1,12 @@
-02/26/2026 ---
+03/02/2026 ---
 
  > Lightning Wand Ability Must Stack
  > Ice Tiles should stop mortars, should be able to click on fire, fire can't go on those ice tiles.
  > Allow ice to remain for boss? Maybe change to boss-unique ice, only stops mortar after life reset?
+ > Ice Wand should be able to target any tile, and enemies should stop upon crossing over it
+    > Bats can fly over ice tiles unaffected, wolves/mortars can't be targeted by ice
+ > Mortar needs to increase fire shot count per turn, too weak right now
+ > 
 
  <> Later Updates:
 
