@@ -6,7 +6,9 @@
  > Ice Wand should be able to target any tile, and enemies should stop upon crossing over it
     > Bats can fly over ice tiles unaffected, wolves/mortars can't be targeted by ice
  > Mortar needs to increase fire shot count per turn, too weak right now
- > 
+ > Update README instructions (Only double-clicking Index.html works, other methods still fail)
+ > Make first boss harder; maybe ghosts with boss, slightly less fire (Maybe normal mortar enemies in corners each stage)
+      > Could make boss move more erratically as well, less predictable
 
  <> Later Updates:
 

@@ -2,6 +2,10 @@ function intDiv(a, b) {
   return Math.floor(a / b);
 }
 
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function loadLevelNumber() {
   const raw = sessionStorage.getItem('currentLevel');
   levelNumber = raw !== null ? Number(raw) || 1 : 1;
