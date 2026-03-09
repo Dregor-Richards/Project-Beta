@@ -29,6 +29,7 @@ let mortarEnemies = [];
 let trackerTurnParity = 0;      // 0 = rest, 1 = active
 let mortarTargets = [];  // tiles targeted by mortars
 let mortarJustTargeted = false; // tracks targeting/firing phase
+let mortarFireCount = 0;
 
 // Get-Hit globals
 let shakeTime = 0;

@@ -55,8 +55,6 @@ function pickMortarTargets(countPerMortar = 5) {
       ...mortarTargets, // already chosen targets
     ]);
 
-    blocked.delete(mortarIndex);
-
     const candidates = [];
     for (let i = 1; i <= maxIndex; i++) {
       if (!blocked.has(i)) candidates.push(i);

@@ -142,7 +142,13 @@ async function moveFastEnemies(size, maxIndex) {
 
         // Hit player: damage, but DON'T move into their tile
         if (next === avatarIndex) {
-          const died = await applyPlayerHit(1);
+          const died = await applyPlayerHit(
+            1,
+            true,            // moveIntoPlayerTile
+            fastEnemies,     // enemyArray
+            i,               // enemyIndex
+            next             // newEnemyPos
+          );
           if (died) return;
 
           moved = true;
@@ -207,14 +213,21 @@ async function moveTrackerEnemies(size, maxIndex) {
 
       if (next === idx) break;
 
-      // Hit player: damage but do not move into their tile
+      // Hit player: damage and move into their tile if they kill the player
       if (next === avatarIndex) {
-        const died = await applyPlayerHit(1);
+        const died = await applyPlayerHit(
+          1,
+          true,             // moveIntoPlayerTile
+          trackerEnemies,   // enemyArray
+          i,                // enemyIndex
+          next              // newEnemyPos
+        );
         if (died) return;
 
         movedThisEnemy = true;
         break;
       }
+
 
       const occupiedByOther =
         enemies.includes(next) ||
@@ -238,7 +251,8 @@ async function handleMortarPhase() {
   if (mortarEnemies.length === 0) return;
 
   if (!mortarJustTargeted || mortarTargets.length === 0) {
-    pickMortarTargets(5);
+    // Telegraph phase: use current scaling to show how many tiles *will* be hit
+    pickMortarTargets(5 + mortarFireCount);
     mortarJustTargeted = true;
     redrawBoard();
     return;
@@ -250,8 +264,12 @@ async function handleMortarPhase() {
     if (died) return;
   }
 
-  // Clear old targets and immediately pick new ones
-  pickMortarTargets(5);
+  // Mortars have actually fired once more this level
+  mortarFireCount++;
+
+  // Clear old targets and immediately pick new ones with updated scaling
+  pickMortarTargets(5 + mortarFireCount);
   mortarJustTargeted = true;
   redrawBoard();
+
 }

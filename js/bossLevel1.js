@@ -223,6 +223,71 @@ function pickRandomTilesFrom(array, count) {
   return result;
 }
 
+async function moveBossRandomly(stepsMin, stepsMax) {
+  if (bossHealth <= 0) return;
+
+  const steps = randomInt(stepsMin, stepsMax);
+
+  const size = gridSize;
+  const maxIndex = size * size;
+  const missingSet = new Set(BOSS_MISSING_TILES.map(idx => idx + 1));
+
+  let bossTileIndex = bossIndex + 1; // 1-based
+  const playerTileIndex = avatarIndex;
+
+  for (let i = 0; i < steps; i++) {
+    const dir = randomDirection();
+    let next = bossTileIndex;
+
+    if (dir === 'up') {
+      const up = bossTileIndex - size;
+      if (up >= 1 && !missingSet.has(up)) next = up;
+    } else if (dir === 'down') {
+      const down = bossTileIndex + size;
+      if (down <= maxIndex && !missingSet.has(down)) next = down;
+    } else if (dir === 'left') {
+      if ((bossTileIndex - 1) % size !== 0) {
+        const left = bossTileIndex - 1;
+        if (!missingSet.has(left)) next = left;
+      }
+    } else if (dir === 'right') {
+      if (bossTileIndex % size !== 0) {
+        const right = bossTileIndex + 1;
+        if (!missingSet.has(right)) next = right;
+      }
+    }
+
+    // If we didn't move, skip this step
+    if (next === bossTileIndex) continue;
+
+    // Stepping onto the player
+    if (next === playerTileIndex) {
+      const died = await applyPlayerHit(1, false, null, null, null, true);
+      if (died) {
+        bossTileIndex = next;
+        bossIndex = bossTileIndex - 1;
+        redrawBoard();
+        await sleep(250);
+        showDeathModal();
+        return;
+      } else {
+        // Non-lethal: boss stays in place this turn
+        break;
+      }
+    }
+
+    // Normal random step
+    bossTileIndex = next;
+    bossIndex = bossTileIndex - 1;
+
+    redrawBoard();
+    await sleep(120);
+  }
+
+  bossIndex = bossTileIndex - 1;
+}
+
+
 async function moveBossTowardsPlayer(stepsMin, stepsMax) {
   if (bossHealth <= 0) return;
 
@@ -366,7 +431,15 @@ async function bossAct() {
 
     // 3) Move boss
     if (bossMoves && !playerDead) {
-      await moveBossTowardsPlayer(stepsMin, stepsMax);
+      // 50/50: tracker-like (chasing) or normal-like (erratic) movement
+      const useTrackerLike = Math.random() < 0.5;
+
+      if (useTrackerLike) {
+        await moveBossTowardsPlayer(stepsMin, stepsMax);
+      } else {
+        await moveBossRandomly(stepsMin, stepsMax);
+      }
+
       redrawBoard();
     }
 }

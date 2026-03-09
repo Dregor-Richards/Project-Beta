@@ -106,6 +106,9 @@ window.addEventListener('DOMContentLoaded', () => {
     // Normal levels
     gridSize = config.gridSize;
 
+    // Reset per-level mortar escalation
+    mortarFireCount = 0;
+
     // Default spawn in lower-left row (your existing logic)
     avatarIndex = gridSize * gridSize - gridSize + 1;
 
