@@ -1,5 +1,10 @@
 ﻿# Project-Beta
 
+## Overview
+
+Project Beta is a browser-based, single-player, turn-based game with procedurally generated levels.
+Each run uses RNG to drive enemy movement, item drop rates, and level layout, and comes equip with browser storage for highscores, and custom modals.
+
 ## How to Download and Run the Game
 
 ### 1. Get the game files
@@ -24,61 +29,23 @@ Click the green Code button → Download ZIP.
 
 Extract the ZIP somewhere on your computer.
 
-Quick - You may try opening the html folder from your File Explorer, and double clicking the index.html file.
-This should work in most cases, but the steps below are more reliable.
+### 2. Run the game
 
-Open a terminal/command prompt in the extracted folder (or cd into it).
+Open the html folder in your file explorer
 
-### Run a local web server
+Double-click index.html
 
-If you have Python 3 installed
-From the project folder:
+Your default browser should open and the game should load.
 
-```bash
-python -m http.server 8000
-```
-OR:
+Note: If this does not work on a particular machine or browser, please let the developer know which OS and browser you're using.
 
-```bash
-python3 -m http.server 8000
-```
-Then open your browser and visit:
-
-http://localhost:8000/html/index.html
-
-The game should load and run normally.
-
-#### If you prefer Node.js
-Install serve once:
-
-```bash
-npm install -g serve
-```
-
-Then, from the project folder:
-
-```bash
-serve .
-```
-
-It should print a local URL; open that in your browser and navigate to /html/index.html.
-
-
-
-If anything doesn’t work (audio not playing, assets missing, etc.), make sure:
-
-You are running through http://localhost:... and not opening the file directly.
-
-
-All folders (assets, js, html etc.) are present as in the repo structure.
 
 
 ### Project Structure (Folder Overview)
 
 .
 ├── style.css
-├── background.png    # Not the actual name
-├── assets/
-├── html/        # contains index.html and other pages
-├── js/
-
+├── background.png    # Actual png name different, current background asset
+├── assets/           # Images, audio, and other game assets
+├── html/             # contains index.html and other pages
+├── js/               # Game logic and supporting scripts
