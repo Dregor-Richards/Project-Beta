@@ -39,13 +39,16 @@ Your default browser should open and the game should load.
 
 Note: If this does not work on a particular machine or browser, please let the developer know which OS and browser you're using.
 
+Tested on: Comet/Perplexity browser and Google Chrome on recent versions of Windows.
+
 
 
 ### Project Structure (Folder Overview)
 
+```text
 .
 ├── style.css
-├── background.png    # Actual png name different, current background asset
-├── assets/           # Images, audio, and other game assets
-├── html/             # contains index.html and other pages
-├── js/               # Game logic and supporting scripts
+├── background.png        # Actual png name different, current background asset
+├── assets/               # Images, audio, and other game assets
+├── html/                 # Contains index.html and other pages
+└── js/                   # Game logic and supporting scripts
