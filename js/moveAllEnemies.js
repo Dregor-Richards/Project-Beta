@@ -115,6 +115,7 @@ async function moveFastEnemies(size, maxIndex) {
   for (let i = 0; i < fastEnemies.length; i++) {
     let idx = fastEnemies[i];
 
+    // If they start on an icy tile, they are already frozen
     if (frozenEnemyTiles.has(idx)) {
       continue;
     }
@@ -163,12 +164,19 @@ async function moveFastEnemies(size, maxIndex) {
           mortarEnemies.includes(next);
         if (occupiedByOther) continue;
 
+        // Move one step
         idx = next;
         fastEnemies[i] = idx;
         moved = true;
 
         redrawBoard();
         await sleep(ENEMY_STEP_DELAY_MS);
+
+        // New: if we just stepped onto an icy tile, lock immediately and stop all movement
+        if (frozenEnemyTiles.has(idx)) {
+          step = stepsThisTurn; // end outer loop
+          break;                // end attempts loop
+        }
       }
 
       if (!moved) {
@@ -178,6 +186,7 @@ async function moveFastEnemies(size, maxIndex) {
   }
 }
 
+
 async function moveTrackerEnemies(size, maxIndex) {
   trackerTurnParity = 1 - trackerTurnParity; // toggle each enemy phase
 
@@ -186,6 +195,7 @@ async function moveTrackerEnemies(size, maxIndex) {
   for (let i = 0; i < trackerEnemies.length; i++) {
     let idx = trackerEnemies[i];
 
+    // Already frozen
     if (frozenEnemyTiles.has(idx)) {
       continue;
     }
@@ -228,7 +238,6 @@ async function moveTrackerEnemies(size, maxIndex) {
         break;
       }
 
-
       const occupiedByOther =
         enemies.includes(next) ||
         fastEnemies.includes(next) ||
@@ -237,18 +246,33 @@ async function moveTrackerEnemies(size, maxIndex) {
 
       if (occupiedByOther) break;
 
+      // Move one step
       idx = next;
       trackerEnemies[i] = idx;
       movedThisEnemy = true;
 
       redrawBoard();
       await sleep(ENEMY_STEP_DELAY_MS);
+
+      // New: if we just stepped onto an icy tile, lock immediately and stop all movement
+      if (frozenEnemyTiles.has(idx)) {
+        break; // stop their remaining step(s)
+      }
     }
   }
 }
 
 async function handleMortarPhase() {
   if (mortarEnemies.length === 0) return;
+
+  // If all mortars are on frozen tiles, they do nothing
+  const anyUnfrozen = mortarEnemies.some(idx => !frozenEnemyTiles.has(idx));
+  if (!anyUnfrozen) {
+    // NEW: cancel any already-telegraphed shots
+    mortarTargets = [];
+    mortarJustTargeted = false;
+    return;
+  }
 
   if (!mortarJustTargeted || mortarTargets.length === 0) {
     // Telegraph phase: use current scaling to show how many tiles *will* be hit
@@ -271,5 +295,4 @@ async function handleMortarPhase() {
   pickMortarTargets(5 + mortarFireCount);
   mortarJustTargeted = true;
   redrawBoard();
-
 }

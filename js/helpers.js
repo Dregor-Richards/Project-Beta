@@ -21,9 +21,50 @@ function advanceLevel() {
   sessionStorage.setItem('currentLevel', String(levelNumber));
 }
 
+function resetLevelState() {
+  // Board / positions
+  avatarIndex = 1;
+  doorIndex = null;
+  heartIndex = null;
+  skipTileIndex = null;
+  wandIndex = null;
+  stoneIndex = null;
+  stonePresent = false;
+  stoneType = null;
+
+  // Enemies
+  enemies = [];
+  fastEnemies = [];
+  trackerEnemies = [];
+  mortarEnemies = [];
+  trackerTurnParity = 0;
+  mortarTargets = [];
+  mortarJustTargeted = false;
+  mortarFireCount = 0;
+
+  // Per-level effects
+  frozenEnemyTiles = new Set();
+  blockedMortarTiles = new Set();
+  hasDoubleMove = false;
+  hasTripleEnemyTurns = false;
+  heartStoneActive = false;
+
+  // Turn/flow flags
+  playerTurn = true;
+  movesThisTurn = 0;
+  playerDead = false;
+  canPlayerMove = true;
+  uiInputLocked = false;
+
+  // Modals for this level
+  winOpen = false;
+  deathOpen = false;
+}
+
 window.loadLevelNumber = loadLevelNumber;
 window.resetLevelNumber = resetLevelNumber;
 window.advanceLevel = advanceLevel;
+window.resetLevelState = resetLevelState;
 
 function chooseWeightedRandom(options) {
   // options: [{ type: 'fire', weight: 50 }, ...]
@@ -37,4 +78,26 @@ function chooseWeightedRandom(options) {
     r -= opt.weight;
   }
   return options[options.length - 1].type; // fallback
+}
+
+function getNeighborIndices(centerIndex, size) {
+  const indices = [];
+  const row = Math.floor((centerIndex - 1) / size);
+  const col = (centerIndex - 1) % size;
+
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      const nr = row + dr;
+      const nc = col + dc;
+      if (nr < 0 || nr >= size || nc < 0 || nc >= size) continue;
+
+      const idx = nr * size + nc + 1; // back to 1-based
+      // If you have a “void” tiles structure, skip them here:
+      // if (voidTiles.has(idx)) continue;
+      indices.push(idx);
+    }
+  }
+
+  return indices;
 }

@@ -121,6 +121,12 @@ function redrawBossHealth() {
   });
 }
 
+function isBossFrozen() {
+  if (bossIndex == null) return false;
+  const bossTileIndex = bossIndex + 1; // 1-based
+  return frozenEnemyTiles.has(bossTileIndex);
+}
+
 /**
  * Called when the player hits the boss (walk or Fire wand).
  * Handles health loss, teleport, and boss respawn.
@@ -136,10 +142,9 @@ async function hitBoss() {
 
   const bossTileIndex = bossIndex + 1;
 
-  // Clear any Ice on the boss tile from the previous life
-  if (frozenEnemyTiles && typeof frozenEnemyTiles.delete === 'function') {
-    frozenEnemyTiles.delete(bossTileIndex);
-  }
+  // Clear all Ice tiles and blocked-mortar tiles for the new boss phase
+  frozenEnemyTiles = new Set();
+  blockedMortarTiles = new Set();
 
   // Small hit feedback
   spawnParticlesAtCell(bossTileIndex, 'kill');
@@ -198,8 +203,14 @@ function getAllValidBossTiles() {
 async function resolveBossMortarHits() {
   if (!Array.isArray(bossMortarTargets) || bossMortarTargets.length === 0) return;
 
-  const hits = bossMortarTargets.slice();  // tiles currently marked
-  bossMortarTargets = [];                  // clear marks; redraw will remove icons
+  // If boss is frozen, cancel all pending boss mortar hits
+  if (isBossFrozen()) {
+    bossMortarTargets = [];
+    return;
+  }
+
+  const hits = bossMortarTargets.slice();
+  bossMortarTargets = [];
 
   for (const idx of hits) {
     if (idx === avatarIndex && !playerDead) {
@@ -208,8 +219,6 @@ async function resolveBossMortarHits() {
     }
   }
 }
-
-
 
 function pickRandomTilesFrom(array, count) {
   const result = [];
@@ -417,12 +426,22 @@ async function bossAct() {
   await resolveBossMortarHits();
   if (playerDead) return;
 
+  // If boss is on an icy tile, it does absolutely nothing this turn
+  if (isBossFrozen()) {
+    bossMortarTargets = [];  // ensure no telegraphs remain
+    redrawBoard();
+    return;
+  }
+
   // 2) Pick new tiles to mark
     const allValidTiles = getAllValidBossTiles();
     const bossTileIndex = bossIndex + 1; // 1-based
 
     // Exclude the boss's own tile from mortar targets
-    const validTiles = allValidTiles.filter(tile => tile !== bossTileIndex);
+    let validTiles = allValidTiles.filter(tile => tile !== bossTileIndex);
+
+    // NEW: exclude icy tiles from boss targeting, to match mortar behavior
+    validTiles = validTiles.filter(tile => !frozenEnemyTiles.has(tile));
 
     const count = randomInt(mortarMin, mortarMax);
     bossMortarTargets = pickRandomTilesFrom(validTiles, count);

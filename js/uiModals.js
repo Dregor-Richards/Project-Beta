@@ -6,6 +6,21 @@ function showMenuConfirm() {
   }
 }
 
+function resetRunAndGoToMenu() {
+  sessionStorage.removeItem('playerLives');
+  sessionStorage.removeItem('playerScore');
+  sessionStorage.removeItem('currentLevel');
+
+  inventory = new Array(21).fill(null);
+  iceWandIndex = null;
+  frozenEnemyTiles = new Set();
+  blockedMortarTiles = new Set();
+  sessionStorage.removeItem('inventory');
+
+  window.location.href = 'index.html';
+}
+
+
 // =================== Modal wiring ===================
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -72,16 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
     menuYes.addEventListener('click', () => {
       playSfx('uiConfirm');
       setTimeout(() => {
-        sessionStorage.removeItem('playerLives');
-        sessionStorage.removeItem('playerScore');
-        sessionStorage.removeItem('currentLevel');
-
-        inventory = new Array(21).fill(null);
-        iceWandIndex = null;
-        frozenEnemyTiles = new Set();
-        sessionStorage.removeItem('inventory');
-
-        window.location.href = 'index.html'; 
+        resetRunAndGoToMenu();
       }, 250);
     });
   }
@@ -156,16 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function finishAndReturnToMenu() {
   setTimeout(() => {
-    sessionStorage.removeItem('playerLives');
-    sessionStorage.removeItem('playerScore');
-    sessionStorage.removeItem('currentLevel');
-
-    inventory = new Array(21).fill(null);
-    iceWandIndex = null;
-    frozenEnemyTiles = new Set();
-    sessionStorage.removeItem('inventory');
-
-    window.location.href = 'index.html';
+    resetRunAndGoToMenu();
   }, 250);
 }
 
@@ -234,6 +231,8 @@ function finishAndReturnToMenu() {
         let difficulty = rawDiff !== null ? Number(rawDiff) || 1 : 1;
         difficulty += 1;
         sessionStorage.setItem('currentDifficulty', String(difficulty));
+
+        resetLevelState();
         advanceLevel();
         window.location.href = 'level.html';
       }, 250);
@@ -244,15 +243,7 @@ function finishAndReturnToMenu() {
     winMenu.addEventListener('click', () => {
       playSfx('uiCancel');
       setTimeout(() => {
-        sessionStorage.removeItem('playerLives');
-        sessionStorage.removeItem('playerScore');
-
-        inventory = new Array(21).fill(null);
-        iceWandIndex = null;
-        frozenEnemyTiles = new Set();
-        sessionStorage.removeItem('inventory');
-
-        window.location.href = 'index.html';
+        resetRunAndGoToMenu();
       }, 250);
     });
   }

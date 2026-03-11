@@ -55,6 +55,12 @@ function pickMortarTargets(countPerMortar = 5) {
       ...mortarTargets, // already chosen targets
     ]);
 
+        // Permanently blocked / icy tiles
+    if (blockedMortarTiles) {
+      blockedMortarTiles.forEach(t => blocked.add(t));
+    }
+    frozenEnemyTiles.forEach(t => blocked.add(t)); // optional if we always mirror into blockedMortarTiles
+
     const candidates = [];
     for (let i = 1; i <= maxIndex; i++) {
       if (!blocked.has(i)) candidates.push(i);

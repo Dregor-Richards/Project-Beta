@@ -180,7 +180,7 @@ function chooseSkipTileIndex() {
 }
 
 function shouldSpawnWand() {
-  const wandChance = 0.4;
+  const wandChance = 0.4;  // 0.4
   return Math.random() < wandChance;
 }
 

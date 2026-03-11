@@ -1,13 +1,7 @@
 03/02/2026 ---
 
  > Lightning Wand Ability Must Stack
- > Ice Tiles should stop mortars, should be able to click on fire, fire can't go on those ice tiles.
- > Allow ice to remain for boss? Maybe change to boss-unique ice, only stops mortar after life reset?
- > Ice Wand should be able to target any tile, and enemies should stop upon crossing over it
-    > Bats can fly over ice tiles unaffected, wolves/mortars can't be targeted by ice
  % Make first boss harder; maybe ghosts with boss, slightly less fire (Maybe normal mortar enemies in corners each stage)
-      > Could make boss move more erratically as well, less predictable
-      > 50/50 chance the boss moves erratically, follows same movement amount/rules otherwise
       > Add 3-8 ghost enemies on lives 6-5, 4 mortar enemies on lives 4-3, and 3 wolves on live 2-1
  > Add a tab on the left-side of the screen, that opens into a small table that tracks all enemies (Useful for dark levels)
 

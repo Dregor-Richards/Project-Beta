@@ -67,6 +67,7 @@ function addScore(points) {
 // --- DOM ready: core setup ---
 
 window.addEventListener('DOMContentLoaded', () => {
+  resetLevelState();
   loadLevelNumber();
   playMusic('level');
 
@@ -105,9 +106,6 @@ window.addEventListener('DOMContentLoaded', () => {
   } else {
     // Normal levels
     gridSize = config.gridSize;
-
-    // Reset per-level mortar escalation
-    mortarFireCount = 0;
 
     // Default spawn in lower-left row (your existing logic)
     avatarIndex = gridSize * gridSize - gridSize + 1;

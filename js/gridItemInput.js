@@ -9,12 +9,7 @@ function handleGridClick(event) {
   // Wands
   if (armedItem.type === 'wand') {
     if (armedItem.subtype === 'ice') {
-      const hasNormal = enemies.includes(tileIndex);
-      const hasFast = fastEnemies.includes(tileIndex);
-      if (!hasNormal && !hasFast) return;
-
-      frozenEnemyTiles.add(tileIndex);
-
+      applyIceWandAtTile(tileIndex);
       redrawBoard();
 
       playSfx('useIceWand');
@@ -25,6 +20,7 @@ function handleGridClick(event) {
       sessionStorage.setItem('inventory', JSON.stringify(inventory));
       return;
     }
+
 
     if (armedItem.subtype === 'fire') {
       // Boss hit by Fire wand (difficulty 10)
@@ -126,6 +122,43 @@ function handleGridClick(event) {
   renderInventory();
   sessionStorage.setItem('inventory', JSON.stringify(inventory));
 }
+
+function applyIceWandAtTile(centerIndex) {
+  // 1) Always freeze the chosen tile
+  frozenEnemyTiles.add(centerIndex);
+
+  // 2) Remove mortar targeting for this tile and prevent future targeting
+  if (!blockedMortarTiles) {
+    // global or module-level Set you define alongside other globals
+    window.blockedMortarTiles = new Set();
+  }
+  blockedMortarTiles.add(centerIndex);
+
+  // remove existing target
+  mortarTargets = mortarTargets.filter(t => t !== centerIndex);
+
+  // 3) If a mortar enemy is actually standing here, “freeze” its firing
+  const mortarIdx = mortarEnemies.indexOf(centerIndex);
+  if (mortarIdx !== -1) {
+    // You can treat “frozen mortar” simply as:
+    // - stays on the tile, but never fires again
+    // Implemented in handleMortarPhase using frozenEnemyTiles
+  }
+
+  // 4) Freeze 0–8 random surrounding tiles (8-way)
+  const neighbors = getNeighborIndices(centerIndex, gridSize);
+  const extraCount = Math.floor(Math.random() * 9); // 0..8
+
+  for (let i = 0; i < extraCount; i++) {
+    const randomNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
+    // neighbors already ignores off-map; duplicates allowed by just re-adding
+    frozenEnemyTiles.add(randomNeighbor);
+    blockedMortarTiles.add(randomNeighbor);
+    mortarTargets = mortarTargets.filter(t => t !== randomNeighbor);
+  }
+}
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('level-grid');
