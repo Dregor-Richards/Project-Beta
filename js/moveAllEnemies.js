@@ -84,6 +84,7 @@ async function moveNormalEnemies(size, maxIndex) {
       }
 
       if (next === idx) continue;
+      if (isBlockedBossTile(next)) continue;
 
       // Hit player
       if (next === avatarIndex) {
@@ -140,6 +141,7 @@ async function moveFastEnemies(size, maxIndex) {
         }
 
         if (next === idx) continue;
+        if (isBlockedBossTile(next)) continue;
 
         // Hit player: damage, but DON'T move into their tile
         if (next === avatarIndex) {
@@ -222,6 +224,7 @@ async function moveTrackerEnemies(size, maxIndex) {
       }
 
       if (next === idx) break;
+      if (isBlockedBossTile(next)) continue;
 
       // Hit player: damage and move into their tile if they kill the player
       if (next === avatarIndex) {
@@ -263,6 +266,8 @@ async function moveTrackerEnemies(size, maxIndex) {
 }
 
 async function handleMortarPhase() {
+  console.log('handleMortarPhase boss?', gridSize === BOSS_GRID_SIZE, 'mortarEnemies', mortarEnemies.length);
+
   if (mortarEnemies.length === 0) return;
 
   // If all mortars are on frozen tiles, they do nothing

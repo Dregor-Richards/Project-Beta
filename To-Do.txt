@@ -1,7 +1,6 @@
 03/02/2026 ---
 
- % Make first boss harder; maybe ghosts with boss, slightly less fire (Maybe normal mortar enemies in corners each stage)
-      > Add 3-8 ghost enemies on lives 6-5, 4 mortar enemies on lives 4-3, and 3 wolves on live 2-1
+
 
  <> Later Updates:
 

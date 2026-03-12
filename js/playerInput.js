@@ -104,13 +104,19 @@ if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
     playSfx('enemyDeath');
   }
 
-  const mortarIndex = mortarEnemies.indexOf(next);
-  if (mortarIndex !== -1) {
-    mortarEnemies.splice(mortarIndex, 1);
-    addScore(1);
-    spawnParticlesAtCell(next, 'kill');
-    playSfx('enemyDeath');
-  }
+const mortarIndex = mortarEnemies.indexOf(next);
+if (mortarIndex !== -1) {
+  mortarEnemies.splice(mortarIndex, 1);
+
+  const tilesMarked = Array.isArray(mortarTargets) ? mortarTargets.length : 0;
+
+  // Always at least 1 point; +1 for every additional 5 tiles beyond the first 5
+  const mortarPoints = 1 + Math.max(0, Math.floor((tilesMarked - 5) / 5));
+
+  addScore(mortarPoints);
+  spawnParticlesAtCell(next, 'kill');
+  playSfx('enemyDeath');
+}
 
   // if no mortars remain, clear their targets
   if (mortarEnemies.length === 0) {

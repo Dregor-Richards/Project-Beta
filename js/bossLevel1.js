@@ -70,6 +70,8 @@ function setupBossLevel() {
   trackerEnemies = [];
   mortarEnemies = [];
   mortarTargets = [];
+  mortarJustTargeted = false;
+  mortarFireCount = 0;
   frozenEnemyTiles = new Set();
   doorIndex = null;
   heartIndex = null;
@@ -86,12 +88,96 @@ function setupBossLevel() {
     BOSS_SPAWN_TILES[Math.floor(Math.random() * BOSS_SPAWN_TILES.length)];
   bossIndex = choice;
 
+  // Stage 1 companion enemies
+  spawnBossStageEnemies();
+
   // Show and fill health bar
   showBossHealthBar();
   updateBossStage();
   redrawBoard();
 }
 
+function spawnBossStageEnemies() {
+  const maxIndex = gridSize * gridSize;
+  const missingSet = new Set(BOSS_MISSING_TILES.map(idx => idx + 1));
+
+  // Base pool: any valid, non-hole tile
+  const allTiles = [];
+  for (let i = 1; i <= maxIndex; i++) {
+    if (!missingSet.has(i)) allTiles.push(i);
+  }
+
+  const bossTile = bossIndex + 1;
+
+  // Blocked tiles: boss, player, and existing enemies
+  const blocked = new Set([
+    bossTile,
+    avatarIndex,
+    ...enemies,
+    ...fastEnemies,
+    ...trackerEnemies,
+    ...mortarEnemies,
+  ]);
+
+  // Helper to grab a free tile or null
+  function takeFreeTile() {
+    const candidates = allTiles.filter(i => !blocked.has(i));
+    if (candidates.length === 0) return null;
+    const idx = candidates[Math.floor(Math.random() * candidates.length)];
+    blocked.add(idx);
+    return idx;
+  }
+
+  // Stage-specific ranges
+  let mortarMin, mortarMax;
+  let trackerMin, trackerMax;
+  let normFastMin, normFastMax;
+
+  if (bossStage === 1) {
+    mortarMin   = 0;  mortarMax   = 1;
+    trackerMin  = 0;  trackerMax  = 2;
+    normFastMin = 0;  normFastMax = 4;
+  } else if (bossStage === 2) {
+    mortarMin   = 2;  mortarMax   = 3;
+    trackerMin  = 2;  trackerMax  = 4;
+    normFastMin = 2;  normFastMax = 8;
+  } else { // stage 3
+    mortarMin   = 3;  mortarMax   = 4;
+    trackerMin  = 3;  trackerMax  = 4;
+    normFastMin = 4;  normFastMax = 10;
+  }
+
+  const mortarCount   = randomInt(mortarMin,   mortarMax);
+  const trackerCount  = randomInt(trackerMin,  trackerMax);
+  const normFastCount = randomInt(normFastMin, normFastMax);
+
+  // Mortars
+  for (let i = 0; i < mortarCount; i++) {
+    const tile = takeFreeTile();
+    if (tile == null) break;
+    mortarEnemies.push(tile);
+  }
+
+  // Trackers
+  for (let i = 0; i < trackerCount; i++) {
+    const tile = takeFreeTile();
+    if (tile == null) break;
+    trackerEnemies.push(tile);
+  }
+
+  // Normal + Fast share the same pool count
+  for (let i = 0; i < normFastCount; i++) {
+    const tile = takeFreeTile();
+    if (tile == null) break;
+    const isFast = Math.random() < 0.5; // tweak weight if you like
+
+    if (isFast) {
+      fastEnemies.push(tile);
+    } else {
+      enemies.push(tile);
+    }
+  }
+}
 
 function showBossHealthBar() {
   const wrapper = document.getElementById('boss-health-wrapper');
@@ -174,6 +260,16 @@ if (bossHealth === 0) {
 
   // Reset boss turn rhythm
   bossTurnCounter = 0;
+
+  // Clear all adds from previous life, then spawn fresh for this stage
+  enemies = [];
+  fastEnemies = [];
+  trackerEnemies = [];
+  mortarEnemies = [];
+  mortarTargets = [];
+  mortarJustTargeted = false;
+  mortarFireCount = 0;
+  spawnBossStageEnemies();
 
   // Redraw board and place boss at new spot
   redrawBoard();
@@ -440,7 +536,7 @@ async function bossAct() {
     // Exclude the boss's own tile from mortar targets
     let validTiles = allValidTiles.filter(tile => tile !== bossTileIndex);
 
-    // NEW: exclude icy tiles from boss targeting, to match mortar behavior
+    // Exclude icy tiles from boss targeting, to match mortar behavior
     validTiles = validTiles.filter(tile => !frozenEnemyTiles.has(tile));
 
     const count = randomInt(mortarMin, mortarMax);

@@ -101,3 +101,10 @@ function getNeighborIndices(centerIndex, size) {
 
   return indices;
 }
+
+function isBlockedBossTile(tileIndex) {
+  if (gridSize !== BOSS_GRID_SIZE) return false; // only matters on boss level
+  // BOSS_MISSING_TILES is 0-based, board is 1-based
+  const missingSet = new Set(BOSS_MISSING_TILES.map(idx => idx + 1));
+  return missingSet.has(tileIndex);
+}

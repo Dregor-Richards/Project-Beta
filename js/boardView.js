@@ -139,9 +139,13 @@ function redrawBoard() {
   const difficulty =
     storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
 
-  // mortar target tiles (red skip-tile style)
-  const targetsToDraw =
-    difficulty === 10 ? bossMortarTargets : mortarTargets;
+  // mortar target tiles
+
+  let targetsToDraw = mortarTargets;
+
+  if (difficulty === 10) {
+    targetsToDraw = [...mortarTargets, ...bossMortarTargets];
+  }
 
   targetsToDraw.forEach(idx => {
     const cell = findCellByIndex(cells, idx);

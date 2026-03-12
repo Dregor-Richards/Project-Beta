@@ -39,6 +39,9 @@ function pickMortarTargets(countPerMortar = 5) {
   if (mortarEnemies.length === 0) return;
 
   const maxIndex = gridSize * gridSize;
+  const missingSet = (gridSize === BOSS_GRID_SIZE)
+  ? new Set(BOSS_MISSING_TILES.map(idx => idx + 1))
+  : null;
 
   mortarEnemies.forEach(mortarIndex => {
     const blocked = new Set([
@@ -63,6 +66,7 @@ function pickMortarTargets(countPerMortar = 5) {
 
     const candidates = [];
     for (let i = 1; i <= maxIndex; i++) {
+      if (missingSet && missingSet.has(i)) continue;
       if (!blocked.has(i)) candidates.push(i);
     }
 
@@ -87,12 +91,18 @@ async function endPlayerTurn() {
     storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
 
   if (difficulty === 10) {
-    // Boss level
-    await bossAct();
+    // Boss level: enemies move, then boss acts
+    await moveAllEnemies();
+    if (!playerDead && bossHealth > 0) {
+      await bossAct();
+    }
 
     if (hasTripleEnemyTurns && !playerDead && bossHealth > 0) {
-      // 2 extra boss actions (total 3 per player move)
+      // 2 extra cycles (total 3 per player move)
       for (let i = 0; i < 2; i++) {
+        await moveAllEnemies();
+        if (playerDead || bossHealth <= 0) break;
+
         await bossAct();
         if (playerDead || bossHealth <= 0) break;
       }
@@ -112,7 +122,6 @@ async function endPlayerTurn() {
   movesThisTurn = 0;
   playerTurn = true;
 }
-
 
 function allEnemiesDead() {
   return (
