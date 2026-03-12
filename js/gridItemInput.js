@@ -48,7 +48,7 @@ function handleGridClick(event) {
       const normalIndex = enemies.indexOf(tileIndex);
       if (normalIndex !== -1) {
         enemies.splice(normalIndex, 1);
-        addScore(hasTripleEnemyTurns ? 2 : 1);
+        addScore(1);
         spawnParticlesAtCell(tileIndex, 'kill');
         removed = true;
       } else {
@@ -56,7 +56,7 @@ function handleGridClick(event) {
         const fastIndex = fastEnemies.indexOf(tileIndex);
         if (fastIndex !== -1) {
           fastEnemies.splice(fastIndex, 1);
-          addScore(hasTripleEnemyTurns ? 4 : 2);
+          addScore(2);
           spawnParticlesAtCell(tileIndex, 'kill');
           removed = true;
         } else {
@@ -64,7 +64,7 @@ function handleGridClick(event) {
           const trackerIndex = trackerEnemies.indexOf(tileIndex);
           if (trackerIndex !== -1) {
             trackerEnemies.splice(trackerIndex, 1);
-            addScore(hasTripleEnemyTurns ? 2 : 1);
+            addScore(1);
             spawnParticlesAtCell(tileIndex, 'kill');
             removed = true;
           } else {
@@ -72,7 +72,7 @@ function handleGridClick(event) {
             const mortarIndex = mortarEnemies.indexOf(tileIndex);
             if (mortarIndex !== -1) {
               mortarEnemies.splice(mortarIndex, 1);
-              addScore(hasTripleEnemyTurns ? 4 : 2);
+              addScore(2);
               spawnParticlesAtCell(tileIndex, 'kill');
               removed = true;
 

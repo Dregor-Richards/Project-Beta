@@ -1,4 +1,4 @@
-03/02/2026 ---
+03/12/2026 ---
 
  > Put Brazier on its own Z-value, so it doesn't share space
  > Double check all mortar allowed fire spots (No door, no brazier)
