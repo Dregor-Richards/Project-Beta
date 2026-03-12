@@ -125,14 +125,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
     skipTileIndex = chooseSkipTileIndex();
 
-    wandIndex = null;
-    currentWandSubtype = null;
+    wandsOnBoard = [];
 
-    if (shouldSpawnWand()) {
-      const idx = chooseWandIndex();
-      if (idx !== null) {
-        wandIndex = idx;
-        currentWandSubtype = chooseWandSubtype();
+    for (let i = 0; i < 2; i++) {
+      if (shouldSpawnWand()) {                 // 40% per roll
+        const idx = chooseWandIndex();        // already respects blocked tiles
+        if (idx !== null) {
+          const subtype = chooseWandSubtype(); // 50/30/20
+          wandsOnBoard.push({ index: idx, subtype });
+        }
       }
     }
 

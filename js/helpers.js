@@ -45,7 +45,7 @@ function resetLevelState() {
   // Per-level effects
   frozenEnemyTiles = new Set();
   blockedMortarTiles = new Set();
-  hasDoubleMove = false;
+  extraMoves = 0;
   hasTripleEnemyTurns = false;
   heartStoneActive = false;
 

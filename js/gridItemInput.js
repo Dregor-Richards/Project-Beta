@@ -103,7 +103,7 @@ function handleGridClick(event) {
     if (armedItem.subtype === 'lightning') {
       if (tileIndex !== avatarIndex) return;
 
-      hasDoubleMove = true;
+      extraMoves += 1;
       playSfx('useLightningWand');
       consumeWandCharge(armedItem.slotIndex);
       armedItem = null;

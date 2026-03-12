@@ -1,3 +1,8 @@
+function getAllowedMovesThisTurn() {
+  // 1 * (2 ^ extraMoves)
+  return 1 << extraMoves; // bit shift, equivalent to Math.pow(2, extraMoves)
+}
+
 async function handleMove(event) {
   if (!canPlayerMove || winOpen) return;
   if (uiInputLocked) return;
@@ -123,14 +128,18 @@ if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
     heartIndex = null;
   }
 
-  // Wand pickup
-  if (next === wandIndex && currentWandSubtype) {
-    pickupWand(currentWandSubtype);
-    spawnParticlesAtCell(next, 'pickup');
-    playSfx('itemPickup');
-    wandIndex = null;
-    currentWandSubtype = null;
+  // Wand pickup (supports multiple wands)
+  if (Array.isArray(wandsOnBoard) && wandsOnBoard.length > 0) {
+    const wandIdx = wandsOnBoard.findIndex(w => w.index === next);
+    if (wandIdx !== -1) {
+      const picked = wandsOnBoard[wandIdx];
+      pickupWand(picked.subtype);
+      spawnParticlesAtCell(next, 'pickup');
+      playSfx('itemPickup');
+      wandsOnBoard.splice(wandIdx, 1); // remove from board
+    }
   }
+
 
   // Stone pickup
   if (next === stoneIndex && stonePresent) {
@@ -170,10 +179,14 @@ if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
 
   // Normal (non-skip) tile
   movesThisTurn += 1;
+  const allowedMoves = getAllowedMovesThisTurn();
 
-  if (hasDoubleMove && movesThisTurn < 2) {
+  if (movesThisTurn < allowedMoves) {
+    // Player still has remaining moves this turn
     return;
   }
+
+  refreshEnemyRoster();
 
   movesThisTurn = 0;
   await endPlayerTurn();

@@ -1,29 +1,31 @@
 03/02/2026 ---
 
- > Lightning Wand Ability Must Stack
  % Make first boss harder; maybe ghosts with boss, slightly less fire (Maybe normal mortar enemies in corners each stage)
       > Add 3-8 ghost enemies on lives 6-5, 4 mortar enemies on lives 4-3, and 3 wolves on live 2-1
- > Add a tab on the left-side of the screen, that opens into a small table that tracks all enemies (Useful for dark levels)
 
  <> Later Updates:
 
 
  <---> For Levels 11-20 <--->
  > Dark Rooms (Pick-Up Lantern To Illuminate Adjecent Tiles)
+     > Mortar Fire Should Illuminate Own Tile
  > Summoner Enemy (Slow, Summons Basic, or Trackers? Pink Versions)
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
  > Falling Floor? (Too Redundant Perhaps?)
- % Sniper Enemy?
+ % Sniper Enemy? (Instead of the Falling Floor Above^)
  > Wand to turn wall into walkways
+ > Empty Lanterns To Pickup For Later Levels, Use Fire Wand To Light
 
  <--->                  <--->
 
  <---> Challenge Mode <--->
+ > Mode Select For Challenge & normal
  > Mortar Survival, where the player can't reach the mortars, and is just trying to outlast to get to scoreboard
  > Items to freeze patches for safety, and to reset Mortar fire count for prolonged survival
 
  <--->                  <--->
 
+ $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
  $ Character Spawn Moves With Door
  $ Add Character Equipment
  $ Character Customization Pages
@@ -46,7 +48,6 @@
 -----
 
  % Area control boss: Periodically drops zones on the grid that force you to keep moving (safe vs unsafe tiles).
- % High-Scores: Limit: 3–8 characters tends to feel “arcade,” and prevents UI overflow.
 
 
 

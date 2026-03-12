@@ -58,20 +58,22 @@ function redrawBoard() {
     }
   }
 
-  // Wand on board (any subtype)
-  if (wandIndex != null && currentWandSubtype) {
-    const wandCell = findCellByIndex(cells, wandIndex);
-    if (wandCell) {
+  // Wands on board (any subtype)
+  if (Array.isArray(wandsOnBoard)) {
+    wandsOnBoard.forEach(w => {
+      const wandCell = findCellByIndex(cells, w.index);
+      if (!wandCell) return;
+
       const wand = document.createElement('div');
-      if (currentWandSubtype === 'ice') {
+      if (w.subtype === 'ice') {
         wand.className = 'ice-wand';
-      } else if (currentWandSubtype === 'fire') {
+      } else if (w.subtype === 'fire') {
         wand.className = 'fire-wand';
-      } else if (currentWandSubtype === 'lightning') {
+      } else if (w.subtype === 'lightning') {
         wand.className = 'lightning-wand';
       }
       wandCell.appendChild(wand);
-    }
+    });
   }
 
   // Stone on board (Wyrd or Heart)
@@ -171,6 +173,8 @@ function redrawBoard() {
       bossCell.appendChild(boss);
     }
   }
+
+  refreshEnemyRoster();
 }
 
 

@@ -40,12 +40,13 @@ let shakeMagnitude = 6; //pixels
 // inventory-related globals
 let inventory = new Array(21).fill(null);
 let frozenEnemyTiles = new Set();
-let wandIndex = null;
-let currentWandSubtype = null;
+//let wandIndex = null;
+//let currentWandSubtype = null;
+let wandsOnBoard = [];
 let stoneIndex = null;
 let stonePresent = false;
 let stoneType = null;
-let hasDoubleMove = false;
+let extraMoves = 0;
 let hasTripleEnemyTurns = false;
 let heartStoneActive = false;
 let armedItem = null;

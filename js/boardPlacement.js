@@ -180,7 +180,7 @@ function chooseSkipTileIndex() {
 }
 
 function shouldSpawnWand() {
-  const wandChance = 0.4;  // 0.4
+  const wandChance = 0.3;  // 0.30%
   return Math.random() < wandChance;
 }
 
@@ -195,13 +195,21 @@ function chooseWandSubtype() {
 
 function chooseWandIndex() {
   const maxIndex = gridSize * gridSize;
+
+  const existingWandIndices = Array.isArray(wandsOnBoard)
+    ? wandsOnBoard.map(w => w.index)
+    : (wandIndex != null ? [wandIndex] : []);
+
   const blocked = new Set([
     avatarIndex,
     doorIndex,
     heartIndex,
     skipTileIndex,
     ...enemies,
-    ...fastEnemies
+    ...fastEnemies,
+    ...trackerEnemies,
+    ...mortarEnemies,
+    ...existingWandIndices
   ]);
 
   const candidates = [];

@@ -153,6 +153,7 @@ window.addEventListener('DOMContentLoaded', () => {
       sessionStorage.removeItem('playerLives');
       sessionStorage.removeItem('playerScore');
       sessionStorage.removeItem('inventory');
+      resetLevelNumber();
 
       setTimeout(() => {
         window.location.href = 'level.html';

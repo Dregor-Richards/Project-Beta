@@ -361,6 +361,103 @@ body.level-screen {
   z-index: 16; /* above background, under modals */
 }
 
+#left-side-tabs {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 30;
+  transform: translate(-180px, -50%);      /* hidden: shifted left */
+  transition: transform 0.25s ease;
+}
+
+/* when open, slide the whole group to x=0 */
+#left-side-tabs.tabs-open {
+  transform: translate(0, -50%);
+}
+
+
+#left-side-tabs.tabs-shifted {
+  transform: translateX(180px);
+}
+
+.side-panel {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 200px;
+  height: 60vh;
+  background: #101013;
+  color: #f5f5f5;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.5);
+  transform: translateY(-50%);  /* only center vertically */
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+}
+
+/* center line is at top: 50% of wrapper; offset each tab up/down */
+.side-tab {
+  position: absolute;
+  left: 200px;       /* same as panel width: sit on its right edge */
+  width: 32px;
+  height: 120px;
+  background: #1e1e1f;
+  color: #f5f5f5;
+  border-radius: 0 6px 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.4);
+  z-index: 40;
+}
+
+/* center around the wrapper’s vertical center, offset up/down */
+.side-tab--top {
+  top: -130px;        /* adjust until it looks centered above */
+}
+
+.side-tab--bottom {
+  top: 10px;
+}
+
+.side-tab__label {
+  writing-mode: vertical-rl;   /* vertical text */
+  transform: rotate(180deg);   /* so text reads top-to-bottom */
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+/* Slide-out panel */
+
+#side-panel-content {
+  padding: 8px 10px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.panel-section {
+  display: none;
+}
+
+.panel-section--active {
+  display: block;
+}
+
+#enemy-roster-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#enemy-roster-list li {
+  margin-bottom: 4px;
+}
+
 /* Boss health bar (top-center above grid) */
 .boss-health {
   position: absolute;
