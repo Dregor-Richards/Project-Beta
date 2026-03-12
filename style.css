@@ -590,6 +590,43 @@ body.level-screen {
   pointer-events: none;
 }
 
+/* Global pre-turn overlay */
+.level-dark-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  pointer-events: none;       /* clicks go through */
+  z-index: 8;                 /* below entities if needed, above tiles */
+}
+
+/* Per-tile darkness for fullDarkActive */
+.grid-cell.dark-full {
+  position: relative;
+}
+
+.grid-cell.dark-full::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0.98;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.grid-cell.dark-shadow {
+  position: relative;
+}
+
+.grid-cell.dark-shadow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  pointer-events: none;
+  z-index: 5;
+}
+
 /* =========================================
    6. Entities (player, enemies, tiles, particles)
    ========================================= */
@@ -737,6 +774,38 @@ body.level-screen {
   background-position: center;
 }
 
+.lantern-tile {
+  width: 80%;
+  height: 80%;
+  margin: 10%;
+  background-image: url('./assets/sprites/Lantern.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.brazier-tile,
+.brazier-tile-lit {
+  width: 80%;
+  height: 80%;
+  margin: 10%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.brazier-tile {
+  background-image: url('./assets/sprites/Brazier.png'); /* your path */
+}
+
+.brazier-tile-lit {
+  background-image: url('./assets/sprites/BrazierLit.png');   /* your path */
+}
+
 
 /* Stopping mouse drag upon grid features */
 
@@ -751,7 +820,10 @@ body.level-screen {
 .door,
 .skip-tile,
 .mortar-target-a,
-.mortar-target-b {
+.mortar-target-b,
+.boss-enemy,
+.lantern-tile,
+.brazier-tile {
   -webkit-user-drag: none;
   user-select: none;
 }

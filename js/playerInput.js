@@ -160,7 +160,35 @@ if (mortarIndex !== -1) {
   const steppingOntoSkipTile = (next === skipTileIndex);
 
   avatarIndex = next;
+
+  // === Darkness: lantern & brazier interactions ===
+  if (isDarkLevel && fullDarkActive) {
+    // Lantern pickup
+    if (!lanternCollected && avatarIndex === lanternTile) {
+      lanternCollected = true;
+      recomputeDarkness();
+      playSfx('itemPickup');
+      spawnParticlesAtCell(avatarIndex, 'pickup');
+    }
+
+    // Brazier: if carrying lantern, clear all darkness for this level
+    if (lanternCollected && avatarIndex === brazierTile && !brazierLit) {
+      brazierLit = true;
+
+      // Permanently clear darkness for this level
+      litTiles.clear();
+      shadowTiles.clear();
+      isDarkLevel = false;
+      fullDarkActive = false;
+    }
+
+    // Recompute light/shadow around new player position
+    recomputeDarkness();
+  }
+
+  onPlayerMoved();
   redrawBoard();
+
 
   checkForWin();
 

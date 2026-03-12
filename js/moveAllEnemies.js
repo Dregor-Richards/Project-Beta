@@ -266,8 +266,6 @@ async function moveTrackerEnemies(size, maxIndex) {
 }
 
 async function handleMortarPhase() {
-  console.log('handleMortarPhase boss?', gridSize === BOSS_GRID_SIZE, 'mortarEnemies', mortarEnemies.length);
-
   if (mortarEnemies.length === 0) return;
 
   // If all mortars are on frozen tiles, they do nothing
@@ -293,11 +291,14 @@ async function handleMortarPhase() {
     if (died) return;
   }
 
-  // Mortars have actually fired once more this level
-  mortarFireCount++;
+  // Chance for Mortars to gain extra strike each round
+  if (Math.random() < 0.25) {
+    mortarFireCount++;
+  }
 
   // Clear old targets and immediately pick new ones with updated scaling
   pickMortarTargets(5 + mortarFireCount);
   mortarJustTargeted = true;
+  onMortarTargetsChanged();
   redrawBoard();
 }

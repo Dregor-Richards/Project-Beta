@@ -91,14 +91,13 @@ async function endPlayerTurn() {
     storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
 
   if (difficulty === 10) {
-    // Boss level: enemies move, then boss acts
+    // Boss level: enemies move, then boss acts (no darkness here)
     await moveAllEnemies();
     if (!playerDead && bossHealth > 0) {
       await bossAct();
     }
 
     if (hasTripleEnemyTurns && !playerDead && bossHealth > 0) {
-      // 2 extra cycles (total 3 per player move)
       for (let i = 0; i < 2; i++) {
         await moveAllEnemies();
         if (playerDead || bossHealth <= 0) break;
@@ -108,13 +107,26 @@ async function endPlayerTurn() {
       }
     }
   } else {
-    // Normal levels
+    // Normal / post-boss / endless levels
     await moveAllEnemies();
 
     if (hasTripleEnemyTurns && !playerDead && !allEnemiesDead()) {
       for (let i = 0; i < 2; i++) {
         await moveAllEnemies();
         if (playerDead || allEnemiesDead()) break;
+      }
+    }
+
+    // After the *first* enemy phase on dark levels, upgrade to full darkness
+    if (isDarkLevel && !fullDarkActive) {
+      const activated = activateFullDarkness();
+      if (activated) {
+        const wrapper = document.querySelector('.level-viewport');
+        const overlay = wrapper && wrapper.querySelector('.level-dark-overlay');
+        if (overlay) overlay.remove();
+
+        // mortarTargets now reflect the first telegraph, so all tiles can be lit
+        redrawBoard();
       }
     }
   }

@@ -67,25 +67,37 @@ const DIFFICULTY_TABLE = [
     fastRange: [3, 3],
     trackerRange: [3, 3],
     mortarRange: [3, 3],
-    guaranteeStone: true, // guaranteed Wyrd Stone
+    guaranteeStone: true, // guaranteed Stone
   },
 
-  // Difficulty 10 – until boss is implemented, treat like 11+
+  // Difficulty 11–12 (post‑boss, pre‑endless)
   {
-    min: 10,
-    max: 10,
-    gridSizes: [12],
+    min: 11,
+    max: 12,
+    gridSizes: [9, 10, 11],
+    normalRange: [2, 3], // 3 4
+    fastRange: [2, 3],  // 3 4
+    trackerRange: [2, 3],  // 3 4
+    mortarRange: [1, 2],   // 3 4
+    guaranteeStone: false,
+  },
+  
+  // Difficulty 13-14
+  {
+    min: 13,
+    max: 14,
+    gridSizes: [10, 11, 12],
     normalRange: [3, 4],
     fastRange: [3, 4],
     trackerRange: [3, 4],
-    mortarRange: [3, 4],
+    mortarRange: [2, 4],
     guaranteeStone: false,
   },
 ];
 
 function getDifficultyConfig(difficulty) {
-  // 11+ treated as endless placeholder
-  if (difficulty >= 11) {
+  // 13+ treated as endless placeholder
+  if (difficulty >= 15) {
     return {
       gridSize: 12,
       normalCount: randomInt(5, 6),

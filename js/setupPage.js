@@ -12,8 +12,8 @@ function goToLevel() {
   const raw = document.getElementById("size-input").value;
   const n = Number(raw);
 
-  // Difficulty must be 1–10
-  if (!Number.isInteger(n) || n < 1 || n > 10) {
+  // Difficulty must be 1–12
+  if (!Number.isInteger(n) || n < 1 || n > 12) {
     const rangeModal = document.getElementById('range-modal');
     if (rangeModal) {
       rangeModal.classList.remove('hidden');
@@ -25,17 +25,19 @@ function goToLevel() {
   const difficulty = n;
   sessionStorage.setItem('baseDifficulty', String(difficulty));
   sessionStorage.setItem('currentDifficulty', String(difficulty));
-  sessionStorage.removeItem('playerScore');
+
+  // Keep score when starting/continuing a run
+  // sessionStorage.removeItem('playerScore');  // REMOVE this line
+
+  // Lives and level number can still reset as designed
   sessionStorage.removeItem('playerLives');
   resetLevelNumber();
 
   playSfx('uiConfirm');
   setTimeout(() => {
-    // size in URL is no longer needed; difficulty is in storage
     window.location.href = "level.html";
   }, 250);
 }
-
 
 // Wait for DOM before wiring events
 window.addEventListener('DOMContentLoaded', () => {

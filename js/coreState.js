@@ -10,6 +10,7 @@ let heartIndex = null;
 let levelNumber = 1;
 let skipTileIndex = null;
 let skipNextTurn = false;
+let brazierLit = false;
 
 // Camera
 let cameraZoom = 1;

@@ -134,6 +134,32 @@ function redrawBoard() {
     cell.appendChild(enemy);
   });
 
+  if (isDarkLevel && lanternTile && !lanternCollected) {
+    const cell = findCellByIndex(cells, lanternTile);
+    if (cell) {
+      const lantern = document.createElement('div');
+      lantern.className = 'lantern-tile';
+      cell.appendChild(lantern);
+    }
+  }
+
+  if (isDarkLevel && brazierTile) {
+    const cell = findCellByIndex(cells, brazierTile);
+    if (cell) {
+      const brazier = document.createElement('div');
+      brazier.className = brazierLit ? 'brazier-tile-lit' : 'brazier-tile';
+      cell.appendChild(brazier);
+    }
+  } else if (brazierTile) {
+    // Even after darkness is cleared we still want the lit brazier sprite
+    const cell = findCellByIndex(cells, brazierTile);
+    if (cell) {
+      const brazier = document.createElement('div');
+      brazier.className = brazierLit ? 'brazier-tile-lit' : 'brazier-tile';
+      cell.appendChild(brazier);
+    }
+  }
+
   // === Difficulty (for mortars and boss) ===
   const storedDifficulty = sessionStorage.getItem('currentDifficulty');
   const difficulty =
@@ -176,6 +202,25 @@ function redrawBoard() {
       boss.className = 'boss-enemy';
       bossCell.appendChild(boss);
     }
+  }
+
+  if (isDarkLevel && fullDarkActive) {
+    const maxIndex = gridSize * gridSize;
+    for (let i = 1; i <= maxIndex; i++) {
+      const cell = findCellByIndex(cells, i);
+      if (!cell) continue;
+      cell.classList.remove('dark-full', 'dark-shadow');
+
+      if (litTiles.has(i)) {
+        // no darkness
+      } else if (shadowTiles.has(i)) {
+        cell.classList.add('dark-shadow');
+      } else {
+        cell.classList.add('dark-full');
+      }
+    }
+  } else {
+    cells.forEach(c => c.classList.remove('dark-full', 'dark-shadow'));
   }
 
   refreshEnemyRoster();

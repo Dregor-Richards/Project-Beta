@@ -1,14 +1,13 @@
 03/02/2026 ---
 
+ > Put Brazier on its own Z-value, so it doesn't share space
+ > Double check all mortar allowed fire spots (No door, no brazier)
 
-
- <> Later Updates:
+ <> Later Updates: (Currently 1-12 Levels Accurate)
 
 
  <---> For Levels 11-20 <--->
- > Dark Rooms (Pick-Up Lantern To Illuminate Adjecent Tiles)
-     > Mortar Fire Should Illuminate Own Tile
- > Summoner Enemy (Slow, Summons Basic, or Trackers? Pink Versions)
+ > Summoner Enemy (Slow, Summons Basic, or Trackers?)
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
  > Falling Floor? (Too Redundant Perhaps?)
  % Sniper Enemy? (Instead of the Falling Floor Above^)
@@ -27,6 +26,7 @@
  $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
  $ Character Spawn Moves With Door
  $ Add Character Equipment
+     $ Every 5 played levels, chance of a dropped inventory item once implemented
  $ Character Customization Pages
  $ Player Profiles (To Save Above)
  $ Shop to buy per profile items?
