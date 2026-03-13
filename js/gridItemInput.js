@@ -10,6 +10,14 @@ function handleGridClick(event) {
   if (armedItem.type === 'wand') {
     if (armedItem.subtype === 'ice') {
       applyIceWandAtTile(tileIndex);
+
+      // Ice wand particles
+      spawnParticlesAtCell(tileIndex, 'wand', undefined, [
+        '#99d9ff', // light blue
+        '#4fa3ff', // medium blue
+        '#ffffff', // white
+      ]);
+
       redrawBoard();
 
       playSfx('useIceWand');
@@ -20,6 +28,7 @@ function handleGridClick(event) {
       sessionStorage.setItem('inventory', JSON.stringify(inventory));
       return;
     }
+
 
 
     if (armedItem.subtype === 'fire') {
@@ -49,7 +58,11 @@ function handleGridClick(event) {
       if (normalIndex !== -1) {
         enemies.splice(normalIndex, 1);
         addScore(1);
-        spawnParticlesAtCell(tileIndex, 'kill');
+        spawnParticlesAtCell(tileIndex, 'kill', undefined, [
+          '#ffff66', // yellow
+          '#ff9933', // orange
+          '#ff3333', // red
+        ]);
         removed = true;
       } else {
         // Fast
@@ -57,7 +70,11 @@ function handleGridClick(event) {
         if (fastIndex !== -1) {
           fastEnemies.splice(fastIndex, 1);
           addScore(2);
-          spawnParticlesAtCell(tileIndex, 'kill');
+          spawnParticlesAtCell(tileIndex, 'kill', undefined, [
+            '#ffff66', // yellow
+            '#ff9933', // orange
+            '#ff3333', // red
+          ]);
           removed = true;
         } else {
           // Tracker
@@ -65,7 +82,11 @@ function handleGridClick(event) {
           if (trackerIndex !== -1) {
             trackerEnemies.splice(trackerIndex, 1);
             addScore(1);
-            spawnParticlesAtCell(tileIndex, 'kill');
+            spawnParticlesAtCell(tileIndex, 'kill', undefined, [
+              '#ffff66', // yellow
+              '#ff9933', // orange
+              '#ff3333', // red
+            ]);
             removed = true;
           } else {
             // Mortar
@@ -73,7 +94,11 @@ function handleGridClick(event) {
             if (mortarIndex !== -1) {
               mortarEnemies.splice(mortarIndex, 1);
               addScore(2);
-              spawnParticlesAtCell(tileIndex, 'kill');
+              spawnParticlesAtCell(tileIndex, 'kill', undefined, [
+                '#ffff66', // yellow
+                '#ff9933', // orange
+                '#ff3333', // red
+              ]);
               removed = true;
 
               // If no mortars remain, clear their targets
@@ -103,6 +128,14 @@ function handleGridClick(event) {
     if (armedItem.subtype === 'lightning') {
       if (tileIndex !== avatarIndex) return;
 
+      // Lightning particles at the player
+      spawnParticlesAtCell(tileIndex, 'wand', undefined, [
+        '#ffffff', // white
+        '#fff799', // pale yellow
+        '#ffff33', // bright yellow
+        '#a0c8ff', // soft blue accent
+      ]);
+
       extraMoves += 1;
       playSfx('useLightningWand');
       consumeWandCharge(armedItem.slotIndex);
@@ -112,6 +145,7 @@ function handleGridClick(event) {
       sessionStorage.setItem('inventory', JSON.stringify(inventory));
       return;
     }
+
 
     return;
   }
@@ -129,36 +163,44 @@ function applyIceWandAtTile(centerIndex) {
 
   // 2) Remove mortar targeting for this tile and prevent future targeting
   if (!blockedMortarTiles) {
-    // global or module-level Set you define alongside other globals
     window.blockedMortarTiles = new Set();
   }
   blockedMortarTiles.add(centerIndex);
 
-  // remove existing target
   mortarTargets = mortarTargets.filter(t => t !== centerIndex);
 
   // 3) If a mortar enemy is actually standing here, “freeze” its firing
   const mortarIdx = mortarEnemies.indexOf(centerIndex);
   if (mortarIdx !== -1) {
-    // You can treat “frozen mortar” simply as:
-    // - stays on the tile, but never fires again
-    // Implemented in handleMortarPhase using frozenEnemyTiles
+    // handled elsewhere via frozenEnemyTiles
   }
+
+  // Ice wand particle palette
+  const icePalette = [
+    '#99d9ff', // light blue
+    '#4fa3ff', // medium blue
+    '#ffffff', // white
+  ];
+
+  // Particles on the central tile
+  spawnParticlesAtCell(centerIndex, 'wand', undefined, icePalette);
 
   // 4) Freeze 0–8 random surrounding tiles (8-way)
   const neighbors = getNeighborIndices(centerIndex, gridSize);
   const extraCount = Math.floor(Math.random() * 9); // 0..8
 
   for (let i = 0; i < extraCount; i++) {
-    const randomNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
-    // neighbors already ignores off-map; duplicates allowed by just re-adding
+    const randomNeighbor =
+      neighbors[Math.floor(Math.random() * neighbors.length)];
+
     frozenEnemyTiles.add(randomNeighbor);
     blockedMortarTiles.add(randomNeighbor);
     mortarTargets = mortarTargets.filter(t => t !== randomNeighbor);
+
+    // Particles on each successfully chosen neighbor
+    spawnParticlesAtCell(randomNeighbor, 'wand', undefined, icePalette);
   }
 }
-
-
 
 window.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('level-grid');

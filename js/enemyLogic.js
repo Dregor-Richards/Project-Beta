@@ -45,12 +45,10 @@ function pickMortarTargets(countPerMortar = 5) {
 
   mortarEnemies.forEach(mortarIndex => {
     const blocked = new Set([
-      avatarIndex,
       doorIndex,
-      heartIndex,
       skipTileIndex,
-      wandIndex,
-      stoneIndex,
+      lanternTile,
+      brazierTile,
       ...enemies,
       ...fastEnemies,
       ...trackerEnemies,

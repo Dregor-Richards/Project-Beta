@@ -66,6 +66,16 @@ function centerCameraOnPlayer() {
 }
 
 document.addEventListener('keydown', (e) => {
+  // Block camera hotkeys while typing in any input/textarea
+  const active = document.activeElement;
+  const isTypingField =
+    active &&
+    (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+
+  if (window.cheatConsoleOpen || isTypingField) {
+    return;
+  }
+
   const zoomStep = 0.1;
 
   if (e.key === '=' || e.key === '+') {

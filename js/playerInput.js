@@ -4,6 +4,16 @@ function getAllowedMovesThisTurn() {
 }
 
 async function handleMove(event) {
+  // Block if cheat console is open OR any text input/textarea is focused
+  const active = document.activeElement;
+  const isTypingField =
+    active &&
+    (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+
+  if (window.cheatConsoleOpen || isTypingField) {
+    return;
+  }
+
   if (!canPlayerMove || winOpen) return;
   if (uiInputLocked) return;
   const isConfirmKey =
@@ -131,6 +141,7 @@ if (mortarIndex !== -1) {
     }
     spawnParticlesAtCell(next, 'pickup');
     playSfx('heartPickup');
+    addScore(1);
     heartIndex = null;
   }
 
@@ -174,6 +185,7 @@ if (mortarIndex !== -1) {
     // Brazier: if carrying lantern, clear all darkness for this level
     if (lanternCollected && avatarIndex === brazierTile && !brazierLit) {
       brazierLit = true;
+      playMusic('level');
 
       // Permanently clear darkness for this level
       litTiles.clear();

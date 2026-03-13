@@ -130,6 +130,11 @@ function shouldSpawnHeart() {
 
 function chooseFreeIndex() {
   const maxIndex = gridSize * gridSize;
+
+  const existingWandIndices = Array.isArray(wandsOnBoard)
+    ? wandsOnBoard.map(w => w.index)
+    : (wandIndex != null ? [wandIndex] : []);
+
   const blocked = new Set([
     avatarIndex,
     doorIndex,
@@ -137,8 +142,10 @@ function chooseFreeIndex() {
     skipTileIndex,
     ...enemies,
     ...fastEnemies,
-    wandIndex,
-    stoneIndex
+    ...trackerEnemies,
+    ...mortarEnemies,
+    ...existingWandIndices,
+    ...pickupIndices, // avoid any existing pickups (wands/stones)
   ]);
 
   const candidates = [];
@@ -148,7 +155,9 @@ function chooseFreeIndex() {
   if (candidates.length === 0) return null;
 
   const idx = Math.floor(Math.random() * candidates.length);
-  return candidates[idx];
+  const chosen = candidates[idx];
+  pickupIndices.push(chosen); // mark this tile as used by a pickup
+  return chosen;
 }
 
 function chooseHeartIndex() {
@@ -209,7 +218,8 @@ function chooseWandIndex() {
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
-    ...existingWandIndices
+    ...existingWandIndices,
+    ...pickupIndices,            // <- NEW: avoid any existing pickups
   ]);
 
   const candidates = [];
@@ -219,5 +229,6 @@ function chooseWandIndex() {
   if (candidates.length === 0) return null;
 
   const idx = Math.floor(Math.random() * candidates.length);
+  pickupIndices.push(candidates[idx]); // <- NEW: record for necklaces, etc.
   return candidates[idx];
 }

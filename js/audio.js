@@ -35,6 +35,7 @@ const music = {
   index:       new Audio('../assets/music/Goblins_Den_(Regular).wav'),   // index.html        - Will change later
   setup:       new Audio('../assets/music/Goblins_Den_(Regular).wav'),   // levelSetup.html   - Will change later
   level:       new Audio('../assets/music/Goblins_Dance_(Battle).wav'),  // level.html        - Will change later
+  levelDark:   new Audio('../assets/music/02.To_Grind_Out_Your_Soul.wav'),  // CHange Later
   highscore:   new Audio('../assets/music/Ghost chior.wav'),             // highScore.html    - Will change later
   credits:     new Audio('../assets/music/Ghost chior.wav'),             // credits.html      - Will change later
 };
@@ -50,6 +51,11 @@ let currentMusic = null;
 function playMusic(name) {
   const track = music[name];
   if (!track) return;
+
+  // If this track is already playing, do nothing
+  if (currentMusic === track && !currentMusic.paused) {
+    return;
+  }
 
   // If a different track is playing, stop it
   if (currentMusic && currentMusic !== track) {

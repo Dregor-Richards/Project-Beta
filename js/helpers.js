@@ -27,6 +27,7 @@ function resetLevelState() {
   doorIndex = null;
   heartIndex = null;
   skipTileIndex = null;
+  pickupIndices = [];
   wandIndex = null;
   stoneIndex = null;
   stonePresent = false;

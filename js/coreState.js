@@ -41,8 +41,7 @@ let shakeMagnitude = 6; //pixels
 // inventory-related globals
 let inventory = new Array(21).fill(null);
 let frozenEnemyTiles = new Set();
-//let wandIndex = null;
-//let currentWandSubtype = null;
+let pickupIndices = [];
 let wandsOnBoard = [];
 let stoneIndex = null;
 let stonePresent = false;

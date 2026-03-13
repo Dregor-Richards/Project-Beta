@@ -227,7 +227,7 @@ function redrawBoard() {
 }
 
 
-function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
+function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
   const grid = document.getElementById('level-grid');
   if (!grid) return;
 
@@ -235,7 +235,6 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
   const cell = findCellByIndex(cells, index);
   if (!cell) return;
 
-  // Ensure particle-layer lives inside the grid
   let layer = grid.querySelector('.particle-layer');
   if (!layer) {
     layer = document.createElement('div');
@@ -243,14 +242,12 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
     grid.appendChild(layer);
   }
 
-  // Derive grid size and tile coordinates from index (1-based)
   const totalCells = cells.length;
-  const size = Math.sqrt(totalCells);      // assumes square grid
+  const size = Math.sqrt(totalCells); // assumes square grid
   const zeroBased = index - 1;
   const row = Math.floor(zeroBased / size);
   const col = zeroBased % size;
 
-  // Center of that tile in grid space (percent)
   const tileWidthPct = 100 / size;
   const tileHeightPct = 100 / size;
 
@@ -264,9 +261,26 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
 
   const particleCount = countOverride ?? baseCount;
 
+  // Default colors by kind, if a custom palette is not provided
+  const defaultColorsByKind = {
+    hit: ['#ff5555'],
+    kill: ['#ff2222'],
+    pickup: ['#ffd966'],
+    door: ['#ffffff'],
+  };
+  const palette =
+    Array.isArray(colors) && colors.length > 0
+      ? colors
+      : (defaultColorsByKind[kind] || ['#ffffff']);
+
   for (let i = 0; i < particleCount; i++) {
     const p = document.createElement('div');
     p.className = `particle particle--${kind}`;
+
+    if (kind === 'wand') {
+      const shape = Math.random() < 0.6 ? 'shard' : 'orb'; // 60% shards, 40% orbs
+      p.classList.add(`particle-shape-${shape}`);
+    }
 
     const angle = Math.random() * Math.PI * 2;
     const distance =
@@ -277,11 +291,14 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride) {
     const px = Math.cos(angle) * distance;
     const py = Math.sin(angle) * distance;
 
-    // Place particle at tile center in grid coordinate space
     p.style.left = `${centerXPct}%`;
     p.style.top = `${centerYPct}%`;
     p.style.setProperty('--px', `${px}px`);
     p.style.setProperty('--py', `${py}px`);
+
+    // Per‑particle color: randomly pick from palette
+    const color = palette[Math.floor(Math.random() * palette.length)];
+    p.style.backgroundColor = color;
 
     p.addEventListener('animationend', () => {
       p.remove();

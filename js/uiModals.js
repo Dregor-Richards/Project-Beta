@@ -10,6 +10,8 @@ function resetRunAndGoToMenu() {
   sessionStorage.removeItem('playerLives');
   sessionStorage.removeItem('playerScore');
   sessionStorage.removeItem('currentLevel');
+  sessionStorage.removeItem('inventory');
+  sessionStorage.removeItem('pbo_usedCheats');
 
   inventory = new Array(21).fill(null);
   iceWandIndex = null;
@@ -58,6 +60,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Escape closes control/instructions modals if open
   window.addEventListener('keydown', (event) => {
+    if (window.cheatConsoleOpen) return;
     if (event.key !== 'Escape') return;
 
     let closed = false;
@@ -153,6 +156,7 @@ window.addEventListener('DOMContentLoaded', () => {
       sessionStorage.removeItem('playerLives');
       sessionStorage.removeItem('playerScore');
       sessionStorage.removeItem('inventory');
+      sessionStorage.removeItem('pbo_usedCheats');
       resetLevelNumber();
 
       setTimeout(() => {
@@ -184,6 +188,7 @@ function finishAndReturnToMenu() {
 
     // F key → Play Again when death modal is visible
   window.addEventListener('keydown', (event) => {
+    if (window.cheatConsoleOpen) return;
     if (event.key !== 'f' && event.key !== 'F') return;
     if (!deathModal || deathModal.classList.contains('hidden')) return;
 
@@ -259,6 +264,7 @@ function finishAndReturnToMenu() {
 
   // Win modal keyboard shortcut: E / Enter → Press Onward
   window.addEventListener('keydown', (event) => {
+    if (window.cheatConsoleOpen) return;
     if (!winModal || winModal.classList.contains('hidden')) return;
     if (event.key === 'Enter' || event.key === 'e' || event.key === 'E') {
       event.preventDefault();
@@ -289,6 +295,7 @@ function finishAndReturnToMenu() {
   }
 
   window.addEventListener('keydown', (event) => {
+    if (window.cheatConsoleOpen) return;
     if (event.key !== 'Escape') return;
     if (inventoryPanel && !inventoryPanel.classList.contains('hidden')) {
       inventoryPanel.classList.add('hidden');
@@ -320,6 +327,15 @@ function finishAndReturnToMenu() {
 
   // G key → toggle glossary (same behavior as the buttons)
   window.addEventListener('keydown', (event) => {
+    if (window.cheatConsoleOpen) return;
+
+    // NEW: if user is typing into any input/textarea, let the key go to that field
+    const active = document.activeElement;
+    const isTypingField =
+      active &&
+      (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+    if (isTypingField) return;
+
     if (event.key !== 'g' && event.key !== 'G') return;
 
     // If the highscore name input is focused, ignore G so the user can type it
@@ -327,21 +343,20 @@ function finishAndReturnToMenu() {
       return;
     }
 
-    const glossaryPanel = document.getElementById('glossary-modal'); // root of the glossary UI
+    const glossaryPanel = document.getElementById('glossary-modal');
     if (!glossaryPanel) return;
 
     const isOpen = !glossaryPanel.classList.contains('hidden');
 
     if (isOpen) {
-      closeGlossary();        // same as clicking the close button
+      closeGlossary();
     } else {
-      openGlossary();         // same as clicking the open button
+      openGlossary();
     }
 
     playSfx('uiGlossary');
     event.preventDefault();
   });
-
 
   if (glossaryPrev) {
     glossaryPrev.addEventListener('click', () => {
@@ -362,25 +377,26 @@ function finishAndReturnToMenu() {
   }
 
     window.addEventListener('keydown', (event) => {
-    const key = event.key;
-    if (key !== 'e' && key !== 'E' && key !== 'q' && key !== 'Q') return;
+      if (window.cheatConsoleOpen) return;
+      const key = event.key;
+      if (key !== 'e' && key !== 'E' && key !== 'q' && key !== 'Q') return;
 
-    const glossaryPanel = document.getElementById('glossary-modal');
-    if (!glossaryPanel || glossaryPanel.classList.contains('hidden')) return;
+      const glossaryPanel = document.getElementById('glossary-modal');
+      if (!glossaryPanel || glossaryPanel.classList.contains('hidden')) return;
 
-    const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
+      const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
 
-    if (key === 'e' || key === 'E') {
-      // forward, wrap
-      glossaryPage = (glossaryPage + 1) % (maxPage + 1);
-    } else {
-      // backward, wrap
-      glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);
-    }
+      if (key === 'e' || key === 'E') {
+        // forward, wrap
+        glossaryPage = (glossaryPage + 1) % (maxPage + 1);
+      } else {
+        // backward, wrap
+        glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);
+      }
 
-    renderGlossaryPage();
-    playSfx('uiGlossary');
-    event.preventDefault();
-  });
+      renderGlossaryPage();
+      playSfx('uiGlossary');
+      event.preventDefault();
+    });
 
 });
