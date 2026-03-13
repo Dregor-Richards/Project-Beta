@@ -1,24 +1,25 @@
 03/12/2026 ---
 
- > Put Brazier on its own Z-value, so it doesn't share space
- > Double check all mortar allowed fire spots (No door, no brazier)
+ >> Put Brazier on its own Z-value, so it doesn't share space
+ >> Double check all mortar allowed fire spots (No door, no brazier)
  > Make Wands have special particles on Use
- > No Wands/Necklace Spawns On Each Other
- > Check that Wands Work in Shadow/dark
+ >> No Wands/Necklace Spawns On Each Other
+ >> Check that Wands Work in Shadow/dark
  > Different Music In dark
- > Chatbox (Tab?) FOr Cheats - One To Win, One To Fill Map With Ghosts
+ > Chatbox (Tab?) FOr Cheats - One To Win, One To Fill Map With Ghosts, One to give 1 of each wand or 3 of Fire
  > Add Specific Enemy Spot Placement On Boss
+ > Add Glossary Sections (Bosses, Equipment [Include Gear/Jewelry In One]), cycle with click and/or T?
 
+ > Make Loot-Modal Design, To Show Either Gathered Loot From Chest, Or Loot Options From Boss
+   > Perhaps you're using the Boss' essence to make the jewelry, hence the choice but only getting 1?
  > Equipment Drop Every 6 Played Levels
+   > Make Equipment Drop In A CHest Sprite, 25% Another Chest That's A Mimic
  > Add Person Image For Equipment Tab, With 5 Slots (Head, Chest, Legs, 2 Weapons)
  > Add Jewelry Tab On Left (10 Rings, 2 Hand Images, Neck Image, Necklace Slot)
-    > Bosses Drop Jewelry Right Into Inventory
+    > Bosses Drop Jewelry Right Into Inventory (Use Loot-Modal To Show What They Got)
 
  > Character Avatar Select (Set-up Page)
  > Starting Item Select (Set-up Page)
-
- <> Later Updates: (Currently 1-12 Levels Accurate)
-
 
  <---> For Levels 11-20 <--->
  > Summoner Enemy (Slow, Summons Basic, or Trackers?) Pink Particles
@@ -26,7 +27,6 @@
     > If Fails All Checks, Summons One Of Each
     > Moves Until Summons Die, THen Summons More
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
- > Falling Floor? (Too Redundant Perhaps?)
  % Sniper Enemy? (Instead of the Falling Floor Above^)
  > Wand to turn wall into walkways
  > Empty Lanterns To Pickup For Later Levels, Use Fire Wand To Light
@@ -42,10 +42,6 @@
  <--->                  <--->
 
  $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
- $ Add Character Equipment
-     $ Every 5 played levels, chance of a dropped inventory item once implemented
-     $ Bosses should drop Jewelry, Separate Equipment Tab For Neck/Fingers
- $ Character Select In Setup (With Starting Item Select For Easier Start)
 
 -----
 
