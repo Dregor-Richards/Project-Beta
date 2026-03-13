@@ -2,12 +2,29 @@
 
  > Put Brazier on its own Z-value, so it doesn't share space
  > Double check all mortar allowed fire spots (No door, no brazier)
+ > Make Wands have special particles on Use
+ > No Wands/Necklace Spawns On Each Other
+ > Check that Wands Work in Shadow/dark
+ > Different Music In dark
+ > Chatbox (Tab?) FOr Cheats - One To Win, One To Fill Map With Ghosts
+ > Add Specific Enemy Spot Placement On Boss
+
+ > Equipment Drop Every 6 Played Levels
+ > Add Person Image For Equipment Tab, With 5 Slots (Head, Chest, Legs, 2 Weapons)
+ > Add Jewelry Tab On Left (10 Rings, 2 Hand Images, Neck Image, Necklace Slot)
+    > Bosses Drop Jewelry Right Into Inventory
+
+ > Character Avatar Select (Set-up Page)
+ > Starting Item Select (Set-up Page)
 
  <> Later Updates: (Currently 1-12 Levels Accurate)
 
 
  <---> For Levels 11-20 <--->
- > Summoner Enemy (Slow, Summons Basic, or Trackers?)
+ > Summoner Enemy (Slow, Summons Basic, or Trackers?) Pink Particles
+    > High Chance TO Summon Norms, Lowering Chance Each Turn TO Summon Next Type
+    > If Fails All Checks, Summons One Of Each
+    > Moves Until Summons Die, THen Summons More
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
  > Falling Floor? (Too Redundant Perhaps?)
  % Sniper Enemy? (Instead of the Falling Floor Above^)
@@ -20,20 +37,19 @@
  > Mode Select For Challenge & normal
  > Mortar Survival, where the player can't reach the mortars, and is just trying to outlast to get to scoreboard
  > Items to freeze patches for safety, and to reset Mortar fire count for prolonged survival
+ > PermaDeath Mode (Start From LVL 1, No Score, No Items)
 
  <--->                  <--->
 
  $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
- $ Character Spawn Moves With Door
  $ Add Character Equipment
      $ Every 5 played levels, chance of a dropped inventory item once implemented
- $ Character Customization Pages
- $ Player Profiles (To Save Above)
- $ Shop to buy per profile items?
+     $ Bosses should drop Jewelry, Separate Equipment Tab For Neck/Fingers
+ $ Character Select In Setup (With Starting Item Select For Easier Start)
 
 -----
 
-*Boss 2 - Named After God Of Death, has it's own map (TBD)
+*Boss 2 - Named After God Of Death, has it's own map (Skull-Shaped???)
    - Will utilize the dark maps, with a lantern existing on one tile that the player must reach, to light up the regions around
    where the boss starts. Like the first boss, once hit, the map basically resets, so new areas will darken, the boss will move,
    and the player will have to reacquire a lantern.

@@ -88,6 +88,18 @@ window.addEventListener('DOMContentLoaded', () => {
   const storedScore = sessionStorage.getItem('playerScore');
   score = storedScore !== null ? Number(storedScore) || 0 : 0;
 
+  const storedInventory = sessionStorage.getItem('inventory');
+  if (storedInventory) {
+    try {
+      const parsed = JSON.parse(storedInventory);
+      if (Array.isArray(parsed) && parsed.length === 21) {
+        inventory = parsed;
+      }
+    } catch (e) {
+      // if bad data, fall back to whatever default you set elsewhere
+    }
+  }
+
   const storedDifficulty = sessionStorage.getItem('currentDifficulty');
   let difficulty = storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;
   if (difficulty < 1) difficulty = 1;
@@ -188,4 +200,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
   redrawLives();
   redrawScore();
+  renderInventory();
 });
