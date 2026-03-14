@@ -29,14 +29,36 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function getUnsafeSpawnTilesNearPlayer() {
+  const size = gridSize;
+  const base = avatarIndex;        // 1-based
+  const unsafe = [];
+
+  // Above
+  const above = base - size;
+  if (above >= 1) unsafe.push(above);
+
+  // Right
+  const right = base + 1;
+  if (base % size !== 0) unsafe.push(right);
+
+  // Diagonal up-right
+  const diag = above + 1;
+  if (above >= 1 && base % size !== 0) unsafe.push(diag);
+
+  return unsafe;
+}
+
 function placeNormalEnemies(count) {
   enemies = [];
   const maxIndex = gridSize * gridSize;
+  const unsafe = new Set(getUnsafeSpawnTilesNearPlayer());
 
   while (enemies.length < count) {
     const candidate = getRandomInt(1, maxIndex);
 
     if (candidate === avatarIndex) continue;
+    if (unsafe.has(candidate)) continue;
     if (candidate === doorIndex) continue;
     if (candidate === heartIndex) continue;
     if (candidate === skipTileIndex) continue;
@@ -56,11 +78,13 @@ function placeFastEnemies(count) {
   if (count <= 0) return;
 
   const maxIndex = gridSize * gridSize;
+  const unsafe = new Set(getUnsafeSpawnTilesNearPlayer());
 
   while (fastEnemies.length < count) {
     const candidate = getRandomInt(1, maxIndex);
 
     if (candidate === avatarIndex) continue;
+    if (unsafe.has(candidate)) continue;
     if (candidate === doorIndex) continue;
     if (candidate === heartIndex) continue;
     if (candidate === skipTileIndex) continue;
@@ -80,11 +104,13 @@ function placeTrackerEnemies(count) {
   if (count <= 0) return;
 
   const maxIndex = gridSize * gridSize;
+  const unsafe = new Set(getUnsafeSpawnTilesNearPlayer());
 
   while (trackerEnemies.length < count) {
     const candidate = getRandomInt(1, maxIndex);
 
     if (candidate === avatarIndex) continue;
+    if (unsafe.has(candidate)) continue;
     if (candidate === doorIndex) continue;
     if (candidate === heartIndex) continue;
     if (candidate === skipTileIndex) continue;
@@ -104,11 +130,13 @@ function placeMortarEnemies(count) {
   if (count <= 0) return;
 
   const maxIndex = gridSize * gridSize;
+  const unsafe = new Set(getUnsafeSpawnTilesNearPlayer());
 
   while (mortarEnemies.length < count) {
     const candidate = getRandomInt(1, maxIndex);
 
     if (candidate === avatarIndex) continue;
+    if (unsafe.has(candidate)) continue;
     if (candidate === doorIndex) continue;
     if (candidate === heartIndex) continue;
     if (candidate === skipTileIndex) continue;

@@ -66,7 +66,7 @@ function runCheatCode(rawCode) {
   }
 
   switch (code) {
-    case 'win':
+    case 'aceofspades':
       cheatWinLevel();
       markCheatUsed(code);
       break;
@@ -96,6 +96,14 @@ function runCheatCode(rawCode) {
 
 // Instantly win the current level
 function cheatWinLevel() {
+  addScore(5);
+  const rawDiff = sessionStorage.getItem('currentDifficulty');
+  let difficulty = rawDiff !== null ? Number(rawDiff) || 1 : 1;
+  difficulty += 1;
+  sessionStorage.setItem('currentDifficulty', String(difficulty));
+  resetLevelState();
+  advanceLevel();
+  window.location.href = 'level.html';
   // TODO: implement forced win (e.g., move avatar to door, clear enemies, then call checkForWin()).
 }
 

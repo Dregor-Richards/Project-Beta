@@ -96,11 +96,14 @@ async function moveNormalEnemies(size, maxIndex) {
         break;
       }
 
+      const bossTileIndex = bossIndex != null ? bossIndex + 1 : null;
+
       const occupiedByOther =
         enemies.some((e, j) => j !== i && e === next) ||
         fastEnemies.includes(next) ||
         trackerEnemies.includes(next) ||
-        mortarEnemies.includes(next);
+        mortarEnemies.includes(next) ||
+        (bossTileIndex !== null && next === bossTileIndex);
       if (occupiedByOther) continue;
 
       enemies[i] = next;
@@ -159,11 +162,14 @@ async function moveFastEnemies(size, maxIndex) {
           break;
         }
 
+        const bossTileIndex = bossIndex != null ? bossIndex + 1 : null;
+
         const occupiedByOther =
           enemies.includes(next) ||
           fastEnemies.some((e, j) => j !== i && e === next) ||
           trackerEnemies.includes(next) ||
-          mortarEnemies.includes(next);
+          mortarEnemies.includes(next) ||
+          (bossTileIndex !== null && next === bossTileIndex);
         if (occupiedByOther) continue;
 
         // Move one step
@@ -241,12 +247,14 @@ async function moveTrackerEnemies(size, maxIndex) {
         break;
       }
 
+      const bossTileIndex = bossIndex != null ? bossIndex + 1 : null;
+
       const occupiedByOther =
         enemies.includes(next) ||
         fastEnemies.includes(next) ||
         trackerEnemies.some((e, j) => j !== i && e === next) ||
-        mortarEnemies.includes(next);
-
+        mortarEnemies.includes(next) ||
+        (bossTileIndex !== null && next === bossTileIndex);
       if (occupiedByOther) break;
 
       // Move one step

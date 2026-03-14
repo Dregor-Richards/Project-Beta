@@ -14,6 +14,22 @@ const BOSS_MISSING_TILES = [
   212, 213, 214, 220, 221, 222, 223, 224
 ];
 
+// Center 5x5 block around the player (safe zone excluded later if needed) (1-based indices)
+const BOSS_CENTER_5X5_TILES = [
+  81, 82, 83, 84, 85,
+  96, 97, 98, 99, 100,
+  111, 112, 113, 114, 115,
+  126, 127, 128, 129, 130,
+  141, 142, 143, 144, 145
+];
+
+// Arms: the 1x5 hallways that connect each outer 5x5 patch (1-based indices)
+const BOSS_ARM_TILES = [
+  33, 34, 35, 41, 42, 43, 48, 58, 63, 73, 
+  153, 163, 168, 178, 183, 184, 185,
+  191, 192, 193
+];
+
 // Boss spawn candidates (0-based)
 const BOSS_SPAWN_TILES = [37, 107, 117, 187];
 
@@ -101,15 +117,35 @@ function spawnBossStageEnemies() {
   const maxIndex = gridSize * gridSize;
   const missingSet = new Set(BOSS_MISSING_TILES.map(idx => idx + 1));
 
-  // Base pool: any valid, non-hole tile
-  const allTiles = [];
-  for (let i = 1; i <= maxIndex; i++) {
-    if (!missingSet.has(i)) allTiles.push(i);
-  }
-
   const bossTile = bossIndex + 1;
 
-  // Blocked tiles: boss, player, and existing enemies
+  function tileAt(r, c) {
+    return r * gridSize + c + 1; // r,c 0-based
+  }
+
+  // Ring around center: 5x5 areas around the *central* 5x5,
+  // excluding: actual center 5x5, boss spawn tiles, arms.
+  const ringPool = [];
+
+  // Precompute sets for quick exclusion
+  const centerSet = new Set(BOSS_CENTER_5X5_TILES);
+  const armSet    = new Set(BOSS_ARM_TILES);
+
+  for (let r = 0; r < gridSize; r++) {
+    for (let c = 0; c < gridSize; c++) {
+      const t = tileAt(r, c);
+      if (missingSet.has(t)) continue;
+      if (centerSet.has(t)) continue;   // keep center safe
+      if (armSet.has(t)) continue;      // not an arm
+      // This leaves: the four 5x5 “rings” around the center cross
+      ringPool.push(t);
+    }
+  }
+
+  // Arms pool for mortars
+  const armPool = BOSS_ARM_TILES.filter(t => !missingSet.has(t));
+
+  // Blocked tiles
   const blocked = new Set([
     bossTile,
     avatarIndex,
@@ -119,58 +155,56 @@ function spawnBossStageEnemies() {
     ...mortarEnemies,
   ]);
 
-  // Helper to grab a free tile or null
-  function takeFreeTile() {
-    const candidates = allTiles.filter(i => !blocked.has(i));
+  function takeFrom(pool) {
+    const candidates = pool.filter(t => !blocked.has(t));
     if (candidates.length === 0) return null;
     const idx = candidates[Math.floor(Math.random() * candidates.length)];
     blocked.add(idx);
     return idx;
   }
 
-  // Stage-specific ranges
+  // Stage ranges (unchanged) ...
   let mortarMin, mortarMax;
   let trackerMin, trackerMax;
   let normFastMin, normFastMax;
 
   if (bossStage === 1) {
-    mortarMin   = 0;  mortarMax   = 1;
-    trackerMin  = 0;  trackerMax  = 2;
-    normFastMin = 0;  normFastMax = 4;
+    mortarMin   = 0; mortarMax   = 1;
+    trackerMin  = 0; trackerMax  = 2;
+    normFastMin = 0; normFastMax = 4;
   } else if (bossStage === 2) {
-    mortarMin   = 2;  mortarMax   = 3;
-    trackerMin  = 2;  trackerMax  = 4;
-    normFastMin = 2;  normFastMax = 8;
-  } else { // stage 3
-    mortarMin   = 3;  mortarMax   = 4;
-    trackerMin  = 3;  trackerMax  = 4;
-    normFastMin = 4;  normFastMax = 10;
+    mortarMin   = 2; mortarMax   = 3;
+    trackerMin  = 2; trackerMax  = 4;
+    normFastMin = 2; normFastMax = 8;
+  } else {
+    mortarMin   = 3; mortarMax   = 4;
+    trackerMin  = 3; trackerMax  = 4;
+    normFastMin = 4; normFastMax = 10;
   }
 
   const mortarCount   = randomInt(mortarMin,   mortarMax);
   const trackerCount  = randomInt(trackerMin,  trackerMax);
   const normFastCount = randomInt(normFastMin, normFastMax);
 
-  // Mortars
+  // Mortars → only arms (correct)
   for (let i = 0; i < mortarCount; i++) {
-    const tile = takeFreeTile();
+    const tile = takeFrom(armPool);
     if (tile == null) break;
     mortarEnemies.push(tile);
   }
 
-  // Trackers
+  // Trackers → ring around center (5x5 regions)
   for (let i = 0; i < trackerCount; i++) {
-    const tile = takeFreeTile();
+    const tile = takeFrom(ringPool);
     if (tile == null) break;
     trackerEnemies.push(tile);
   }
 
-  // Normal + Fast share the same pool count
+  // Normal + Fast → ring around center as well
   for (let i = 0; i < normFastCount; i++) {
-    const tile = takeFreeTile();
+    const tile = takeFrom(ringPool);
     if (tile == null) break;
-    const isFast = Math.random() < 0.5; // tweak weight if you like
-
+    const isFast = Math.random() < 0.5;
     if (isFast) {
       fastEnemies.push(tile);
     } else {
@@ -328,6 +362,13 @@ function pickRandomTilesFrom(array, count) {
   return result;
 }
 
+function isTileOccupiedByEnemy(tileIndex) {
+  return enemies.includes(tileIndex) ||
+         fastEnemies.includes(tileIndex) ||
+         trackerEnemies.includes(tileIndex) ||
+         mortarEnemies.includes(tileIndex);
+}
+
 async function moveBossRandomly(stepsMin, stepsMax) {
   if (bossHealth <= 0) return;
 
@@ -379,6 +420,11 @@ async function moveBossRandomly(stepsMin, stepsMax) {
         // Non-lethal: boss stays in place this turn
         break;
       }
+    }
+
+    // Do not step onto other enemies
+    if (isTileOccupiedByEnemy(next)) {
+      continue; // skip this direction, try another step next loop
     }
 
     // Normal random step
@@ -465,6 +511,11 @@ async function moveBossTowardsPlayer(stepsMin, stepsMax) {
       }
     }
 
+    // Do not step onto other enemies
+    if (isTileOccupiedByEnemy(next)) {
+      continue; // skip this direction, try another step next loop
+    }
+
     // Normal step toward player
     bossTileIndex = next;
     bossIndex = bossTileIndex - 1;
@@ -485,7 +536,6 @@ async function bossAct() {
 
   bossTurnCounter += 1;
 
-  // Stage parameters (unchanged)
   let mortarMin, mortarMax;
   let stepsMin, stepsMax;
   let pattern;
@@ -497,14 +547,14 @@ async function bossAct() {
     stepsMax = 3;
     pattern = 'everyOther';
   } else if (bossStage === 2) {
-    mortarMin = 25;
-    mortarMax = 35;
+    mortarMin = 20;
+    mortarMax = 30;
     stepsMin = 2;
     stepsMax = 4;
     pattern = 'everyOther';
   } else {
-    mortarMin = 35;
-    mortarMax = 45;
+    mortarMin = 25;
+    mortarMax = 35;
     stepsMin = 2;
     stepsMax = 4;
     pattern = 'twoThenPause';

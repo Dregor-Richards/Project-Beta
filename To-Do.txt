@@ -1,8 +1,5 @@
 03/12/2026 ---
 
- > Implement 1 Cheat, to Test If They Work (Make Sure Can Only Use Once Per Playthrough)
-    > Win Cheat ; FIll Map Cheat ; Add Inventory Item CHeat
- > Specific Enemy Spot Placement On Boss
  > Add Glossary Sections (Bosses, Equipment, cycle with click and/or T)
  > Make loot modal design (Chests loot and boss loot)
  > Equipment drop every 6 played levels in chest (25% of chest mimic)
@@ -33,6 +30,7 @@
  <--->                  <--->
 
  $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
+ $ FIll Map Cheat ; Add Inventory Item CHeat
 
 -----
 

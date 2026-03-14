@@ -14,7 +14,7 @@ const DIFFICULTY_TABLE = [
   {
     min: 1,
     max: 2,
-    gridSizes: [3, 4, 5],
+    gridSizes: [4, 5],
     normalRange: [1, 2],
     fastRange: [0, 0],
     trackerRange: [0, 0],
