@@ -358,10 +358,54 @@ function finishAndReturnToMenu() {
     event.preventDefault();
   });
 
+    // T key → cycle glossary type while glossary is open
+    window.addEventListener('keydown', (event) => {
+      if (window.cheatConsoleOpen) return;
+      const key = event.key;
+      if (key !== 't' && key !== 'T') return;
+
+      const glossaryPanel = document.getElementById('glossary-modal');
+      if (!glossaryPanel || glossaryPanel.classList.contains('hidden')) return;
+
+      if (typeof getCurrentGlossaryConfig !== 'function') {
+        return;
+      }
+
+      if (currentGlossaryType === GLOSSARY_TYPES.MAIN) {
+        currentGlossaryType = GLOSSARY_TYPES.BOSS;
+      } else if (currentGlossaryType === GLOSSARY_TYPES.BOSS) {
+        currentGlossaryType = GLOSSARY_TYPES.EQUIPMENT;
+      } else {
+        currentGlossaryType = GLOSSARY_TYPES.MAIN;
+      }
+
+      glossaryPage = 0;
+      renderGlossaryPage();
+      playSfx('uiGlossary');
+      event.preventDefault();
+    });
+
+  const glossaryTypeBtn = document.getElementById('glossary-type-button');
+  if (glossaryTypeBtn) {
+    glossaryTypeBtn.addEventListener('click', () => {
+      if (currentGlossaryType === GLOSSARY_TYPES.MAIN) {
+        currentGlossaryType = GLOSSARY_TYPES.BOSS;
+      } else if (currentGlossaryType === GLOSSARY_TYPES.BOSS) {
+        currentGlossaryType = GLOSSARY_TYPES.EQUIPMENT;
+      } else {
+        currentGlossaryType = GLOSSARY_TYPES.MAIN;
+      }
+      glossaryPage = 0;
+      renderGlossaryPage();
+      playSfx('uiGlossary');
+    });
+  }
+
   if (glossaryPrev) {
     glossaryPrev.addEventListener('click', () => {
-      const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
-      glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);  // wrap backward
+      const { items, pageSize } = getCurrentGlossaryConfig();
+      const maxPage = Math.ceil(items.length / pageSize) - 1;
+      glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);
       renderGlossaryPage();
       playSfx('uiGlossary');
     });
@@ -369,34 +413,35 @@ function finishAndReturnToMenu() {
 
   if (glossaryNext) {
     glossaryNext.addEventListener('click', () => {
-      const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
-      glossaryPage = (glossaryPage + 1) % (maxPage + 1);                  // wrap forward
+      const { items, pageSize } = getCurrentGlossaryConfig();
+      const maxPage = Math.ceil(items.length / pageSize) - 1;
+      glossaryPage = (glossaryPage + 1) % (maxPage + 1);
       renderGlossaryPage();
       playSfx('uiGlossary');
     });
   }
 
-    window.addEventListener('keydown', (event) => {
-      if (window.cheatConsoleOpen) return;
-      const key = event.key;
-      if (key !== 'e' && key !== 'E' && key !== 'q' && key !== 'Q') return;
+  window.addEventListener('keydown', (event) => {
+    if (window.cheatConsoleOpen) return;
+    const key = event.key;
+    if (key !== 'e' && key !== 'E' && key !== 'q' && key !== 'Q') return;
 
-      const glossaryPanel = document.getElementById('glossary-modal');
-      if (!glossaryPanel || glossaryPanel.classList.contains('hidden')) return;
+    const glossaryPanel = document.getElementById('glossary-modal');
+    if (!glossaryPanel || glossaryPanel.classList.contains('hidden')) return;
 
-      const maxPage = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE) - 1;
+    const { items, pageSize } = getCurrentGlossaryConfig();
+    const maxPage = Math.ceil(items.length / pageSize) - 1;
 
-      if (key === 'e' || key === 'E') {
-        // forward, wrap
-        glossaryPage = (glossaryPage + 1) % (maxPage + 1);
-      } else {
-        // backward, wrap
-        glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);
-      }
+    if (key === 'e' || key === 'E') {
+      glossaryPage = (glossaryPage + 1) % (maxPage + 1);
+    } else {
+      glossaryPage = (glossaryPage - 1 + (maxPage + 1)) % (maxPage + 1);
+    }
 
-      renderGlossaryPage();
-      playSfx('uiGlossary');
-      event.preventDefault();
-    });
+    renderGlossaryPage();
+    playSfx('uiGlossary');
+    event.preventDefault();
+  });
+
 
 });

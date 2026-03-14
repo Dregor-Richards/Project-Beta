@@ -199,7 +199,7 @@ function redrawBoard() {
     const bossCell = findCellByIndex(cells, bossIndex + 1);
     if (bossCell) {
       const boss = document.createElement('div');
-      boss.className = 'boss-enemy';
+      boss.className = 'boss-enemy1';
       bossCell.appendChild(boss);
     }
   }

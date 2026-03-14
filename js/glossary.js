@@ -1,6 +1,6 @@
 // Glossary items and organization
 
-const GLOSSARY_ITEMS = [
+const GLOSSARY_ITEMS_MAIN = [
   { id: 'player', title: 'YOU', iconClass: 'avatar',
     description: 'You. Likely vital to keep safe, but who knows. Thrice may you be struck, before the floors turn crimson.' },
   { id: 'door', title: 'The Door', iconClass: 'door',
@@ -19,33 +19,84 @@ const GLOSSARY_ITEMS = [
     description: 'Before you try it, fire burns faster than your stride can carry you through the inferno. Avoid these blazes, and turn your blade upon the Acolytes to quell the scorch.'},
   { id: 'heart', title: 'Fresh Apple', iconClass: 'heart',
     description: 'A simple apple. It will rot before you even make it through the door, from the dark magic creeping through the air. But if you find yourself injured, it may ease your pain, for a time.'},
+  { id: 'lantern', title: 'Lantern', iconClass: 'lantern-tile',
+    description: 'Light, in these darkening halls, will swiftly be a luxury. But these lanterns, discarded by those who came before, still burn with the Wisps locked within.'},
+  { id: 'brazier', title: 'Brazier', iconClass: 'brazier-tile',
+    description: 'This sacrifical basin will accept the life of a Wisp, such as those within the grasp of these discarded lanterns. Mayhap their light will burn even brighter, in death.'},
   { id: 'fire_wand', title: 'Fire Wand', iconClass: 'inventory-fire-wand',
     description: 'A simple twig of Cypress, capable of a single casting. Just point and shoot, so that the denizens of this sprawl shall know your fury.' },
   { id: 'ice_wand', title: 'Ice Wand', iconClass: 'inventory-ice-wand',
-    description: 'Whatever wood this once was made of, has long since departed. Now only frost remains, and its lethality is minimal. But still, it may prove to slow your foes, for a time.' },
+    description: 'Whatever wood this once was made of, has long since departed. Now only frost remains, and its lethality is minimal. But still, it may prove to slow your foes.' },
   { id: 'lightning_wand', title: 'Lightning Wand', iconClass: 'inventory-lightning-wand',
-    description: 'Despite common sense, you will be aiming this one at yourself. It shall spark your heart, and add a spring to your step. For every stride you used to take, you will find you can take another.' },
+    description: 'Despite common sense, you will be aiming this one at yourself. It shall spark your heart, and add a spring to your step. For every stride you used to take, you may take another.' },
   { id: 'wyrd_stone', title: 'Wyrd Stone', iconClass: 'inventory-wyrd-stone',
-    description: 'A physical manifestation of the tether between body and soul, corded into a necklace as though it was a second-hand trinket. Offer it up as a challenge, and you will find your foes enthralled in frenzy. Their strides will be tripled, but your rewards will be doubled for slaying them.' },
+    description: 'A physical manifestation of the tether between body and soul, corded into a necklace. Offer it up as a challenge, and your foes will be enthralled in frenzy. Strides will be tripled, but rewards will be doubled for slaying them.' },
   { id: 'heart_stone', title: 'Vytal Stone', iconClass: 'inventory-heart-stone',
-  description: 'A copycat. Imperfect, designed to serve as storage for the essence of existence itself. Not something a half-wit scholar should have ever attempted, and the fact that the original owner does not possess it, tells all. But, if you dare to sacrifice it, and face mortal failure from every wound, you will be rewarded in triple.'}
+  description: 'A copycat. Imperfect, designed to serve as storage for the essence of existence itself. Not something a half-wit scholar should have ever attempted, and the fact that the original owner does not possess it, tells all. If you dare to sacrifice it, and face mortal failure from every wound, you will be rewarded in triple.'}
 ];
 
-const GLOSSARY_PAGE_SIZE = 5;
+// Boss glossary
+const GLOSSARY_ITEMS_BOSS = [
+  { id: 'boss_1', title: 'Acolyte Of Voca', iconClass: 'boss-enemy1',
+    description: 'Devoted to the God of Magic, this charalatan was loyal through life and into undeath, but still is unworthy of holding the title of Champion. Beware, their god has still gifted them token powers, to reflect their dark efforts to gain favour.' },
+];
+
+// Equipment glossary
+const GLOSSARY_ITEMS_EQUIPMENT = [
+  { id: 'equip1', title: 'To Fill', iconClass: 'boss-enemy1',
+    description: 'FILL'},
+];
+
+const GLOSSARY_TYPES = {
+  MAIN: 'main',
+  BOSS: 'boss',
+  EQUIPMENT: 'equipment',
+};
+
+let currentGlossaryType = GLOSSARY_TYPES.MAIN;
+// Page sizes per glossary
+const GLOSSARY_PAGE_SIZE_MAIN = 5;
+const GLOSSARY_PAGE_SIZE_BOSS = 3;
+const GLOSSARY_PAGE_SIZE_EQUIPMENT = 5;
 let glossaryPage = 0;
+
+function getCurrentGlossaryConfig() {
+  if (currentGlossaryType === GLOSSARY_TYPES.BOSS) {
+    return {
+      items: GLOSSARY_ITEMS_BOSS,
+      pageSize: GLOSSARY_PAGE_SIZE_BOSS,
+      label: 'The Devouted & The Dead',
+    };
+  }
+  if (currentGlossaryType === GLOSSARY_TYPES.EQUIPMENT) {
+    return {
+      items: GLOSSARY_ITEMS_EQUIPMENT,
+      pageSize: GLOSSARY_PAGE_SIZE_EQUIPMENT,
+      label: 'Arms & Adornments',
+    };
+  }
+  return {
+    items: GLOSSARY_ITEMS_MAIN,
+    pageSize: GLOSSARY_PAGE_SIZE_MAIN,
+    label: 'Rabble & Trinkets',
+  };
+}
 
 function renderGlossaryPage() {
   const grid = document.getElementById('glossary-grid');
   const indicator = document.getElementById('glossary-page-indicator');
+  const typeLabelEl = document.getElementById('glossary-type-indicator'); // NEW (optional)
   if (!grid || !indicator) return;
+
+  const { items, pageSize, label } = getCurrentGlossaryConfig();
 
   grid.innerHTML = '';
 
-  const start = glossaryPage * GLOSSARY_PAGE_SIZE;
-  const end = Math.min(start + GLOSSARY_PAGE_SIZE, GLOSSARY_ITEMS.length);
-  const items = GLOSSARY_ITEMS.slice(start, end);
+  const start = glossaryPage * pageSize;
+  const end = Math.min(start + pageSize, items.length);
+  const slice = items.slice(start, end);
 
-  items.forEach(item => {
+  slice.forEach(item => {
     const iconCell = document.createElement('div');
     iconCell.className = 'glossary-icon-cell';
 
@@ -76,8 +127,12 @@ function renderGlossaryPage() {
     grid.appendChild(textCell);
   });
 
-  const totalPages = Math.ceil(GLOSSARY_ITEMS.length / GLOSSARY_PAGE_SIZE);
+  const totalPages = Math.ceil(items.length / pageSize) || 1;
   indicator.textContent = `Page ${glossaryPage + 1} of ${totalPages}`;
+
+  if (typeLabelEl) {
+    typeLabelEl.textContent = label; // e.g., “Basics” or “Bosses”
+  }
 }
 
 function openGlossary() {

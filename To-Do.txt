@@ -1,6 +1,5 @@
 03/12/2026 ---
 
- > Add Glossary Sections (Bosses, Equipment, cycle with click and/or T)
  > Make loot modal design (Chests loot and boss loot)
  > Equipment drop every 6 played levels in chest (25% of chest mimic)
  > Add person image for Equipment tab with 5 slots (Head Chest Legs 2 Weapons)

@@ -57,19 +57,25 @@
   <div class="modal-content glossary-modal-content">
     <h2>Glossary (G)</h2>
 
-    <div class="glossary-pagination">
-      <button id="glossary-prev" class="modal-ok-button">&uarr; Previous (Q)</button>
-      <span id="glossary-page-indicator"></span>
-      <button id="glossary-next" class="modal-ok-button">&darr; Next (E)</button>
+    <div class="glossary-header-row">
+      <span id="glossary-type-indicator">Basics</span>
+      <button id="glossary-type-button" class="modal-ok-button">
+        Switch Type (T)
+      </button>
     </div>
+		<div class="glossary-pagination">
+		<button id="glossary-prev" class="modal-ok-button">&uarr; Previous (Q)</button>
+		<span id="glossary-page-indicator"></span>
+		<button id="glossary-next" class="modal-ok-button">&darr; Next (E)</button>
+		</div>
 
-    <div id="glossary-grid" class="glossary-grid"></div>
+		<div id="glossary-grid" class="glossary-grid"></div>
 
-    <div class="glossary-close-row">
-      <button id="glossary-close" class="modal-ok-button">Close (G)</button>
-    </div>
-  </div>
-</div>
+		<div class="glossary-close-row">
+		<button id="glossary-close" class="modal-ok-button">Close (G)</button>
+		</div>
+	</div>
+	</div>
 
 	<!-- Control Config Modal (same style as setup page) -->
 	<div id="control-modal" class="modal hidden">
@@ -277,12 +283,12 @@
   <script src="../js/enemyRoster.js"></script>
   <script src="../js/camera.js"></script>
   <script src="../js/inventory.js"></script>
+  <script src="../js/glossary.js"></script>
   <script src="../js/uiModals.js"></script>
   <script src="../js/levelCore.js"></script>
   <script src="../js/playerInput.js"></script>
   <script src="../js/gridItemInput.js"></script>
   <script src="../js/cheats.js"></script>
-  <script src="../js/glossary.js"></script>
   <script src="../js/highScores.js"></script>
 
 </body>
