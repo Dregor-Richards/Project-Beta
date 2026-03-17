@@ -295,6 +295,9 @@ if (bossHealth === 0) {
   // Reset boss turn rhythm
   bossTurnCounter = 0;
 
+  // Reset moves; mainly for lightning wand to get full impact
+  movesThisTurn = 0;
+
   // Clear all adds from previous life, then spawn fresh for this stage
   enemies = [];
   fastEnemies = [];

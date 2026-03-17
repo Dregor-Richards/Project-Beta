@@ -40,10 +40,15 @@ function pickMortarTargets(countPerMortar = 5) {
 
   const maxIndex = gridSize * gridSize;
   const missingSet = (gridSize === BOSS_GRID_SIZE)
-  ? new Set(BOSS_MISSING_TILES.map(idx => idx + 1))
-  : null;
+    ? new Set(BOSS_MISSING_TILES.map(idx => idx + 1))
+    : null;
 
   mortarEnemies.forEach(mortarIndex => {
+    // If this mortar is frozen, it contributes no targets
+    if (frozenEnemyTiles.has(mortarIndex)) {
+      return;
+    }
+
     const blocked = new Set([
       doorIndex,
       skipTileIndex,
@@ -56,11 +61,11 @@ function pickMortarTargets(countPerMortar = 5) {
       ...mortarTargets, // already chosen targets
     ]);
 
-        // Permanently blocked / icy tiles
+    // Permanently blocked / icy tiles
     if (blockedMortarTiles) {
       blockedMortarTiles.forEach(t => blocked.add(t));
     }
-    frozenEnemyTiles.forEach(t => blocked.add(t)); // optional if we always mirror into blockedMortarTiles
+    frozenEnemyTiles.forEach(t => blocked.add(t));
 
     const candidates = [];
     for (let i = 1; i <= maxIndex; i++) {
