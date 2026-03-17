@@ -145,41 +145,26 @@ window.addEventListener('DOMContentLoaded', () => {
     skipTileIndex = chooseSkipTileIndex();
 
     wandsOnBoard = [];
-    for (let i = 0; i < 2; i++) {
-      if (shouldSpawnWand()) {           // 40% per roll
-        const idx = chooseWandIndex();   // respects blocked tiles
+    // If this difficulty guarantees a wand, place one first
+    if (config.guaranteeWand) {
+      const guaranteedIdx = chooseWandIndex();
+      if (guaranteedIdx !== null) {
+        const guaranteedSubtype = chooseWandSubtype();
+        wandsOnBoard.push({ index: guaranteedIdx, subtype: guaranteedSubtype });
+      }
+    }
+    const wandRolls = 2;
+    for (let i = 0; i < wandRolls; i++) {
+      if (shouldSpawnWand()) {
+        const idx = chooseWandIndex();
         if (idx !== null) {
-          const subtype = chooseWandSubtype(); // 50/30/20
+          const subtype = chooseWandSubtype();
           wandsOnBoard.push({ index: idx, subtype });
         }
       }
     }
 
-    stoneIndex = null;
-    stonePresent = false;
-    stoneType = null;
-    hasTripleEnemyTurns = false;
-    heartStoneActive = false;
-
-    if (config.guaranteeStone) {
-      const idx = chooseFreeIndex();
-      if (idx !== null) {
-        stoneIndex = idx;
-        stonePresent = true;
-        stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart';
-      }
-    } else {
-      const stoneRoll = Math.random();
-      if (stoneRoll < 0.05) {
-        const idx = chooseFreeIndex();
-        if (idx !== null) {
-          stoneIndex = idx;
-          stonePresent = true;
-          stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart';
-        }
-      }
-    }
-
+    placeStoneForConfig(config);
     buildGrid(gridSize);
 
     // If dark level and full-dark not yet active, add global overlay

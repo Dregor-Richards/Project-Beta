@@ -20,6 +20,7 @@ const DIFFICULTY_TABLE = [
     trackerRange: [0, 0],
     mortarRange: [0, 0],
     guaranteeStone: false,
+    guaranteeWand: false,
   },
 
   // Difficulty 3–4
@@ -32,6 +33,7 @@ const DIFFICULTY_TABLE = [
     trackerRange: [0, 0],
     mortarRange: [0, 0],
     guaranteeStone: false,
+    guaranteeWand: false,
   },
 
   // Difficulty 5–6
@@ -44,6 +46,7 @@ const DIFFICULTY_TABLE = [
     trackerRange: [1, 3],
     mortarRange: [0, 0],
     guaranteeStone: false,
+    guaranteeWand: false,
   },
 
   // Difficulty 7–8
@@ -56,6 +59,7 @@ const DIFFICULTY_TABLE = [
     trackerRange: [2, 3],
     mortarRange: [1, 2],
     guaranteeStone: false,
+    guaranteeWand: false,
   },
 
   // Difficulty 9
@@ -68,6 +72,7 @@ const DIFFICULTY_TABLE = [
     trackerRange: [3, 3],
     mortarRange: [3, 3],
     guaranteeStone: true, // guaranteed Stone
+    guaranteeWand: true, // guaranteed Wand
   },
 
   // Difficulty 11–12 (post‑boss, pre‑endless)
@@ -80,6 +85,7 @@ const DIFFICULTY_TABLE = [
     trackerRange: [2, 3],  // 3 4
     mortarRange: [1, 2],   // 3 4
     guaranteeStone: false,
+    guaranteeWand: false,
   },
   
   // Difficulty 13-14
@@ -92,6 +98,7 @@ const DIFFICULTY_TABLE = [
     trackerRange: [3, 4],
     mortarRange: [2, 4],
     guaranteeStone: false,
+    guaranteeWand: false,
   },
 ];
 
@@ -105,6 +112,7 @@ function getDifficultyConfig(difficulty) {
       trackerCount: randomInt(5, 6),
       mortarCount: randomInt(5, 6),
       guaranteeStone: false, // we can still let normal 5% wyrd stone roll
+      guaranteeWand: false,
     };
   }
 
@@ -123,6 +131,7 @@ function getDifficultyConfig(difficulty) {
       trackerCount: 0,
       mortarCount: 0,
       guaranteeStone: false,
+      guaranteeWand: false,
     };
   }
 
@@ -144,5 +153,6 @@ function getDifficultyConfig(difficulty) {
     trackerCount: randomInt(tMin, tMax),
     mortarCount: randomInt(mMin, mMax),
     guaranteeStone: entry.guaranteeStone,
+    guaranteeWand: entry.guaranteeWand,
   };
 }

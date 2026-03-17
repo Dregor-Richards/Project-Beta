@@ -217,15 +217,15 @@ function chooseSkipTileIndex() {
 }
 
 function shouldSpawnWand() {
-  const wandChance = 0.25;  // 0.25%
+  const wandChance = 0.20;  // 0.20%
   return Math.random() < wandChance;
 }
 
 function chooseWandSubtype() {
   const wandOptions = [
-    { type: 'fire',      weight: 50 }, // 50%
+    { type: 'fire',      weight: 60 }, // 60%
     { type: 'ice',       weight: 30 }, // 30%
-    { type: 'lightning', weight: 20 }, // 20%
+    { type: 'lightning', weight: 10 }, // 10%
   ];
   return chooseWeightedRandom(wandOptions);
 }
@@ -259,4 +259,36 @@ function chooseWandIndex() {
   const idx = Math.floor(Math.random() * candidates.length);
   pickupIndices.push(candidates[idx]); // <- NEW: record for necklaces, etc.
   return candidates[idx];
+}
+
+function resetStoneState() {
+  stoneIndex = null;
+  stonePresent = false;
+  stoneType = null;
+}
+
+function placeStoneForConfig(config) {
+  resetStoneState();
+
+  // If the config wants a guaranteed stone
+  if (config.guaranteeStone) {
+    const idx = chooseFreeIndex();
+    if (idx !== null) {
+      stoneIndex = idx;
+      stonePresent = true;
+      stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart';
+    }
+    return;
+  }
+
+  // Otherwise, use the random 5% chance
+  const stoneRoll = Math.random();
+  if (stoneRoll < 0.05) {
+    const idx = chooseFreeIndex();
+    if (idx !== null) {
+      stoneIndex = idx;
+      stonePresent = true;
+      stoneType = Math.random() < 0.5 ? 'wyrd' : 'heart';
+    }
+  }
 }

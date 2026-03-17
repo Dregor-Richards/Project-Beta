@@ -1,12 +1,19 @@
 03/12/2026 ---
 
+ > Make Wand Drop On Level 9
+ > Upgrade Glossary Size, Too Small For Some Web Browsers
+ > Frozen Mortars need to not count towards the total fire on map
+ > Lightning Wand moves need to reset when hitting boss (Right now, if you move thrice and hit boss, 
+         you only get one move after reset, instead of fresh set)
  > Make loot modal design (Chests loot and boss loot)
  > Equipment drop every 6 played levels in chest (25% of chest mimic)
  > Add person image for Equipment tab with 5 slots (Head Chest Legs 2 Weapons)
- > Add Jewelry tab on left (10 Rings, 2 Hands, Neck, Necklace Slot)
+ > Add Jewelry tab on left (10 Rings, 2 Hands, No Necklace!)
  > Bosses drop jewelry directly into inventory, using the loot modal to show what they got
  > Character Avatar Select
  > Starting Item Select
+      > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
+      > 
 
  <---> For Levels 11-20 <--->
  > Summoner Enemy (Slow, Summons Basic, or Trackers?) Pink Particles
@@ -27,6 +34,13 @@
  > PermaDeath Mode (Start From LVL 1, No Score, No Items)
 
  <--->                  <--->
+
+ <---> Level Editor Mode <--->
+
+ > Build maps, Choose where enemies spawn, choose RNG percentages
+ > Export map, can import other maps by this single file
+
+ <--->                   <--->
 
  $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
  $ FIll Map Cheat ; Add Inventory Item CHeat
