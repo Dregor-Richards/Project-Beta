@@ -167,6 +167,24 @@
       </div>
     </div>
 
+	<!-- Boss ring choice modal -->
+	<div id="ring-choice-modal" class="modal hidden">
+	<div class="modal-content ring-choice-modal-content">
+		<h2>Choose Your Reward</h2>
+		<p>Select one ring to keep for the rest of your run.</p>
+
+		<div id="ring-choice-options" class="ring-choice-options">
+		<!-- Buttons/cards injected via JS -->
+		</div>
+
+		<div class="glossary-close-row">
+		<button id="ring-choice-cancel" class="modal-ok-button hidden">
+			Cancel
+		</button>
+		</div>
+	</div>
+	</div>
+
 		<!-- Inventory Panel -->
 	<div id="inventory-panel" class="inventory-panel hidden">
 	<div class="inventory-header">
@@ -211,8 +229,13 @@
 		<span class="side-tab__label">Enemies</span>
 	</div>
 
-	<div id="character-inventory-tab" class="side-tab side-tab--bottom">
+	<div id="character-inventory-tab" class="side-tab side-tab--middle">
 		<span class="side-tab__label">Equipment</span>
+	</div>
+
+	<!-- NEW: Jewelry tab -->
+	<div id="jewelry-tab" class="side-tab side-tab--bottom">
+		<span class="side-tab__label">Jewelry</span>
 	</div>
 
 	<div id="side-panel" class="side-panel side-panel--closed">
@@ -225,6 +248,24 @@
 		<div id="character-inventory-panel" class="panel-section">
 			<h3>Character Equipment</h3>
 			<p>Coming Later</p>
+		</div>
+
+		<!-- NEW: Jewelry panel content -->
+		<div id="jewelry-panel" class="panel-section">
+			<h3>Jewelry</h3>
+			<p>Equip up to 10 rings to gain their passive bonuses.</p>
+			<div id="jewelry-slots" class="jewelry-slots">
+			<div class="jewelry-slot" data-slot="0"></div>
+			<div class="jewelry-slot" data-slot="1"></div>
+			<div class="jewelry-slot" data-slot="2"></div>
+			<div class="jewelry-slot" data-slot="3"></div>
+			<div class="jewelry-slot" data-slot="4"></div>
+			<div class="jewelry-slot" data-slot="5"></div>
+			<div class="jewelry-slot" data-slot="6"></div>
+			<div class="jewelry-slot" data-slot="7"></div>
+			<div class="jewelry-slot" data-slot="8"></div>
+			<div class="jewelry-slot" data-slot="9"></div>
+			</div>
 		</div>
 		</div>
 	</div>
@@ -274,13 +315,14 @@
   <script src="../js/coreState.js"></script>
   <script src="../js/helpers.js"></script>
   <script src="../js/darkness.js"></script>
+  <script src="../js/equipment.js"></script>
   <script src="../js/bossLevel1.js"></script>
   <script src="../js/difficultyConfig.js"></script>
   <script src="../js/enemyLogic.js"></script>
   <script src="../js/moveAllEnemies.js"></script>
   <script src="../js/boardPlacement.js"></script>
   <script src="../js/boardView.js"></script>
-  <script src="../js/enemyRoster.js"></script>
+  <script src="../js/leftTabs.js"></script>
   <script src="../js/camera.js"></script>
   <script src="../js/inventory.js"></script>
   <script src="../js/glossary.js"></script>

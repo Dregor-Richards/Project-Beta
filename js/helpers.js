@@ -109,3 +109,17 @@ function isBlockedBossTile(tileIndex) {
   const missingSet = new Set(BOSS_MISSING_TILES.map(idx => idx + 1));
   return missingSet.has(tileIndex);
 }
+
+function addItemToInventory(item) {
+  if (!Array.isArray(inventory)) return;
+  const emptyIndex = inventory.findIndex(slot => slot === null);
+  if (emptyIndex === -1) {
+    // Inventory full; optional: show a “Inventory full” modal instead
+    // or drop the item on the ground.
+    return;
+  }
+  inventory[emptyIndex] = item;
+  // Persist and redraw
+  sessionStorage.setItem('inventory', JSON.stringify(inventory));
+  renderInventory();
+}

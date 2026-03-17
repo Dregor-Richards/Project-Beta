@@ -50,6 +50,10 @@ let extraMoves = 0;
 let hasTripleEnemyTurns = false;
 let heartStoneActive = false;
 let armedItem = null;
+// Jewelery inventory
+let selectedRingFromInventory = null;
+let equippedRings = new Array(10).fill(null);
+
 
 // shared flags
 let winOpen = false;

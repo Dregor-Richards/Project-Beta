@@ -186,4 +186,5 @@ window.addEventListener('DOMContentLoaded', () => {
   redrawLives();
   redrawScore();
   renderInventory();
+  renderJewelry();
 });

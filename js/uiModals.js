@@ -22,6 +22,82 @@ function resetRunAndGoToMenu() {
   window.location.href = 'index.html';
 }
 
+let pendingRingChoices = null;
+let onRingChoiceComplete = null;
+
+function openRingChoiceModal(rings, onComplete) {
+  pendingRingChoices = rings;
+  onRingChoiceComplete = onComplete || null;
+
+  const modal = document.getElementById('ring-choice-modal');
+  const optionsContainer = document.getElementById('ring-choice-options');
+  if (!modal || !optionsContainer) return;
+
+  optionsContainer.innerHTML = '';
+
+  rings.forEach((ring, index) => {
+    const card = document.createElement('div');
+    card.className = 'ring-choice-card';
+
+    const iconWrapper = document.createElement('div');
+    iconWrapper.className = 'ring-choice-icon-wrapper';
+
+    const iconInner = document.createElement('div');
+    iconInner.className = `ring-choice-icon ${ring.iconClass}`;
+    iconWrapper.appendChild(iconInner);
+
+    const titleEl = document.createElement('h3');
+    titleEl.className = 'ring-choice-title';
+    titleEl.textContent = ring.title;
+
+    const descEl = document.createElement('p');
+    descEl.className = 'ring-choice-desc';
+    descEl.textContent = ring.description;
+
+    const button = document.createElement('button');
+    button.className = 'modal-ok-button ring-choice-button';
+    button.textContent = 'Choose';
+    button.addEventListener('click', () => {
+      handleRingChosen(index);
+    });
+
+    card.appendChild(iconWrapper);
+    card.appendChild(titleEl);
+    card.appendChild(descEl);
+    card.appendChild(button);
+
+    optionsContainer.appendChild(card);
+  });
+
+  modal.classList.remove('hidden');
+}
+
+function closeRingChoiceModal() {
+  const modal = document.getElementById('ring-choice-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+  pendingRingChoices = null;
+}
+
+function handleRingChosen(index) {
+  if (!pendingRingChoices || index < 0 || index >= pendingRingChoices.length) {
+    closeRingChoiceModal();
+    if (onRingChoiceComplete) onRingChoiceComplete();
+    return;
+  }
+
+  const chosenRing = pendingRingChoices[index];
+
+  const item = makeRingInventoryItem(chosenRing);
+  addItemToInventory(item);
+
+  closeRingChoiceModal();
+
+  if (onRingChoiceComplete) {
+    onRingChoiceComplete();
+  }
+}
 
 // =================== Modal wiring ===================
 

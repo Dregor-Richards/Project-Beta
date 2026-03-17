@@ -270,18 +270,23 @@ async function hitBoss() {
   spawnParticlesAtCell(bossTileIndex, 'kill');
   playSfx('enemyDeath');
 
-// If boss is dead, end the fight
-if (bossHealth === 0) {
-  // Final boss score = base * Wyrd multiplier * Heart multiplier
-  const finalBossScore =
-    bossScoreBase *
-    (bossWyrdScoreMultiplier || 1) *
-    (bossHeartScoreMultiplier || 1);
+  if (bossHealth === 0) {
+    const finalBossScore =
+      bossScoreBase *
+      (bossWyrdScoreMultiplier || 1) *
+      (bossHeartScoreMultiplier || 1);
 
-  addScore(finalBossScore);
-  showWinModal();
-  return;
-}
+    addScore(finalBossScore);
+
+    // Trigger ring choice before the normal win flow
+    const rings = getRandomRings(2);
+    openRingChoiceModal(rings, () => {
+      // After the player picks a ring, show the usual win modal
+      showWinModal();
+    });
+
+    return;
+  }
 
   // Teleport player back to center
   avatarIndex = BOSS_PLAYER_SPAWN + 1;
@@ -615,19 +620,25 @@ async function bossAct() {
 
 
 
-// Debug: instantly kill the boss and trigger win
+
+// Debug: instantly kill the boss and trigger win + ring choice
 function killBossDebug() {
   bossHealth = 0;
   redrawBossHealth();
+
   const finalBossScore =
     bossScoreBase *
     (bossWyrdScoreMultiplier || 1) *
     (bossHeartScoreMultiplier || 1);
 
   addScore(finalBossScore);
-  // If you want some feedback:
+
+  // Optional visual feedback:
   // spawnParticlesAtCell(bossIndex + 1, 'kill');
   // playSfx('enemyDeath');
 
-  showWinModal(); // same as hitBoss() uses when boss dies
+  const rings = getRandomRings(2);
+  openRingChoiceModal(rings, () => {
+    showWinModal();
+  });
 }

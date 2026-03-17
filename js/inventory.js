@@ -99,8 +99,13 @@ function renderInventory() {
       countLabel.textContent = String(item.count);
       countLabel.className = 'inventory-stack-count';
       slot.appendChild(countLabel);
-    }
 
+    } else if (item.type === 'ring') {
+      // NEW: render ring icon (no stack count, it’s unique)
+      const icon = document.createElement('div');
+      icon.className = item.iconClass || 'inventory-ring-generic';
+      slot.appendChild(icon);
+    }
   });
 }
 
@@ -112,13 +117,30 @@ function getInventoryItemName(item) {
     if (item.subtype === 'lightning') return 'Lightning Wand';
     return 'Wand';
   }
-  if (item.type === 'wyrd_stone') {
-    return 'Wyrd Stone';
-  }
-  if (item.type === 'heart_stone') {
-    return 'Heart Stone';
-  }
+  if (item.type === 'wyrd_stone') return 'Wyrd Stone';
+  if (item.type === 'heart_stone') return 'Heart Stone';
+  if (item.type === 'ring') return item.title || 'Ring';
   return 'Item';
+}
+
+function renderJewelry() {
+  const slots = document.querySelectorAll('.jewelry-slot');
+  if (!slots.length) return;
+
+  slots.forEach(slot => {
+    const idx = Number(slot.dataset.slot);
+    const ring = equippedRings[idx] || null;
+
+    slot.innerHTML = '';
+    slot.classList.remove('has-ring');
+
+    if (!ring) return;
+
+    const icon = document.createElement('div');
+    icon.className = ring.iconClass || 'inventory-ring-generic';
+    slot.appendChild(icon);
+    slot.classList.add('has-ring');
+  });
 }
 
 function consumeWandCharge(slotIndex) {
@@ -217,6 +239,32 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+       // ring selection
+      if (item.type === 'ring') {
+        // toggle selection
+        const isSameRing =
+          selectedRingFromInventory &&
+          selectedRingFromInventory.slotIndex === currentIndex;
+
+        if (isSameRing) {
+          selectedRingFromInventory = null;
+        } else {
+          selectedRingFromInventory = {
+            slotIndex: currentIndex,
+          };
+        }
+
+        // highlight selected inventory slot for rings
+        document.querySelectorAll('.inventory-slot')
+          .forEach((s, i) => {
+            const selected =
+              selectedRingFromInventory &&
+              i === selectedRingFromInventory.slotIndex;
+            s.classList.toggle('inventory-selected', selected);
+          });
+        return;
+      }
+
     });
 
     // Tooltip
@@ -244,6 +292,94 @@ window.addEventListener('DOMContentLoaded', () => {
       tooltip.classList.add('hidden');
     });
   });
+
+ // ===== Jewelry slot wiring (equip/swap rings) =====
+  const jewelrySlots = document.querySelectorAll('.jewelry-slot');
+
+  // Restore equipped rings from sessionStorage if present
+  const storedRings = sessionStorage.getItem('equippedRings');
+  if (storedRings) {
+    try {
+      const parsed = JSON.parse(storedRings);
+      if (Array.isArray(parsed) && parsed.length === 10) {
+        equippedRings = parsed;
+      }
+    } catch (e) {
+      // ignore bad data
+    }
+  }
+  renderJewelry();
+
+  if (jewelrySlots.length) {
+    jewelrySlots.forEach(slot => {
+      slot.addEventListener('click', () => {
+        const idx = Number(slot.dataset.slot);
+        if (Number.isNaN(idx)) return;
+
+        // Need a selected ring from inventory
+        if (!selectedRingFromInventory) return;
+
+        const invIndex = selectedRingFromInventory.slotIndex;
+        const invItem = inventory[invIndex];
+        if (!invItem || invItem.type !== 'ring') {
+          // stale selection
+          selectedRingFromInventory = null;
+          clearInventorySelection();
+          return;
+        }
+
+        const jewelryRing = equippedRings[idx] || null;
+
+        // Swap or move
+        if (jewelryRing) {
+          // swap: jewelry ring goes into inventory slot
+          inventory[invIndex] = jewelryRing;
+        } else {
+          // move: clear inventory slot
+          inventory[invIndex] = null;
+        }
+
+        equippedRings[idx] = invItem;
+
+        // clear selection and refresh UI
+        selectedRingFromInventory = null;
+        clearInventorySelection();
+
+        sessionStorage.setItem('inventory', JSON.stringify(inventory));
+        sessionStorage.setItem('equippedRings', JSON.stringify(equippedRings));
+
+        renderInventory();
+        renderJewelry();
+      });
+    });
+  }
+
+    // ===== Jewelry tooltip wiring =====
+  if (jewelrySlots.length && tooltip) {
+    jewelrySlots.forEach(slot => {
+      slot.addEventListener('mouseenter', () => {
+        const idx = Number(slot.dataset.slot);
+        if (Number.isNaN(idx)) return;
+
+        const ring = equippedRings[idx] || null;
+        if (!ring) return;
+
+        const name = ring.title || 'Ring';
+        tooltip.textContent = name;
+        tooltip.classList.remove('hidden');
+      });
+
+      slot.addEventListener('mousemove', (e) => {
+        if (tooltip.classList.contains('hidden')) return;
+        tooltip.style.left = e.clientX + 'px';
+        tooltip.style.top = e.clientY + 'px';
+      });
+
+      slot.addEventListener('mouseleave', () => {
+        tooltip.classList.add('hidden');
+      });
+    });
+  }
 
   // Confirm Wyrd Stone
   if (wyrdConfirmBtn && wyrdModal) {

@@ -417,13 +417,19 @@ body.level-screen {
 }
 
 /* center around the wrapper’s vertical center, offset up/down */
+/* Three-tab vertical positions, shifted upward */
 .side-tab--top {
-  top: -130px;        /* adjust until it looks centered above */
+  top: -160px;   /* was -130; move higher */
+}
+
+.side-tab--middle {
+  top: -40px;    /* was -10; move higher */
 }
 
 .side-tab--bottom {
-  top: 10px;
+  top: 80px;     /* was 110; move higher */
 }
+
 
 .side-tab__label {
   writing-mode: vertical-rl;   /* vertical text */
@@ -432,10 +438,52 @@ body.level-screen {
   letter-spacing: 2px;
 }
 
+.jewelry-slots {
+  margin-top: 8px;
+  padding: 0 12px;              /* horizontal margin inside the panel */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 56px;
+  column-gap: 8px;
+  row-gap: 24px;
+}
+
+.jewelry-slot {
+  border-radius: 8px;
+  border: 2px solid #777;
+  background-color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.jewelry-slot.has-ring {
+  border-color: #ffd966;
+  box-shadow: 0 0 6px rgba(255, 217, 102, 0.8);
+}
+
+/* Center the final single slot in the 4th row (slot index 9) */
+.jewelry-slot[data-slot="9"] {
+  grid-column: 2 / 3;  /* middle column */
+}
+
+/* Ring visuals in jewelry slots */
+.jewelry-slot .ring-extra-fruit,
+.jewelry-slot .ring-betrayal,
+.jewelry-slot .ring-shadow-step,
+.jewelry-slot .ring-prisms {
+  width: 70%;
+  height: 70%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 /* Slide-out panel */
 
 #side-panel-content {
-  padding: 8px 10px;
+  padding: 8px 18px 8px 10px;  /* was 8px 10px; more right cushion */
   overflow-y: auto;
   font-size: 12px;
 }
@@ -1130,6 +1178,104 @@ body.level-screen {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.ring-choice-modal-content {
+  max-width: 800px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.ring-choice-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.ring-choice-card {
+  background-color: #151515;
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* center icon + text horizontally */
+  text-align: center;         /* center text */
+}
+
+/* Icon centered */
+.ring-choice-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-choice-icon {
+  width: 85%;
+  height: 85%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Title and text centered; no extra left bias */
+.ring-choice-title {
+  margin: 6px 0 2px;
+  font-size: 1.2rem;
+}
+
+.ring-choice-desc {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+/* Make all Choose buttons line up at the bottom */
+.ring-choice-button {
+  align-self: stretch;        /* full card width */
+  margin-top: auto;           /* push down to bottom of card */
+}
+
+.ring-extra-fruit {
+  background-image: url('./assets/sprites/RingExtraFruit.png');
+}
+.ring-betrayal {
+  background-image: url('./assets/sprites/RingBetrayal.png');
+}
+.ring-shadow-step {
+  background-image: url('./assets/sprites/RingShadowStep.png');
+}
+.ring-prisms {
+  background-image: url('./assets/sprites/RingPrisms.png');
+}
+
+/* Inventory ring visuals */
+.inventory-slot .ring-extra-fruit,
+.inventory-slot .ring-betrayal,
+.inventory-slot .ring-shadow-step,
+.inventory-slot .ring-prisms,
+.inventory-slot .inventory-ring-generic {
+  width: 80%;
+  height: 80%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.ring-choice-title {
+  margin: 4px 0 0;
+  font-size: 1.2rem;
+}
+
+.ring-choice-desc {
+  margin: 4px 0 0;
+  font-size: 1rem;
+  line-height: 1.3;
 }
 
 /* =========================================
