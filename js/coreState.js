@@ -12,6 +12,8 @@ let levelNumber = 1;
 let skipTileIndex = null;
 let skipNextTurn = false;
 let brazierLit = false;
+let chestIndex = null;
+let chestOpened = false;
 
 // Camera
 let cameraZoom = 1;
@@ -54,6 +56,16 @@ let armedItem = null;
 // Jewelery inventory
 let selectedRingFromInventory = null;
 let equippedRings = new Array(10).fill(null);
+// Equipment inventory
+let selectedEquipmentFromInventory = null;
+let equippedEquipment = {
+  head: null,
+  chest: null,
+  legs: null,
+  'hand-left': null,
+  'hand-right': null,
+};
+
 
 
 // shared flags

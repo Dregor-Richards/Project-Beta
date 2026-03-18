@@ -58,6 +58,16 @@ function redrawBoard() {
     }
   }
 
+  // chest
+  if (chestIndex != null) {
+    const chestCell = findCellByIndex(cells, chestIndex);
+    if (chestCell) {
+      const chestDiv = document.createElement('div');
+      chestDiv.className = chestOpened ? 'chest-open' : 'chest-closed';
+      chestCell.appendChild(chestDiv);
+    }
+  }
+
   // Wands on board (any subtype)
   if (Array.isArray(wandsOnBoard)) {
     wandsOnBoard.forEach(w => {

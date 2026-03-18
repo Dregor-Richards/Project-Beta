@@ -310,6 +310,14 @@ body {
   font-size: 20px;
   padding: 4px 10px;
   cursor: pointer;
+  background-color: #1f7a1f;  /* medium green */
+  color: #000000;             /* black arrow glyph */
+  border: 2px solid #0f3d0f;  /* darker green border */
+  border-radius: 4px;
+}
+
+.char-arrow:hover {
+  background-color: #289628;  /* slightly brighter on hover */
 }
 
 .char-wheel {
@@ -557,6 +565,87 @@ body.level-screen {
 .jewelry-slot .ring-prisms {
   width: 70%;
   height: 70%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.equipment-slots {
+  position: relative;
+  margin-top: 8px;
+  height: 300px;                 /* space for the cross */
+}
+
+.equipment-slot {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  border: 2px solid #777;
+  background-color: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding-top: 2px;
+}
+
+.equipment-slot .equipment-label {
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+
+.equipment-icon-wrapper {
+  flex: 1;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.equipment-slot.has-equipment {
+  border-color: #7fdfff;
+  box-shadow: 0 0 6px rgba(127, 223, 255, 0.8);
+}
+
+/* Center column positions */
+.equipment-slot[data-slot="head"] {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.equipment-slot[data-slot="chest"] {
+  left: 50%;
+  top: 78px;
+  transform: translateX(-50%);
+}
+
+.equipment-slot[data-slot="legs"] {
+  left: 50%;
+  top: 156px;
+  transform: translateX(-50%);
+}
+
+/* Hand slots below the center column */
+.equipment-slot--left-hand {
+  left: 0%;
+  top: 234px;      /* a little below the legs slot */
+}
+
+.equipment-slot--right-hand {
+  right: 0%;
+  top: 234px;
+}
+
+/* Icons inside equipment slots reuse your existing classes */
+.equipment-icon-wrapper .equip-dodge-pants,
+.equipment-icon-wrapper .equip-mining-helm,
+.equipment-icon-wrapper .equip-plated-armor,
+.equipment-icon-wrapper .equip-retaliation-hammer {
+  width: 90%;
+  height: 90%;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -899,6 +988,27 @@ body.level-screen {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.chest-closed,
+.chest-open {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 1;                  /* below avatar/enemies (z-index: 2+) */
+}
+
+.chest-closed {
+  background-image: url('./assets/sprites/Chest1Closed.png');
+}
+
+.chest-open {
+  background-image: url('./assets/sprites/Chest1Opened.png');
 }
 
 .frozen-overlay {
@@ -1291,6 +1401,7 @@ body.level-screen {
   text-align: left;
 }
 
+/* default: 2-column grid for ring choices */
 .ring-choice-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1298,15 +1409,21 @@ body.level-screen {
   margin-top: 1rem;
 }
 
+/* chest loot: single centered card */
+.ring-choice-options.ring-choice-options--single {
+  display: flex;
+  justify-content: center;
+}
+
 .ring-choice-card {
-  background-color: #151515;
+  background-color: #4a3321;   /* warm brown/tan instead of near-black */
   border-radius: 8px;
   padding: 12px 14px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.7);
+  box-shadow: 0 0 12px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
-  align-items: center;        /* center icon + text horizontally */
-  text-align: center;         /* center text */
+  align-items: center;
+  text-align: center;
 }
 
 /* Icon centered */
@@ -1321,6 +1438,7 @@ body.level-screen {
 .ring-choice-icon {
   width: 85%;
   height: 85%;
+  display: block;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -1357,12 +1475,33 @@ body.level-screen {
   background-image: url('./assets/sprites/RingPrisms.png');
 }
 
-/* Inventory ring visuals */
+.equip-dodge-pants {
+  background-image: url('./assets/sprites/EquipDodgePants.png');
+}
+
+.equip-mining-helm {
+  background-image: url('./assets/sprites/EquipMiningHelm.png');
+}
+
+.equip-plated-armor {
+  background-image: url('./assets/sprites/EquipPlatedArmor.png');
+}
+
+.equip-retaliation-hammer {
+  background-image: url('./assets/sprites/EquipRetaliationHammer.png');
+}
+
+/* Inventory ring/equipment visuals */
 .inventory-slot .ring-extra-fruit,
 .inventory-slot .ring-betrayal,
 .inventory-slot .ring-shadow-step,
 .inventory-slot .ring-prisms,
-.inventory-slot .inventory-ring-generic {
+.inventory-slot .inventory-ring-generic,
+.inventory-slot .equip-dodge-pants,
+.inventory-slot .equip-mining-helm,
+.inventory-slot .equip-plated-armor,
+.inventory-slot .equip-retaliation-hammer,
+.inventory-slot .inventory-equipment-generic {
   width: 80%;
   height: 80%;
   background-size: contain;
@@ -1371,14 +1510,16 @@ body.level-screen {
 }
 
 .ring-choice-title {
-  margin: 4px 0 0;
+  margin: 6px 0 2px;
   font-size: 1.2rem;
+  color: #ffe6c0;              /* light warm text */
 }
 
 .ring-choice-desc {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   font-size: 1rem;
   line-height: 1.3;
+  color: #ffe6c0;
 }
 
 /* =========================================

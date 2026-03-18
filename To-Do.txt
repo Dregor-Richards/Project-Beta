@@ -1,18 +1,16 @@
 03/12/2026 ---
 
+ > Add "AD" functionality for character select wheel
  > Make Sure Brazier doesn't load on later non-dark levels
  > Add unique audio for jewel/equip confirms and equips.
- > Equipment drop every 6 played levels in chest (25% of chest mimic)
-      > Mace/Hammer That Hits Enemies That Hit You (Only once per level for lowest version)
-      > Chest Piece That Gives Armor (Some Percent Chance To Regen Each Level, Chance & Armor Provided Upgrade With Version)
- > Add person image for Equipment tab with 5 slots (Head Chest Legs 2 Weapons)
+ > Add a 25% of Mimic spawn when chest spawns (In addition to normal chest, not in place of)
+ > Add Equipment Effects (4 Items Are Current Existent, But All Do Nothing)
  > Add Jewelry Effects (4 Rings Are Current Existent, But All Do Nothing)
  > Make Highscore have little icon of the avatar that was for that run
  > Starting Item Select (Takes 10 Away From Score On Start With An Item?)
       > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
       > A Coin Pouch That Gives Points Equal To Half The Value Of The Enemies Present
       > A Bundle Of 3 Fire Wands
- > Make it where every 10th level is a boss (For now, just repeat the first boss, but later make it random)
 
  <---> For Levels 11-20 <--->
  > Summoner Enemy (Slow, Summons Basic, or Trackers?) Pink Particles

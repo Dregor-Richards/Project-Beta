@@ -168,6 +168,20 @@ if (mortarIndex !== -1) {
     stoneType = null;
   }
 
+    // Chest pickup / open
+  if (next === chestIndex && !chestOpened) {
+    chestOpened = true;
+
+    // Flip sprite to open and show particles/SFX
+    spawnParticlesAtCell(next, 'pickup');
+    playSfx('itemPickup');
+    redrawBoard();
+
+    // Roll a single random loot item and show a modal with a Choose button
+    const item = chooseRandomLootItem();
+    showChestLootModal(item);   
+  }
+
   const steppingOntoSkipTile = (next === skipTileIndex);
 
   avatarIndex = next;

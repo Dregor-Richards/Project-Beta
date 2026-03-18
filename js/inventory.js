@@ -101,9 +101,13 @@ function renderInventory() {
       slot.appendChild(countLabel);
 
     } else if (item.type === 'ring') {
-      // NEW: render ring icon (no stack count, it’s unique)
       const icon = document.createElement('div');
       icon.className = item.iconClass || 'inventory-ring-generic';
+      slot.appendChild(icon);
+
+    } else if (item.type === 'equipment') {
+      const icon = document.createElement('div');
+      icon.className = item.iconClass || 'inventory-equipment-generic';
       slot.appendChild(icon);
     }
   });
@@ -120,6 +124,7 @@ function getInventoryItemName(item) {
   if (item.type === 'wyrd_stone') return 'Wyrd Stone';
   if (item.type === 'heart_stone') return 'Heart Stone';
   if (item.type === 'ring') return item.title || 'Ring';
+  if (item.type === 'equipment') return item.title || 'Equipment';
   return 'Item';
 }
 
@@ -140,6 +145,27 @@ function renderJewelry() {
     icon.className = ring.iconClass || 'inventory-ring-generic';
     slot.appendChild(icon);
     slot.classList.add('has-ring');
+  });
+}
+
+function renderEquipment() {
+  const slots = document.querySelectorAll('.equipment-slot');
+  if (!slots.length) return;
+
+  slots.forEach(slot => {
+    const key = slot.dataset.slot;
+    const equip = equippedEquipment[key] || null;
+
+    const wrapper = slot.querySelector('.equipment-icon-wrapper');
+    if (wrapper) wrapper.innerHTML = '';
+    slot.classList.remove('has-equipment');
+
+    if (!equip || !wrapper) return;
+
+    const icon = document.createElement('div');
+    icon.className = equip.iconClass || 'inventory-equipment-generic';
+    wrapper.appendChild(icon);
+    slot.classList.add('has-equipment');
   });
 }
 
@@ -172,16 +198,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const slots = document.querySelectorAll('.inventory-slot');
   if (!slots.length) return;
 
-  // Inventory slots: click + tooltip
+  // ===== Inventory slots: click + tooltip =====
   slots.forEach((slot) => {
     slot.addEventListener('click', () => {
-      // Derive index from current NodeList so DOM and data stay in sync
       const allSlots = Array.from(document.querySelectorAll('.inventory-slot'));
       const currentIndex = allSlots.indexOf(slot);
       const item = inventory[currentIndex];
       console.log('slot click index', currentIndex, 'item', item);
       if (!item) return;
 
+      // Wand selection / arming
       if (item.type === 'wand') {
         const isSameWand =
           armedItem &&
@@ -211,6 +237,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Wyrd Stone
       if (item.type === 'wyrd_stone') {
         armedItem = { type: 'wyrd_stone', slotIndex: currentIndex };
 
@@ -225,6 +252,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Heart Stone
       if (item.type === 'heart_stone') {
         armedItem = { type: 'heart_stone', slotIndex: currentIndex };
 
@@ -239,9 +267,8 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-       // ring selection
+      // Ring selection
       if (item.type === 'ring') {
-        // toggle selection
         const isSameRing =
           selectedRingFromInventory &&
           selectedRingFromInventory.slotIndex === currentIndex;
@@ -254,7 +281,6 @@ window.addEventListener('DOMContentLoaded', () => {
           };
         }
 
-        // highlight selected inventory slot for rings
         document.querySelectorAll('.inventory-slot')
           .forEach((s, i) => {
             const selected =
@@ -265,6 +291,29 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Equipment selection
+      if (item.type === 'equipment') {
+        const isSameEquip =
+          selectedEquipmentFromInventory &&
+          selectedEquipmentFromInventory.slotIndex === currentIndex;
+
+        if (isSameEquip) {
+          selectedEquipmentFromInventory = null;
+        } else {
+          selectedEquipmentFromInventory = {
+            slotIndex: currentIndex,
+          };
+        }
+
+        document.querySelectorAll('.inventory-slot')
+          .forEach((s, i) => {
+            const selected =
+              selectedEquipmentFromInventory &&
+              i === selectedEquipmentFromInventory.slotIndex;
+            s.classList.toggle('inventory-selected', selected);
+          });
+        return;
+      }
     });
 
     // Tooltip
@@ -293,10 +342,9 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
- // ===== Jewelry slot wiring (equip/swap rings) =====
+  // ===== Jewelry slot wiring (equip/swap rings) =====
   const jewelrySlots = document.querySelectorAll('.jewelry-slot');
 
-  // Restore equipped rings from sessionStorage if present
   const storedRings = sessionStorage.getItem('equippedRings');
   if (storedRings) {
     try {
@@ -316,13 +364,11 @@ window.addEventListener('DOMContentLoaded', () => {
         const idx = Number(slot.dataset.slot);
         if (Number.isNaN(idx)) return;
 
-        // Need a selected ring from inventory
         if (!selectedRingFromInventory) return;
 
         const invIndex = selectedRingFromInventory.slotIndex;
         const invItem = inventory[invIndex];
         if (!invItem || invItem.type !== 'ring') {
-          // stale selection
           selectedRingFromInventory = null;
           clearInventorySelection();
           return;
@@ -330,18 +376,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const jewelryRing = equippedRings[idx] || null;
 
-        // Swap or move
         if (jewelryRing) {
-          // swap: jewelry ring goes into inventory slot
           inventory[invIndex] = jewelryRing;
         } else {
-          // move: clear inventory slot
           inventory[invIndex] = null;
         }
 
         equippedRings[idx] = invItem;
 
-        // clear selection and refresh UI
         selectedRingFromInventory = null;
         clearInventorySelection();
 
@@ -354,7 +396,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    // ===== Jewelry tooltip wiring =====
+  // ===== Jewelry tooltip wiring =====
   if (jewelrySlots.length && tooltip) {
     jewelrySlots.forEach(slot => {
       slot.addEventListener('mouseenter', () => {
@@ -381,7 +423,72 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Confirm Wyrd Stone
+  // ===== Equipment slot wiring (equip/swap equipment) =====
+  const equipmentSlots = document.querySelectorAll('.equipment-slot');
+
+  const storedEquip = sessionStorage.getItem('equippedEquipment');
+  if (storedEquip) {
+    try {
+      const parsed = JSON.parse(storedEquip);
+      if (parsed && typeof parsed === 'object') {
+        equippedEquipment = parsed;
+      }
+    } catch (e) {
+      // ignore bad data
+    }
+  }
+  renderEquipment();
+
+  if (equipmentSlots.length) {
+    equipmentSlots.forEach(slot => {
+      slot.addEventListener('click', () => {
+        const slotKey = slot.dataset.slot;
+        if (!slotKey) return;
+
+        if (!selectedEquipmentFromInventory) return;
+
+        const invIndex = selectedEquipmentFromInventory.slotIndex;
+        const invItem = inventory[invIndex];
+        if (!invItem || invItem.type !== 'equipment') {
+          selectedEquipmentFromInventory = null;
+          clearInventorySelection();
+          return;
+        }
+
+        const expectedType =
+          slotKey === 'head' ? 'head' :
+          slotKey === 'chest' ? 'chest' :
+          slotKey === 'legs' ? 'legs' :
+          'hand'; // both hand-left and hand-right
+
+        if (invItem.slotType !== expectedType) {
+          // wrong equipment type for this slot
+          return;
+        }
+
+        const currentEquip = equippedEquipment[slotKey] || null;
+
+        if (currentEquip) {
+          inventory[invIndex] = currentEquip;
+        } else {
+          inventory[invIndex] = null;
+        }
+
+        equippedEquipment[slotKey] = invItem;
+
+        selectedEquipmentFromInventory = null;
+        clearInventorySelection();
+
+        sessionStorage.setItem('inventory', JSON.stringify(inventory));
+        sessionStorage.setItem('equippedEquipment', JSON.stringify(equippedEquipment));
+
+        renderInventory();
+        renderEquipment();
+      });
+    });
+  }
+
+  // ===== Wyrd Stone confirm/cancel =====
   if (wyrdConfirmBtn && wyrdModal) {
     wyrdConfirmBtn.addEventListener('click', () => {
       if (!armedItem || armedItem.type !== 'wyrd_stone') {
@@ -392,11 +499,10 @@ window.addEventListener('DOMContentLoaded', () => {
       hasTripleEnemyTurns = true;
       playSfx('useWyrdStone');
 
-      // Boss level: if boss is alive and still Stage 1, double final boss score
       if (typeof bossHealth === 'number' && bossHealth > 0 &&
           typeof bossStage === 'number' && bossStage === 1) {
         if (typeof bossWyrdScoreMultiplier === 'number') {
-          bossWyrdScoreMultiplier = 2;  // double score
+          bossWyrdScoreMultiplier = 2;
         }
       }
 
@@ -418,7 +524,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cancel Wyrd Stone
   if (wyrdCancelBtn && wyrdModal) {
     wyrdCancelBtn.addEventListener('click', () => {
       armedItem = null;
@@ -427,7 +532,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    // Confirm Heart Stone
+  // ===== Heart Stone confirm/cancel =====
   if (heartConfirmBtn && heartModal) {
     heartConfirmBtn.addEventListener('click', () => {
       if (!armedItem || armedItem.type !== 'heart_stone') {
@@ -438,11 +543,10 @@ window.addEventListener('DOMContentLoaded', () => {
       heartStoneActive = true;
       playSfx('useWyrdStone');
 
-      // Boss level: if boss is alive and still Stage 1, triple final boss score
       if (typeof bossHealth === 'number' && bossHealth > 0 &&
           typeof bossStage === 'number' && bossStage === 1) {
         if (typeof bossHeartScoreMultiplier === 'number') {
-          bossHeartScoreMultiplier = 3;  // triple score
+          bossHeartScoreMultiplier = 3;
         }
       }
 
@@ -464,7 +568,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cancel Heart Stone
   if (heartCancelBtn && heartModal) {
     heartCancelBtn.addEventListener('click', () => {
       armedItem = null;
@@ -472,5 +575,4 @@ window.addEventListener('DOMContentLoaded', () => {
       heartModal.classList.add('hidden');
     });
   }
-
 });

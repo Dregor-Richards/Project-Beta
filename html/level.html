@@ -171,10 +171,16 @@
 	<div id="ring-choice-modal" class="modal hidden">
 	<div class="modal-content ring-choice-modal-content">
 		<h2>Choose Your Reward</h2>
-		<p>Select one ring to keep for the rest of your run.</p>
+		<p id="ring-choice-text">Select one ring to keep for the rest of your run.</p>
 
-		<div id="ring-choice-options" class="ring-choice-options">
-		<!-- Buttons/cards injected via JS -->
+		<div id="ring-choice-options" class="ring-choice-options ring-choice-options--single">
+		<button id="ring-choice-card" class="ring-choice-card">
+			<div id="ring-choice-icon" class="ring-choice-icon"></div>
+			<div class="ring-choice-text">
+			<div id="ring-choice-title" class="ring-choice-title"></div>
+			<div id="ring-choice-desc" class="ring-choice-desc"></div>
+			</div>
+		</button>
 		</div>
 
 		<div class="glossary-close-row">
@@ -184,6 +190,7 @@
 		</div>
 	</div>
 	</div>
+
 
 		<!-- Inventory Panel -->
 	<div id="inventory-panel" class="inventory-panel hidden">
@@ -245,10 +252,38 @@
 			<ul id="enemy-roster-list"></ul>
 		</div>
 
-		<div id="character-inventory-panel" class="panel-section">
-			<h3>Character Equipment</h3>
-			<p>Coming Later</p>
+	<div id="character-inventory-panel" class="panel-section">
+	<h3>Character Equipment</h3>
+
+	<div id="equipment-slots" class="equipment-slots">
+		<!-- Center column: Head / Chest / Legs -->
+		<div class="equipment-slot" data-slot="head">
+		<div class="equipment-label">Head</div>
+		<div class="equipment-icon-wrapper"></div>
 		</div>
+
+		<div class="equipment-slot" data-slot="chest">
+		<div class="equipment-label">Chest</div>
+		<div class="equipment-icon-wrapper"></div>
+		</div>
+
+		<div class="equipment-slot" data-slot="legs">
+		<div class="equipment-label">Legs</div>
+		<div class="equipment-icon-wrapper"></div>
+		</div>
+
+		<!-- Side “Hand” slots -->
+		<div class="equipment-slot equipment-slot--left-hand" data-slot="hand-left">
+		<div class="equipment-label">Hand</div>
+		<div class="equipment-icon-wrapper"></div>
+		</div>
+
+		<div class="equipment-slot equipment-slot--right-hand" data-slot="hand-right">
+		<div class="equipment-label">Hand</div>
+		<div class="equipment-icon-wrapper"></div>
+		</div>
+	</div>
+	</div>
 
 		<!-- NEW: Jewelry panel content -->
 		<div id="jewelry-panel" class="panel-section">

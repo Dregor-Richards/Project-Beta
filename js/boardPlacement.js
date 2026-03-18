@@ -151,9 +151,12 @@ function placeMortarEnemies(count) {
   }
 }
 
-
 function shouldSpawnHeart() {
   return levelNumber % 3 === 0;
+}
+
+function shouldSpawnChest() {
+  return levelNumber % 6 === 0;
 }
 
 function chooseFreeIndex() {

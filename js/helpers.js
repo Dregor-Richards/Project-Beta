@@ -32,6 +32,8 @@ function resetLevelState() {
   stoneIndex = null;
   stonePresent = false;
   stoneType = null;
+  chestIndex = null;
+  chestOpened = false;
 
   // Enemies
   enemies = [];

@@ -57,7 +57,7 @@ let bossPendingHits = [];
  * Called instead of normal layout when difficulty 10.
  * Builds a 15x15 grid, removes missing tiles, positions player & boss.
  */
-function setupBossLevel() {
+function setupBossLevelA() {
   gridSize = BOSS_GRID_SIZE;
 
   bossMaxHealth = 6;

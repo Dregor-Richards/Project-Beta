@@ -120,9 +120,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Boss level: skip normal config and use custom setup
-  if (difficulty === 10) {
+  if (difficulty >= 10 && difficulty % 10 === 0) {
     initDarkness(0, []);
-    setupBossLevel();
+    setupBossLevelA();
   } else {
     // Normal / post-boss / endless
     const config = getDifficultyConfig(difficulty);
@@ -153,6 +153,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     skipTileIndex = chooseSkipTileIndex();
+
+    if (shouldSpawnChest()) {
+      chestIndex = chooseFreeIndex();
+      chestOpened = false;
+    } else {
+      chestIndex = null;
+      chestOpened = false;
+    }
 
     wandsOnBoard = [];
     // If this difficulty guarantees a wand, place one first
