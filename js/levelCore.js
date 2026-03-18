@@ -96,9 +96,19 @@ window.addEventListener('DOMContentLoaded', () => {
         inventory = parsed;
       }
     } catch (e) {
-      // if bad data, fall back to whatever default you set elsewhere
+      // if bad data, fall back to whatever default set elsewhere
     }
   }
+
+  // Matches upper-right avatar icon to chosen character
+  const hudAvatar = document.getElementById('hud-avatar');
+  if (!hudAvatar) return;
+  const idx = (typeof getSelectedAvatarIndex === 'function')
+    ? getSelectedAvatarIndex()
+    : 0;
+  const classes = ['hud-avatar1', 'hud-avatar2', 'hud-avatar3', 'hud-avatar4'];
+  hudAvatar.classList.remove(...classes);
+  hudAvatar.classList.add(`hud-avatar${idx + 1}`);
 
   const storedDifficulty = sessionStorage.getItem('currentDifficulty');
   let difficulty = storedDifficulty !== null ? Number(storedDifficulty) || 1 : 1;

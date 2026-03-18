@@ -1,7 +1,7 @@
 // Glossary items and organization
 
 const GLOSSARY_ITEMS_MAIN = [
-  { id: 'player', title: 'YOU', iconClass: 'avatar',
+  { id: 'player', title: 'YOU', iconClass: 'avatar1',
     description: 'You. Likely vital to keep safe, but who knows. Thrice may you be struck, before the floors turn crimson.' },
   { id: 'door', title: 'The Door', iconClass: 'door',
     description: 'Reach the door, once all foes have been slain, to delve deeper into these expansive dungeons.' },

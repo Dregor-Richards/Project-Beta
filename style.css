@@ -297,6 +297,74 @@ body {
   cursor: pointer;
 }
 
+#character-selector {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.char-arrow {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 20px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.char-wheel {
+  position: relative;
+  width: 220px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.char-slot {
+  position: absolute;
+  transition: transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+}
+
+.char-slot img {
+  width: 72px;
+  height: 72px;
+  image-rendering: pixelated;
+}
+
+/* Center (selected) character */
+.char-slot-center {
+  transform: translateX(0) scale(1.1);
+  z-index: 3;
+  opacity: 1;
+}
+
+/* Left and right "behind" characters */
+.char-slot-left {
+  transform: translateX(-70px) scale(0.85);
+  z-index: 2;
+  opacity: 0.7;
+  filter: brightness(0.9);
+}
+
+.char-slot-right {
+  transform: translateX(70px) scale(0.85);
+  z-index: 2;
+  opacity: 0.7;
+  filter: brightness(0.9);
+}
+
+/* Hide the fourth option when we're on index 0 */
+.char-slot-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Spacer under the selector for “Starting Item” */
+.setup-spacer {
+  height: 40px;
+}
+
 /* =========================================
    5. Level screen layout, HUD, grid
    ========================================= */
@@ -354,11 +422,26 @@ body.level-screen {
   right: 110px;  /* adjust so it sits left of lives/score/difficulty */
   width: 48px;
   height: 48px;
-  background-image: url('./assets/sprites/Avatar1.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 16; /* above background, under modals */
+}
+
+.hud-avatar1 {
+  background-image: url('./assets/sprites/Avatar1.png');
+}
+
+.hud-avatar2 {
+  background-image: url('./assets/sprites/Avatar2.png');
+}
+
+.hud-avatar3 {
+  background-image: url('./assets/sprites/Avatar3.png');
+}
+
+.hud-avatar4 {
+  background-image: url('./assets/sprites/Avatar4.png');
 }
 
 #left-side-tabs {
@@ -419,17 +502,16 @@ body.level-screen {
 /* center around the wrapper’s vertical center, offset up/down */
 /* Three-tab vertical positions, shifted upward */
 .side-tab--top {
-  top: -160px;   /* was -130; move higher */
+  top: -175px;   /* Lower values raise it on the screen */
 }
 
 .side-tab--middle {
-  top: -40px;    /* was -10; move higher */
+  top: -55px;
 }
 
 .side-tab--bottom {
-  top: 80px;     /* was 110; move higher */
+  top: 65px;
 }
-
 
 .side-tab__label {
   writing-mode: vertical-rl;   /* vertical text */
@@ -707,7 +789,10 @@ body.level-screen {
    6. Entities (player, enemies, tiles, particles)
    ========================================= */
 
-.avatar,
+.avatar1,
+.avatar2,
+.avatar3,
+.avatar4,
 .enemy,
 .fast-enemy,
 .tracker-enemy,
@@ -717,13 +802,31 @@ body.level-screen {
   z-index: 2;
 }
 
-.avatar {
+.avatar1,
+.avatar2,
+.avatar3,
+.avatar4 {
   width: 100%;
   height: 100%;
-  background-image: url('./assets/sprites/Avatar1.png');
   background-size: contain;      /* fit inside the cell */
   background-repeat: no-repeat;
   background-position: center;   /* use a central frame-ish area */
+}
+
+.avatar1 {
+  background-image: url('./assets/sprites/Avatar1.png');
+}
+
+.avatar2 {
+  background-image: url('./assets/sprites/Avatar2.png');
+}
+
+.avatar3 {
+  background-image: url('./assets/sprites/Avatar3.png');
+}
+
+.avatar4 {
+  background-image: url('./assets/sprites/Avatar4.png');
 }
 
 .enemy {
@@ -890,7 +993,7 @@ body.level-screen {
 
 .level-grid,
 .grid-cell,
-.avatar,
+.avatar1,
 .enemy,
 .fast-enemy,
 .tracker-enemy,

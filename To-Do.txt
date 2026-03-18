@@ -1,11 +1,13 @@
 03/12/2026 ---
 
+ > Make Sure Brazier doesn't load on later non-dark levels
+ > Add unique audio for jewel/equip confirms and equips.
  > Equipment drop every 6 played levels in chest (25% of chest mimic)
       > Mace/Hammer That Hits Enemies That Hit You (Only once per level for lowest version)
       > Chest Piece That Gives Armor (Some Percent Chance To Regen Each Level, Chance & Armor Provided Upgrade With Version)
  > Add person image for Equipment tab with 5 slots (Head Chest Legs 2 Weapons)
  > Add Jewelry Effects (4 Rings Are Current Existent, But All Do Nothing)
- > Character Avatar Select
+ > Make Highscore have little icon of the avatar that was for that run
  > Starting Item Select (Takes 10 Away From Score On Start With An Item?)
       > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
       > A Coin Pouch That Gives Points Equal To Half The Value Of The Enemies Present

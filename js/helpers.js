@@ -67,6 +67,20 @@ window.resetLevelNumber = resetLevelNumber;
 window.advanceLevel = advanceLevel;
 window.resetLevelState = resetLevelState;
 
+function getSelectedAvatarIndex() {
+  const raw = sessionStorage.getItem('selectedAvatarIndex');
+  if (raw === null) {
+    return selectedAvatarIndex || 0;
+  }
+  const parsed = Number(raw);
+  return Number.isInteger(parsed) ? parsed : 0;
+}
+
+function setSelectedAvatarIndex(idx) {
+  selectedAvatarIndex = idx;
+  sessionStorage.setItem('selectedAvatarIndex', String(idx));
+}
+
 function chooseWeightedRandom(options) {
   // options: [{ type: 'fire', weight: 50 }, ...]
   const totalWeight = options.reduce((sum, opt) => sum + opt.weight, 0);

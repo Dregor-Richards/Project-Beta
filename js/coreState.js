@@ -1,5 +1,6 @@
 let gridSize = 3;
 let avatarIndex = 1;
+let selectedAvatarIndex = 0;
 let doorIndex = null;
 let playerTurn = true;
 let movesThisTurn = 0;

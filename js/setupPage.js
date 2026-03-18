@@ -26,9 +26,6 @@ function goToLevel() {
   sessionStorage.setItem('baseDifficulty', String(difficulty));
   sessionStorage.setItem('currentDifficulty', String(difficulty));
 
-  // Keep score when starting/continuing a run
-  // sessionStorage.removeItem('playerScore');  // REMOVE this line
-
   // Lives and level number can still reset as designed
   sessionStorage.removeItem('playerLives');
   resetLevelNumber();
@@ -42,6 +39,7 @@ function goToLevel() {
 // Wait for DOM before wiring events
 window.addEventListener('DOMContentLoaded', () => {
   playMusic('setup');
+
   const controlButton = document.querySelector('.control-button');
   const controlModal = document.getElementById('control-modal');
   const controlOk = document.getElementById('control-ok');
@@ -93,9 +91,78 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Begin button click
+  // --- Character selector wiring ---
+
+  const avatarPaths = [
+    '../assets/sprites/Avatar1.png',
+    '../assets/sprites/Avatar2.png',
+    '../assets/sprites/Avatar3.png',
+    '../assets/sprites/Avatar4.png',
+  ];
+
+  const leftImg = document.getElementById('char-left-img');
+  const centerImg = document.getElementById('char-center-img');
+  const rightImg = document.getElementById('char-right-img');
+
+  const leftSlot = document.querySelector('.char-slot-left');
+  const rightSlot = document.querySelector('.char-slot-right');
+
+  const btnLeft = document.getElementById('char-left');
+  const btnRight = document.getElementById('char-right');
+
+  let currentIndex = typeof getSelectedAvatarIndex === 'function'
+    ? getSelectedAvatarIndex()
+    : 0;
+
+  function wrapIndex(i) {
+    if (i < 0) return 3;
+    if (i > 3) return 0;
+    return i;
+  }
+
+  function updateWheel() {
+    if (!centerImg || !leftImg || !rightImg) return;
+
+    // center is current
+    centerImg.src = avatarPaths[currentIndex];
+
+    // left and right neighbors in circular fashion
+    const leftIndex = wrapIndex(currentIndex - 1);
+    const rightIndex = wrapIndex(currentIndex + 1);
+
+    leftImg.src = avatarPaths[leftIndex];
+    rightImg.src = avatarPaths[rightIndex];
+
+    // Always show three visible slots; CSS handles depth/scale.
+    if (leftSlot) leftSlot.classList.remove('char-slot-hidden');
+    if (rightSlot) rightSlot.classList.remove('char-slot-hidden');
+  }
+
+  if (btnLeft) {
+    btnLeft.addEventListener('click', () => {
+      currentIndex = wrapIndex(currentIndex - 1);
+      playSfx('uiClick');
+      updateWheel();
+    });
+  }
+
+  if (btnRight) {
+    btnRight.addEventListener('click', () => {
+      currentIndex = wrapIndex(currentIndex + 1);
+      playSfx('uiClick');
+      updateWheel();
+    });
+  }
+
+  // Initial draw for selector
+  updateWheel();
+
+  // When Begin is clicked, store the chosen avatar index and go to level
   if (goButton) {
     goButton.addEventListener('click', () => {
+      if (typeof setSelectedAvatarIndex === 'function') {
+        setSelectedAvatarIndex(currentIndex);
+      }
       goToLevel();
     });
   }
@@ -107,7 +174,7 @@ window.addEventListener('DOMContentLoaded', () => {
       (menuModal && !menuModal.classList.contains('hidden')) ||
       (controlModal && !controlModal.classList.contains('hidden'));
 
-    // Enter: trigger Begin when no modal is open
+    // Enter/E: trigger Begin when no modal is open
     if (!anyModalOpen &&
         (event.key === 'Enter' || event.key === 'e' || event.key === 'E')) {
       event.preventDefault();

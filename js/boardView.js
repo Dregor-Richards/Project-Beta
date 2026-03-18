@@ -94,7 +94,13 @@ function redrawBoard() {
   const playerCell = findCellByIndex(cells, avatarIndex);
   if (playerCell && !playerDead) {
     const avatar = document.createElement('div');
-    avatar.className = 'avatar';
+
+    // Default to avatar1 if the helper is missing
+    const idx = (typeof getSelectedAvatarIndex === 'function')
+      ? getSelectedAvatarIndex()
+      : 0;
+
+    avatar.className = `avatar${idx + 1}`;
     playerCell.appendChild(avatar);
   }
 
