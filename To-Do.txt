@@ -1,16 +1,19 @@
 03/12/2026 ---
 
- > Add "AD" functionality for character select wheel
  > Make Sure Brazier doesn't load on later non-dark levels
  > Add unique audio for jewel/equip confirms and equips.
  > Add a 25% of Mimic spawn when chest spawns (In addition to normal chest, not in place of)
- > Add Equipment Effects (4 Items Are Current Existent, But All Do Nothing)
+ > Hyllow Stone, Summons Eldritch Horror
+ > Add Equipment Effects (6 Items Are Current Existent, But All Do Nothing)
  > Add Jewelry Effects (4 Rings Are Current Existent, But All Do Nothing)
+ > RIng For Chest Spawn Chance
  > Make Highscore have little icon of the avatar that was for that run
+ > Disable Highscores for runs that used a Cheat
  > Starting Item Select (Takes 10 Away From Score On Start With An Item?)
       > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
       > A Coin Pouch That Gives Points Equal To Half The Value Of The Enemies Present
       > A Bundle Of 3 Fire Wands
+ > Cheat to override Equipment with a full Present
 
  <---> For Levels 11-20 <--->
  > Summoner Enemy (Slow, Summons Basic, or Trackers?) Pink Particles
@@ -21,6 +24,7 @@
  % Sniper Enemy? (Instead of the Falling Floor Above^)
  > Wand to turn wall into walkways
  > Empty Lanterns To Pickup For Later Levels, Use Fire Wand To Light
+      > Or Should this be a candle instead, place it in dark to illumate some tiles (Larger range but timed, or smaller?)
 
  <--->                  <--->
 
@@ -41,6 +45,8 @@
 
  $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
  $ FIll Map Cheat ; Add Inventory Item CHeat
+ $ Every 24th LVL, Puzzle Level
+ > Add Coin on LVL 21+, Chances For Good/Bad Events When Used (Risky, But High Reward)
 
 -----
 

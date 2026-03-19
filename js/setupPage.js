@@ -174,6 +174,37 @@ window.addEventListener('DOMContentLoaded', () => {
       (menuModal && !menuModal.classList.contains('hidden')) ||
       (controlModal && !controlModal.classList.contains('hidden'));
 
+      // Character wheel: A / D / Arrow keys
+    if (!anyModalOpen) {
+      const key = event.key;
+
+      // Move left: A or Left Arrow
+      if (key === 'a' || key === 'A' || key === 'ArrowLeft') {
+        event.preventDefault();
+        if (btnLeft) {
+          btnLeft.click(); // Reuse existing click handler
+        } else {
+          currentIndex = wrapIndex(currentIndex - 1);
+          playSfx('uiClick');
+          updateWheel();
+        }
+        return;
+      }
+
+      // Move right: D or Right Arrow
+      if (key === 'd' || key === 'D' || key === 'ArrowRight') {
+        event.preventDefault();
+        if (btnRight) {
+          btnRight.click(); // Reuse existing click handler
+        } else {
+          currentIndex = wrapIndex(currentIndex + 1);
+          playSfx('uiClick');
+          updateWheel();
+        }
+        return;
+      }
+    }
+    
     // Enter/E: trigger Begin when no modal is open
     if (!anyModalOpen &&
         (event.key === 'Enter' || event.key === 'e' || event.key === 'E')) {

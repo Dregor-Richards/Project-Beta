@@ -96,7 +96,6 @@ function runCheatCode(rawCode) {
 
 // Instantly win the current level
 function cheatWinLevel() {
-  addScore(5);
   const rawDiff = sessionStorage.getItem('currentDifficulty');
   let difficulty = rawDiff !== null ? Number(rawDiff) || 1 : 1;
   difficulty += 1;
@@ -114,9 +113,8 @@ function cheatFillMapWithGhosts() {
 }
 
 // Give 1 of each wand to the player
-function cheatGiveAllWands() {
-  // TODO: implement adding one Fire, one Ice, and one Lightning wand to inventory.
-  // After modifying inventory, call renderInventory().
+function PresetEquipment1() {
+  // TODO: implement adding a full set of gear to the equipment tab, replacing former and filling empty.
 }
 
 // Give 3 Fire wands to the player

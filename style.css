@@ -605,7 +605,7 @@ body.level-screen {
 }
 
 .equipment-slot.has-equipment {
-  border-color: #7fdfff;
+  border-color: #ffd966;
   box-shadow: 0 0 6px rgba(127, 223, 255, 0.8);
 }
 
@@ -1489,6 +1489,14 @@ body.level-screen {
 
 .equip-retaliation-hammer {
   background-image: url('./assets/sprites/EquipRetaliationHammer.png');
+}
+
+.equip-book-wands {
+  background-image: url('./assets/sprites/EquipBookOfWands.png')
+}
+
+.equip-book-stones {
+  background-image: url('./assets/sprites/EquipBookOfStones.png')
 }
 
 /* Inventory ring/equipment visuals */

@@ -9,7 +9,7 @@ const EQUIP_POOL = [
     description: 'Gives you a 3% chance of dodging an attack.',
     iconClass: 'equip-dodge-pants',
     type: 'equipment',
-    slotType: 'legs',          // NEW
+    slotType: 'legs',         
     effect: 'dodge_pants'
   },
   {
@@ -38,6 +38,24 @@ const EQUIP_POOL = [
     type: 'equipment',
     slotType: 'hand',
     effect: 'retaliation_strike'
+  },
+  {
+    id: 'equip_book_of_wands',
+    title: 'Book Of Wands',
+    description: 'Has a 1% chance to generate a wand directly into your inventory each level.',
+    iconClass: 'equip-book-wands',
+    type: 'equipment',
+    slotType: 'hand',
+    effect: 'gain-a-wand'
+  },
+  {
+    id: 'equip_book_of_stones',
+    title: 'Book Of Stones',
+    description: 'Has a 1% chance to generate a stone directly into your inventory each level.',
+    iconClass: 'equip-book-stones',
+    type: 'equipment',
+    slotType: 'hand',
+    effect: 'gain-a-stone'
   },
 ];
 
