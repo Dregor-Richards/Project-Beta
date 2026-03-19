@@ -58,13 +58,33 @@ function redrawBoard() {
     }
   }
 
-  // chest
+  // chest (normal)
   if (chestIndex != null) {
     const chestCell = findCellByIndex(cells, chestIndex);
     if (chestCell) {
       const chestDiv = document.createElement('div');
       chestDiv.className = chestOpened ? 'chest-open' : 'chest-closed';
       chestCell.appendChild(chestDiv);
+    }
+  }
+
+  // hidden mimic: initially looks exactly like a closed chest
+  if (mimicChestIndex != null && !mimicActive) {
+    const mimicChestCell = findCellByIndex(cells, mimicChestIndex);
+    if (mimicChestCell) {
+      const chestDiv = document.createElement('div');
+      chestDiv.className = 'chest-closed';
+      mimicChestCell.appendChild(chestDiv);
+    }
+  }
+
+  // revealed mimic (after trap springs)
+  if (mimicActive && mimicIndex != null) {
+    const mimicCell = findCellByIndex(cells, mimicIndex);
+    if (mimicCell) {
+      const mimicDiv = document.createElement('div');
+      mimicDiv.className = 'mimic-enemy';
+      mimicCell.appendChild(mimicDiv);
     }
   }
 
@@ -114,7 +134,7 @@ function redrawBoard() {
     playerCell.appendChild(avatar);
   }
 
-  // enemies (normal red squares)
+  // enemies
   enemies.forEach(idx => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
@@ -123,7 +143,7 @@ function redrawBoard() {
     cell.appendChild(enemy);
   });
 
-  // fast enemies (red octagons)
+  // fast enemies
   fastEnemies.forEach(idx => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
@@ -132,7 +152,7 @@ function redrawBoard() {
     cell.appendChild(enemy);
   });
 
-  // tracker enemies (red arrows)
+  // tracker enemies
   trackerEnemies.forEach(idx => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
@@ -141,7 +161,7 @@ function redrawBoard() {
     cell.appendChild(enemy);
   });
 
-  // mortar enemies (Square frame with small square inside)
+  // mortar enemies
   mortarEnemies.forEach(idx => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
@@ -283,6 +303,10 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
     kill: ['#ff2222'],
     pickup: ['#ffd966'],
     door: ['#ffffff'],
+    mimicReveal: ['#a020f0', '#000000'],
+    chestLoot: ['#ffd700', '#ffffff', '#c0c0c0'],
+    mimicHit: ['#a020f0', '#ff3333'],
+    mimicKill: ['#a020f0', '#000000', '#1e90ff', '#ff3333'],
   };
   const palette =
     Array.isArray(colors) && colors.length > 0

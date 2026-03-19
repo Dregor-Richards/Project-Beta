@@ -1,12 +1,19 @@
 03/12/2026 ---
 
+ > Add Sound Effects For The Following:
+      > S - Chest Transforming into Mimic
+      > S - Looting Chest
+      > S - Confirming Looting
+      > S - Confirming Boss Looting
+      > S - Beating Boss
+      > S - Killing Mimic
+      > S - Equip Jewelry
+      > S - Equip Equipment
  > Make Sure Brazier doesn't load on later non-dark levels
- > Add unique audio for jewel/equip confirms and equips.
- > Add a 25% of Mimic spawn when chest spawns (In addition to normal chest, not in place of)
  > Hyllow Stone, Summons Eldritch Horror
  > Add Equipment Effects (6 Items Are Current Existent, But All Do Nothing)
  > Add Jewelry Effects (4 Rings Are Current Existent, But All Do Nothing)
- > RIng For Chest Spawn Chance
+ > Ring For Chest Spawn Chance
  > Make Highscore have little icon of the avatar that was for that run
  > Disable Highscores for runs that used a Cheat
  > Starting Item Select (Takes 10 Away From Score On Start With An Item?)

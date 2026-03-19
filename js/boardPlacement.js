@@ -156,7 +156,7 @@ function shouldSpawnHeart() {
 }
 
 function shouldSpawnChest() {
-  return levelNumber % 6 === 0;
+  return levelNumber % 2 === 0;   //6
 }
 
 function chooseFreeIndex() {
@@ -220,15 +220,15 @@ function chooseSkipTileIndex() {
 }
 
 function shouldSpawnWand() {
-  const wandChance = 0.20;  // 0.20%
+  const wandChance = 1.00;  // 0.20%
   return Math.random() < wandChance;
 }
 
 function chooseWandSubtype() {
   const wandOptions = [
-    { type: 'fire',      weight: 60 }, // 60%
-    { type: 'ice',       weight: 30 }, // 30%
-    { type: 'lightning', weight: 10 }, // 10%
+    { type: 'fire',      weight: 100 }, // 60%
+    { type: 'ice',       weight: 0 }, // 30%
+    { type: 'lightning', weight: 0 }, // 10%
   ];
   return chooseWeightedRandom(wandOptions);
 }

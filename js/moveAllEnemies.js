@@ -54,6 +54,9 @@ async function moveAllEnemies() {
   await moveTrackerEnemies(size, maxIndex);
   if (playerDead) return;
 
+  await moveMimic(size, maxIndex);
+  if (playerDead) return;
+
   await handleMortarPhase();
   if (playerDead) return;
 
@@ -271,6 +274,110 @@ async function moveTrackerEnemies(size, maxIndex) {
       }
     }
   }
+}
+
+async function moveMimic(size, maxIndex) {
+  if (!mimicActive || mimicIndex == null || playerDead) return;
+
+  // Phase cycle: 1 → 2 → 3 → 4 → 5 → 1 ...
+  // 1: slow approach (1 toward)
+  // 2: slow approach (1 toward again)
+  // 3: stronger approach (2 toward)
+  // 4: erratic (up to 3 random steps)
+  // 5: away (up to 3 away from player)
+  if (mimicPhase < 1 || mimicPhase > 5) mimicPhase = 1;
+
+  let steps = 0;
+  let mode = 'toward'; // 'toward', 'erratic', or 'away'
+
+  if (mimicPhase === 1) {
+    steps = 1;
+    mode = 'toward';
+  } else if (mimicPhase === 2) {
+    steps = 1;
+    mode = 'toward';
+  } else if (mimicPhase === 3) {
+    steps = 2;
+    mode = 'toward';
+  } else if (mimicPhase === 4) {
+    steps = 3;
+    mode = 'erratic';
+  } else if (mimicPhase === 5) {
+    steps = 3;
+    mode = 'away';
+  }
+
+  let idx = mimicIndex;
+
+  for (let step = 0; step < steps; step++) {
+    if (playerDead) return;
+
+    let dir = null;
+
+    if (mode === 'toward') {
+      // Reuse tracker logic for "towards player"
+      dir = chooseTrackerStepDirection(idx);
+    } else if (mode === 'away') {
+      dir = chooseMimicAwayDirection(idx);
+    } else if (mode === 'erratic') {
+      dir = randomDirection();
+    }
+
+    if (!dir) break;
+
+    let next = idx;
+
+    if (dir === 'up') {
+      if (idx > size) next = idx - size;
+    } else if (dir === 'down') {
+      if (idx <= maxIndex - size) next = idx + size;
+    } else if (dir === 'left') {
+      if ((idx - 1) % size !== 0) next = idx - 1;
+    } else if (dir === 'right') {
+      if (idx % size !== 0) next = idx + 1;
+    }
+
+    if (next === idx) continue;
+    if (isBlockedBossTile(next)) continue;
+
+    // Hit player
+    if (next === avatarIndex) {
+      const died = await applyPlayerHit(
+        1,
+        true,           // moveIntoPlayerTile (on kill)
+        null,           // enemyArray - mimic is single, tracked by mimicIndex
+        null,           // enemyIndex
+        next            // newEnemyPos
+      );
+      if (died) return;
+
+      // If player survives, mimic stays where it was before this step
+      // so we do not move idx
+      break;
+    }
+
+    // Check occupancy: don't overlap with other enemies or boss
+    const bossTileIndex = bossIndex != null ? bossIndex + 1 : null;
+    const occupiedByOther =
+      enemies.includes(next) ||
+      fastEnemies.includes(next) ||
+      trackerEnemies.includes(next) ||
+      mortarEnemies.includes(next) ||
+      (bossTileIndex !== null && next === bossTileIndex);
+
+    if (occupiedByOther) continue;
+
+    // Move one step
+    idx = next;
+    mimicIndex = idx;
+
+    redrawBoard();
+    await sleep(ENEMY_STEP_DELAY_MS);
+  }
+
+  // Advance phase for next enemy turn
+  mimicPhase += 1;
+  if (mimicPhase > 5) mimicPhase = 1;
 }
 
 async function handleMortarPhase() {

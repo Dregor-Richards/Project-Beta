@@ -12,8 +12,16 @@ let levelNumber = 1;
 let skipTileIndex = null;
 let skipNextTurn = false;
 let brazierLit = false;
+
+// CHest & Mimic
 let chestIndex = null;
 let chestOpened = false;
+let mimicChestIndex = null;      // where the hidden mimic chest sits (looks like chest)
+let mimicActive = false;         // has it revealed and become an enemy yet?
+let mimicIndex = null;           // current tile of the mimic once active
+let mimicHealth = 0;
+let mimicPhase = 0;              // movement phase (1→4 cycle) for later AI
+let mimicUsingBossBar = false;
 
 // Camera
 let cameraZoom = 1;

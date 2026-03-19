@@ -1,3 +1,20 @@
+function resetPlayerInventoryAndEquipment() {
+  inventory = new Array(21).fill(null);
+  equippedRings = new Array(10).fill(null);
+  equippedEquipment = {
+    head: null,
+    chest: null,
+    legs: null,
+    'hand-left': null,
+    'hand-right': null,
+  };
+
+  // Clear any persisted state
+  sessionStorage.removeItem('inventory');
+  sessionStorage.removeItem('equippedRings');
+  sessionStorage.removeItem('equippedEquipment');
+}
+
 function applyCameraTransform() {
   const wrapper = document.querySelector('.level-grid-wrapper');
   if (!wrapper) return;
@@ -157,9 +174,27 @@ window.addEventListener('DOMContentLoaded', () => {
     if (shouldSpawnChest()) {
       chestIndex = chooseFreeIndex();
       chestOpened = false;
+
+      // 25% chance to spawn a second chest that is secretly a mimic
+      if (Math.random() < 1) {   // 0.25
+        mimicChestIndex = chooseFreeIndex();
+      } else {
+        mimicChestIndex = null;
+      }
+
+      mimicActive = false;
+      mimicIndex = null;
+      mimicHealth = 0;
+      mimicPhase = 0;
     } else {
       chestIndex = null;
       chestOpened = false;
+
+      mimicChestIndex = null;
+      mimicActive = false;
+      mimicIndex = null;
+      mimicHealth = 0;
+      mimicPhase = 0;
     }
 
     wandsOnBoard = [];

@@ -217,9 +217,8 @@ function showBossHealthBar() {
   const wrapper = document.getElementById('boss-health-wrapper');
   const pipsContainer = document.getElementById('boss-health-pips');
   if (!wrapper || !pipsContainer) return;
-
+  mimicUsingBossBar = false;
   wrapper.classList.remove('hidden');
-
   pipsContainer.innerHTML = '';
   for (let i = 0; i < bossMaxHealth; i++) {
     const pip = document.createElement('div');
@@ -277,6 +276,7 @@ async function hitBoss() {
       (bossHeartScoreMultiplier || 1);
 
     addScore(finalBossScore);
+    hideBossHealthBarIfNoElite();
 
     // Trigger ring choice before the normal win flow
     const rings = getRandomRings(2);

@@ -168,23 +168,59 @@ if (mortarIndex !== -1) {
     stoneType = null;
   }
 
-    // Chest pickup / open
-  if (next === chestIndex && !chestOpened) {
+  // Chest pickup / open
+  const steppingOntoNormalChest = (next === chestIndex && !chestOpened);
+  const steppingOntoMimicChest = (next === mimicChestIndex && !mimicActive);
+
+  if (steppingOntoNormalChest) {
     chestOpened = true;
 
     // Flip sprite to open and show particles/SFX
-    spawnParticlesAtCell(next, 'pickup');
+    spawnParticlesAtCell(next, 'chestLoot');
+
     playSfx('itemPickup');
     redrawBoard();
 
     // Roll a single random loot item and show a modal with a Choose button
     const item = chooseRandomLootItem();
-    showChestLootModal(item);   
+    showChestLootModal(item);
+  }
+
+  // Stepping onto a hidden mimic chest: trap spring
+  if (steppingOntoMimicChest) {
+    // Reveal the mimic at that tile (but the player does NOT move there)
+    mimicActive = true;
+    mimicIndex = mimicChestIndex;
+    mimicHealth = 4;
+    mimicPhase = 1;          // start of its movement cycle
+    mimicChestIndex = null;  // no longer a chest
+
+    // Visual feedback for the ambush
+    spawnParticlesAtCell(mimicIndex, 'mimicReveal');
+    redrawBoard();
+
+    // No damage on reveal: the *next* time it reaches the player, it will hit
+  }
+
+  // Attacking an already-revealed mimic: moving into its tile hits it instead of moving
+  const steppingOntoActiveMimic = (mimicActive && mimicIndex != null && next === mimicIndex);
+
+  if (steppingOntoActiveMimic) {
+    hitMimic();        // damages mimic, may kill it and show loot
+    // Attack consumes the move, but the player does NOT move into the tile
+
+    // If the mimic died, hitMimic() will clear mimicActive/mimicIndex and handle visuals
+    // We still continue into the normal turn‑end logic below so the move is spent
   }
 
   const steppingOntoSkipTile = (next === skipTileIndex);
 
-  avatarIndex = next;
+  // Only move the avatar if we did NOT:
+  // - spring a hidden mimic chest trap
+  // - attack an active mimic
+  if (!steppingOntoMimicChest && !steppingOntoActiveMimic) {
+    avatarIndex = next;
+  }
 
   // === Darkness: lantern & brazier interactions ===
   if (isDarkLevel && fullDarkActive) {
@@ -222,9 +258,17 @@ if (mortarIndex !== -1) {
   const difficulty2 =
     storedDifficulty2 !== null ? Number(storedDifficulty2) || 1 : 1;
 
-  // On boss level (10), we always let the boss take a turn,
-  // even if there are no regular enemies.
-  if (playerDead || (difficulty2 !== 10 && allEnemiesDead())) return;
+  const noCoreEnemiesLeft = allEnemiesDead();
+  const mimicAlive = mimicActive && mimicIndex != null && mimicHealth > 0;
+
+  // If the player is dead, always stop.
+  if (playerDead) return;
+
+  // If there are no core enemies left and no mimic, we can stop (like before).
+  // On boss level (10), we still fall through so the boss gets a turn.
+  if (!mimicAlive && difficulty2 !== 10 && noCoreEnemiesLeft) {
+    return;
+  }
 
   // If we stepped on the skip tile, we force enemies to move now
   if (steppingOntoSkipTile) {
@@ -251,7 +295,6 @@ if (mortarIndex !== -1) {
   movesThisTurn = 0;
   await endPlayerTurn();
 }
-
 
 function toggleInventory() {
   const inv = document.getElementById('inventory-panel');

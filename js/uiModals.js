@@ -17,7 +17,18 @@ function resetRunAndGoToMenu() {
   iceWandIndex = null;
   frozenEnemyTiles = new Set();
   blockedMortarTiles = new Set();
-  sessionStorage.removeItem('inventory');
+
+  // NEW: clear equipped rings/equipment and their persisted state
+  equippedRings = new Array(10).fill(null);
+  equippedEquipment = {
+    head: null,
+    chest: null,
+    legs: null,
+    'hand-left': null,
+    'hand-right': null,
+  };
+  sessionStorage.removeItem('equippedRings');
+  sessionStorage.removeItem('equippedEquipment');
 
   window.location.href = 'index.html';
 }
@@ -222,7 +233,6 @@ window.addEventListener('DOMContentLoaded', () => {
     deathPlayAgain.addEventListener('click', () => {
       playSfx('uiConfirm');
 
-      // Reset currentDifficulty back to the originally chosen difficulty
       const base = sessionStorage.getItem('baseDifficulty');
       if (base !== null) {
         sessionStorage.setItem('currentDifficulty', base);
@@ -234,6 +244,18 @@ window.addEventListener('DOMContentLoaded', () => {
       sessionStorage.removeItem('inventory');
       sessionStorage.removeItem('pbo_usedCheats');
       resetLevelNumber();
+
+      // NEW: clear equipped items for a truly fresh run
+      equippedRings = new Array(10).fill(null);
+      equippedEquipment = {
+        head: null,
+        chest: null,
+        legs: null,
+        'hand-left': null,
+        'hand-right': null,
+      };
+      sessionStorage.removeItem('equippedRings');
+      sessionStorage.removeItem('equippedEquipment');
 
       setTimeout(() => {
         window.location.href = 'level.html';

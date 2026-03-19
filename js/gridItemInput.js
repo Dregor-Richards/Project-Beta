@@ -51,6 +51,25 @@ function handleGridClick(event) {
         }
       }
 
+            // Mimic hit by Fire wand
+      if (mimicActive && mimicIndex != null && tileIndex === mimicIndex) {
+        playSfx('useFireWand');
+
+        // Fire wand deals 1 damage to the mimic (does NOT guarantee a kill)
+        hitMimic();
+
+        consumeWandCharge(armedItem.slotIndex);
+        armedItem = null;
+        clearInventorySelection();
+        renderInventory();
+        sessionStorage.setItem('inventory', JSON.stringify(inventory));
+
+        // Board and boss/mimic bar are updated inside hitMimic()
+        // but we can safely ensure visuals are current:
+        redrawBoard();
+        return;
+      }
+
       let removed = false;
 
       // Normal

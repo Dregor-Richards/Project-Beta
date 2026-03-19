@@ -643,7 +643,9 @@ body.level-screen {
 .equipment-icon-wrapper .equip-dodge-pants,
 .equipment-icon-wrapper .equip-mining-helm,
 .equipment-icon-wrapper .equip-plated-armor,
-.equipment-icon-wrapper .equip-retaliation-hammer {
+.equipment-icon-wrapper .equip-retaliation-hammer,
+.equipment-icon-wrapper .equip-book-wands,
+.equipment-icon-wrapper .equip-book-stones {
   width: 90%;
   height: 90%;
   background-size: contain;
@@ -957,6 +959,15 @@ body.level-screen {
   background-position: center;
 }
 
+.mimic-enemy {
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sprites/Mimic.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .boss-enemy1 {
   width: 100%;
   height: 100%;
@@ -1108,6 +1119,7 @@ body.level-screen {
 .fast-enemy,
 .tracker-enemy,
 .mortar-enemy,
+.mimic-enemy,
 .heart,
 .door,
 .skip-tile,
@@ -1171,6 +1183,39 @@ body.level-screen {
 }
 .particle--door {
   background-color: #ffffff;
+}
+
+/* Chest transforming into mimic: purple + black, slightly spooky, tighter radius */
+.particle--mimicReveal {
+  box-shadow: 0 0 6px rgba(160, 32, 240, 0.7);
+  animation-duration: 450ms;
+}
+
+/* Looting chest: gold/white/silver, slightly “sparkly” */
+.particle--chestLoot {
+  width: 8px;
+  height: 8px;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.9);
+  animation-duration: 550ms;
+}
+
+/* Hitting mimic (non‑kill): compact, sharp hit */
+.particle--mimicHit {
+  width: 6px;
+  height: 6px;
+  box-shadow: 0 0 7px rgba(255, 0, 0, 0.8);
+  animation-duration: 400ms;
+}
+
+/* Killing mimic: bigger explosion */
+.particle--mimicKill {
+  width: 10px;
+  height: 10px;
+  box-shadow:
+    0 0 10px rgba(160, 32, 240, 0.9),
+    0 0 16px rgba(30, 144, 255, 0.7),
+    0 0 20px rgba(255, 51, 51, 0.8);
+  animation-duration: 650ms;
 }
 
 @keyframes particle-burst {
@@ -1509,6 +1554,8 @@ body.level-screen {
 .inventory-slot .equip-mining-helm,
 .inventory-slot .equip-plated-armor,
 .inventory-slot .equip-retaliation-hammer,
+.inventory-slot .equip-book-wands,
+.inventory-slot .equip-book-stones,
 .inventory-slot .inventory-equipment-generic {
   width: 80%;
   height: 80%;

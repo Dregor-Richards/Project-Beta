@@ -32,6 +32,38 @@ function chooseTrackerStepDirection(enemyIndex) {
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
+function chooseMimicAwayDirection(enemyIndex) {
+  const size = gridSize;
+  const maxIndex = size * size;
+
+  const enemyRow = Math.floor((enemyIndex - 1) / size);
+  const enemyCol = (enemyIndex - 1) % size;
+  const playerRow = Math.floor((avatarIndex - 1) / size);
+  const playerCol = (avatarIndex - 1) % size;
+
+  const candidates = [];
+
+  // Vertical: prefer moving away from player
+  if (playerRow < enemyRow && enemyIndex <= maxIndex - size) {
+    // player above, so move down if possible
+    candidates.push('down');
+  } else if (playerRow > enemyRow && enemyIndex > size) {
+    // player below, so move up if possible
+    candidates.push('up');
+  }
+
+  // Horizontal: prefer moving away from player
+  if (playerCol < enemyCol && enemyIndex % size !== 0) {
+    // player left, so move right
+    candidates.push('right');
+  } else if (playerCol > enemyCol && (enemyIndex - 1) % size !== 0) {
+    // player right, so move left
+    candidates.push('left');
+  }
+
+  if (candidates.length === 0) return null;
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
 
 function pickMortarTargets(countPerMortar = 5) {
   mortarTargets = [];
@@ -80,6 +112,38 @@ function pickMortarTargets(countPerMortar = 5) {
       candidates.splice(idx, 1);
     }
   });
+}
+
+function hitMimic() {
+  if (!mimicActive || mimicHealth <= 0 || mimicIndex == null) return;
+
+  mimicHealth -= 1;
+  if (mimicHealth < 0) mimicHealth = 0;
+
+  // First time we take damage, ensure the bar is visible and configured
+  if (!mimicUsingBossBar) {
+    showMimicHealthBar();
+  }
+  redrawMimicHealth();
+
+  spawnParticlesAtCell(mimicIndex, 'mimicHit');
+  playSfx('enemyHit'); // or reuse 'enemyDeath' if you prefer
+
+  if (mimicHealth === 0) {
+    // Death: drop one chest-style loot item
+    spawnParticlesAtCell(mimicIndex, 'mimicKill');
+    playSfx('enemyDeath');
+
+    const item = chooseRandomLootItem();
+    showChestLootModal(item);
+
+    mimicActive = false;
+    mimicIndex = null;
+
+    hideBossHealthBarIfNoElite();
+  } else {
+    redrawBoard();
+  }
 }
 
 function sleep(ms) {
