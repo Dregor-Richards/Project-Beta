@@ -176,7 +176,7 @@ window.addEventListener('DOMContentLoaded', () => {
       chestOpened = false;
 
       // 25% chance to spawn a second chest that is secretly a mimic
-      if (Math.random() < 1) {   // 0.25
+      if (Math.random() < 0.25) {  
         mimicChestIndex = chooseFreeIndex();
       } else {
         mimicChestIndex = null;

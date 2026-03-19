@@ -1,5 +1,6 @@
 03/12/2026 ---
 
+ > Fix Equipment Shape
  > Add Sound Effects For The Following:
       > S - Chest Transforming into Mimic
       > S - Looting Chest
