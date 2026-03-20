@@ -562,7 +562,8 @@ body.level-screen {
 .jewelry-slot .ring-extra-fruit,
 .jewelry-slot .ring-betrayal,
 .jewelry-slot .ring-shadow-step,
-.jewelry-slot .ring-prisms {
+.jewelry-slot .ring-prisms,
+.jewelry-slot .ring-chests {
   width: 70%;
   height: 70%;
   background-size: contain;
@@ -573,7 +574,7 @@ body.level-screen {
 .equipment-slots {
   position: relative;
   margin-top: 8px;
-  height: 300px;                 /* space for the cross */
+  height: 400px;                 /* space for the slots; bigger number, can go down further */
 }
 
 .equipment-slot {
@@ -630,13 +631,15 @@ body.level-screen {
 
 /* Hand slots below the center column */
 .equipment-slot--left-hand {
-  left: 0%;
-  top: 234px;      /* a little below the legs slot */
+  left: 50%;
+  top: 234px;
+  transform: translateX(-50%);
 }
 
 .equipment-slot--right-hand {
-  right: 0%;
-  top: 234px;
+  left: 50%;
+  top: 312px;
+  transform: translateX(-50%);
 }
 
 /* Icons inside equipment slots reuse your existing classes */
@@ -1519,6 +1522,9 @@ body.level-screen {
 .ring-prisms {
   background-image: url('./assets/sprites/RingPrisms.png');
 }
+.ring-chests {
+  background-image: url('./assets/sprites/RingChests.png');
+}
 
 .equip-dodge-pants {
   background-image: url('./assets/sprites/EquipDodgePants.png');
@@ -1549,6 +1555,7 @@ body.level-screen {
 .inventory-slot .ring-betrayal,
 .inventory-slot .ring-shadow-step,
 .inventory-slot .ring-prisms,
+.inventory-slot .ring-chests,
 .inventory-slot .inventory-ring-generic,
 .inventory-slot .equip-dodge-pants,
 .inventory-slot .equip-mining-helm,

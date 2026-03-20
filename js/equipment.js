@@ -92,6 +92,14 @@ const RING_POOL = [
     type: 'ring',
     effect: 'prisms_score_bonus'
   },
+  {
+    id: 'ring_chests',
+    title: 'Ring of Chests',
+    description: 'Each level brings a 3% chance that a chest will appear.',
+    iconClass: 'ring-chests',
+    type: 'ring',
+    effect: 'extra_chest_spawn'
+  },
 ];
 
 // Helper: pick N distinct random rings
