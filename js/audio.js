@@ -4,7 +4,9 @@ const sfx = {
   enemyDeath:       new Audio('../assets/sfx/24_orc_death_spin.wav'),
   playerHit:        new Audio('../assets/sfx/punch_3.wav'),
   doorWin:          new Audio('../assets/sfx/Piano_assending_dissonent.wav'),  //Awesome
-  death:            new Audio('../assets/sfx/Scream.wav'),   // Maybe too much??
+  death:            new Audio('../assets/sfx/Scream.wav'),
+  beatBoss:         new Audio('../assets/sfx/8_bit_positive_long.wav'),
+  killMimic:        new Audio('../assets/sfx/Monster_Roar_2.wav'),
   heartPickup:      new Audio('../assets/sfx/08_human_charge_2.wav'),
   itemPickup:       new Audio('../assets/sfx/Check 1.wav'),
   stonePickup:      new Audio('../assets/sfx/Ghost_moan_2.wav'),
@@ -12,6 +14,10 @@ const sfx = {
   useFireWand:      new Audio('../assets/sfx/24_orc_death_spin.wav'),  // Could later switch to fire specific
   useLightningWand: new Audio('../assets/sfx/08_human_charge_2.wav'), // Same as Heart pickup for now
   useWyrdStone:     new Audio('../assets/sfx/Spooky Ambience.wav'),  // Could Make Shorter
+  lootChest:        new Audio('../assets/sfx/Metal_resonance.wav'),
+  selectLoot:       new Audio('../assets/sfx/sci_fi_confirm.wav'),
+  mimicTransform:   new Audio('../assets/sfx/Ghost_scream_3.wav'),
+  equippedItem:     new Audio('../assets/sfx/Coin Flip_3.wav'),
   uiClick:          new Audio('../assets/sfx/synth_cancel.wav'),   // Ended up matching Cancel for now
   uiConfirm:        new Audio('../assets/sfx/synth_warning.wav'),
   uiCancel:         new Audio('../assets/sfx/synth_cancel.wav'),
@@ -35,6 +41,7 @@ const music = {
   index:       new Audio('../assets/music/Goblins_Den_(Regular).wav'),   // index.html        - Will change later
   setup:       new Audio('../assets/music/Goblins_Den_(Regular).wav'),   // levelSetup.html   - Will change later
   level:       new Audio('../assets/music/Goblins_Dance_(Battle).wav'),  // level.html        - Will change later
+  boss:        new Audio('../assets/music/Larger_Than_Life_Battle_Sequence.wav'),
   levelDark:   new Audio('../assets/music/02.To_Grind_Out_Your_Soul.wav'),  // CHange Later
   highscore:   new Audio('../assets/music/Ghost chior.wav'),             // highScore.html    - Will change later
   credits:     new Audio('../assets/music/Ghost chior.wav'),             // credits.html      - Will change later

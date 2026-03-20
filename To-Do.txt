@@ -1,14 +1,6 @@
 03/12/2026 ---
 
- > Add Sound Effects For The Following:
-      > S - Chest Transforming into Mimic
-      > S - Looting Chest
-      > S - Confirming Looting
-      > S - Confirming Boss Looting
-      > S - Beating Boss
-      > S - Killing Mimic
-      > S - Equip Jewelry
-      > S - Equip Equipment
+ > New Music For Boss Fight
  > Make Sure Brazier doesn't load on later non-dark levels
  > Hyllow Stone, Summons Eldritch Horror
  > Add Equipment Effects (6 Items Are Current Existent, But All Do Nothing)

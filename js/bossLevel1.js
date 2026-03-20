@@ -270,6 +270,7 @@ async function hitBoss() {
   playSfx('enemyDeath');
 
   if (bossHealth === 0) {
+    playSfx('beatBoss');
     const finalBossScore =
       bossScoreBase *
       (bossWyrdScoreMultiplier || 1) *

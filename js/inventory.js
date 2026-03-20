@@ -392,6 +392,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         renderInventory();
         renderJewelry();
+        playSfx('equippedItem');
       });
     });
   }
@@ -484,6 +485,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         renderInventory();
         renderEquipment();
+        playSfx('equippedItem');
       });
     });
   }

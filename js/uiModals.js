@@ -69,6 +69,7 @@ function openRingChoiceModal(rings, onComplete) {
     button.className = 'modal-ok-button ring-choice-button';
     button.textContent = 'Choose';
     button.addEventListener('click', () => {
+      playSfx('selectLoot');
       handleRingChosen(index);
     });
 
@@ -102,6 +103,7 @@ function handleRingChosen(index) {
 
   const item = makeRingInventoryItem(chosenRing);
   addItemToInventory(item);
+  playSfx('selectLoot');
 
   closeRingChoiceModal();
 

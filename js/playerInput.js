@@ -177,8 +177,7 @@ if (mortarIndex !== -1) {
 
     // Flip sprite to open and show particles/SFX
     spawnParticlesAtCell(next, 'chestLoot');
-
-    playSfx('itemPickup');
+    playSfx('lootChest');
     redrawBoard();
 
     // Roll a single random loot item and show a modal with a Choose button
@@ -197,6 +196,7 @@ if (mortarIndex !== -1) {
 
     // Visual feedback for the ambush
     spawnParticlesAtCell(mimicIndex, 'mimicReveal');
+    playSfx('mimicTransform');
     redrawBoard();
 
     // No damage on reveal: the *next* time it reaches the player, it will hit

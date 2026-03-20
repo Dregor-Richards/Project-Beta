@@ -190,7 +190,7 @@ function showChestLootModal(equipDef) {
     const item = makeEquipmentInventoryItem(equipDef);
     addItemToInventory(item);
     modal.classList.add('hidden');
-    playSfx('itemPickup');
+    playSfx('selectLoot');
   });
 
   container.appendChild(card);

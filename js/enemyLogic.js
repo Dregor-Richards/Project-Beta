@@ -132,7 +132,7 @@ function hitMimic() {
   if (mimicHealth === 0) {
     // Death: drop one chest-style loot item
     spawnParticlesAtCell(mimicIndex, 'mimicKill');
-    playSfx('enemyDeath');
+    playSfx('killMimic');
 
     const item = chooseRandomLootItem();
     showChestLootModal(item);
