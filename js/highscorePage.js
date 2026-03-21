@@ -22,6 +22,18 @@ window.addEventListener('DOMContentLoaded', () => {
       const rankTd = document.createElement('td');
       rankTd.textContent = index + 1;
 
+      // Avatar cell
+      const avatarTd = document.createElement('td');
+      const img = document.createElement('img');
+      img.classList.add('highscore-avatar');
+
+      // Use avatarId if present; fall back to avatar1
+      const avatarId = entry.avatarId || 'avatar1';
+      img.src = `../assets/sprites/${avatarId}.png`;
+      img.alt = avatarId;
+
+      avatarTd.appendChild(img);
+
       const nameTd = document.createElement('td');
       nameTd.textContent = entry.name;
 
@@ -29,6 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
       scoreTd.textContent = entry.score;
 
       tr.appendChild(rankTd);
+      tr.appendChild(avatarTd);
       tr.appendChild(nameTd);
       tr.appendChild(scoreTd);
       tbody.appendChild(tr);

@@ -123,6 +123,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const controlOk = document.getElementById('control-ok');
   const instructionsOk = document.getElementById('instructions-ok');
 
+  const selectedIndex = sessionStorage.getItem('selectedAvatarIndex');
+  const avatarIndex = selectedIndex != null ? Number(selectedIndex) || 0 : 0;
+  const currentAvatarId = `avatar${avatarIndex + 1}`;
+
   if (controlButton && controlModal && controlOk) {
     controlButton.addEventListener('click', () => {
       controlModal.classList.remove('hidden');
@@ -219,6 +223,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     if (highscoreModal && highscoreNameInput && typeof wouldBeHighScore === 'function') {
+          // Skip highscore modal entirely if cheats were used
+      if (typeof hasUsedCheatsThisRun === 'function' && hasUsedCheatsThisRun()) {
+        return; // just show death modal, no HS dialog
+      }
       if (wouldBeHighScore(score)) {
         highscoreModal.classList.remove('hidden');
         highscoreNameInput.value = '';
@@ -303,9 +311,18 @@ function finishAndReturnToMenu() {
 
   if (highscoreSaveBtn) {
     highscoreSaveBtn.addEventListener('click', () => {
+      if (typeof hasUsedCheatsThisRun === 'function' && hasUsedCheatsThisRun()) {
+        // Just bail out to menu without saving
+        highscoreModal.classList.add('hidden');
+        uiInputLocked = false;
+        playSfx('uiCancel');
+        finishAndReturnToMenu();
+        return;
+      }
+
       const name = highscoreNameInput.value.trim() || 'Unknown';
       if (typeof submitHighScore === 'function') {
-        submitHighScore(name, score);
+        submitHighScore(name, score, currentAvatarId);
       }
       highscoreModal.classList.add('hidden');
       uiInputLocked = false;

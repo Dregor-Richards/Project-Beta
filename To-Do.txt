@@ -1,17 +1,26 @@
-03/12/2026 ---
+03/20/2026 ---
 
  > New Music For Boss Fight
- > Make Sure Brazier doesn't load on later non-dark levels
- > Hyllow Stone, Summons Eldritch Horror
+ > Hyllow Stone, Summons Eldritch Horror*
+ > Starting Item Select (Takes 10 Away From Score On Start With An Item?)
+     > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
+     > A Coin Pouch That Gives Points Equal To Half The Value Of The Enemies Present
+     > A Bundle Of 3 Fire Wands
  > Add Equipment Effects (6 Items Are Current Existent, But All Do Nothing)
  > Add Jewelry Effects (5 Rings Are Current Existent, But All Do Nothing)
- > Make Highscore have little icon of the avatar that was for that run
- > Disable Highscores for runs that used a Cheat
- > Starting Item Select (Takes 10 Away From Score On Start With An Item?)
-      > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
-      > A Coin Pouch That Gives Points Equal To Half The Value Of The Enemies Present
-      > A Bundle Of 3 Fire Wands
- > Cheat to override Equipment with a full Present
+ > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)
+      > Every turn, lgiths 3 more; has move set: Move erratic 3, move towards 3, move away 3;
+      > If frozen, starts summoning enemies (Specifics undecided)
+      > Worth 12 points, doubles point gain on level, doesn't disappear on boss reset map (Perhaps takes an empty boss spawn tile)
+      > Should have his own music, ubruptly ends upon death
+
+ <---> Refractoring     <--->
+
+ > Stone spawn stuff isn't in the same place as the rest of the spawns (Chest, Heart, Wands), and uses slightly different mechanics
+ > uiModals is large, and has all HUD modals, and win/lose modals in same file
+ > bossLevel1 has several functions that are likely bosses-universal, could be moved to a new bossHelper, for future boss access
+
+ <--->                  <--->
 
  <---> For Levels 11-20 <--->
  > Summoner Enemy (Slow, Summons Basic, or Trackers?) Pink Particles
@@ -20,6 +29,10 @@
     > Moves Until Summons Die, THen Summons More
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
  % Sniper Enemy? (Instead of the Falling Floor Above^)
+      > This sniper enemy should telegraph his fire lanes with redish orange highlight
+      > Next turn, lights those on fire, telegraphs new lanes
+      > Next turn, fire deals damage, disappears, telegraphs are lit, and new telegraphs From
+      > If lane hits internal wall, should spread for some number of tiles (1/2 or 1/3 of distance traveled before wall?)
  > Wand to turn wall into walkways
  > Empty Lanterns To Pickup For Later Levels, Use Fire Wand To Light
       > Or Should this be a candle instead, place it in dark to illumate some tiles (Larger range but timed, or smaller?)
@@ -42,13 +55,13 @@
  <--->                   <--->
 
  $ Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
- $ FIll Map Cheat ; Add Inventory Item CHeat
+ $ FIll Map Cheat ; Add Inventory Item CHeat ; Give Equipment Preset Cheat
  $ Every 24th LVL, Puzzle Level
  > Add Coin on LVL 21+, Chances For Good/Bad Events When Used (Risky, But High Reward)
 
 -----
 
-*Boss 2 - Named After God Of Death, has it's own map (Skull-Shaped???)
+*Boss 2 - Named After God Of Death, has it's own map (Skull-Shaped)
    - Will utilize the dark maps, with a lantern existing on one tile that the player must reach, to light up the regions around
    where the boss starts. Like the first boss, once hit, the map basically resets, so new areas will darken, the boss will move,
    and the player will have to reacquire a lantern.
@@ -56,6 +69,10 @@
    navigate around obstacles while being attacked.
    - Perhaps I'll implement a summoner enemy between this boss and the first, so this one can deploy minions as a third element.
    - While slower than the first boss, they shouldn't move only 1 tile... Perhaps 2-4 moves?
+   - Shoots lanes of fire like sniper enemy, but these are purple (Permeant), slowly forcing the player to reach the boss for
+   a wave reset, or die in endless flames
+   - Mortars should spawn in the teeth, and there should be "spectators" in the middle of the eyes, unaccessible to anything
+   (Perhaps fire wand can kill them, for bonus points or such)
 
  *Boss ? - Centipede
 

@@ -1774,6 +1774,12 @@ body.level-screen {
   font-weight: 400;
 }
 
+.highscore-avatar {
+  width: 26px;    /* As big as possible without scroll bar */
+  height: 26px;
+  image-rendering: pixelated; /* keeps pixel art sharp when scaled up */
+}
+
 .highscore-back-button {
   font-size: 0.7em;
   padding: 0.7em 1.4em;

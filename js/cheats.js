@@ -92,6 +92,10 @@ function runCheatCode(rawCode) {
   }
 }
 
+function hasUsedCheatsThisRun() {
+  return usedCheats.size > 0;
+}
+
 // === Cheat handlers (empty templates for now) ===
 
 // Instantly win the current level

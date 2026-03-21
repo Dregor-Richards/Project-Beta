@@ -1,16 +1,16 @@
 const HS_KEY = 'sandcrypt_highscores';
 
 const DEFAULT_HIGHSCORES = [
-  { name: 'Pixel', score: 500 },
-  { name: 'Skinbones', score: 200 },
-  { name: 'Dregor', score: 150 },
-  { name: 'Eddard', score: 120 },
-  { name: 'Bobbingo', score: 100 },
-  { name: 'Talion', score: 75 },
-  { name: 'Coraline', score: 65 },
-  { name: 'Cinder', score: 50 },
-  { name: 'Val', score: 35 },
-  { name: 'Dan', score: 20 }
+  { name: 'Pixel',    score: 500, avatarId: 'avatar4' },
+  { name: 'Skinbones',score: 200, avatarId: 'avatar2' },
+  { name: 'Dregor',   score: 150, avatarId: 'avatar1' },
+  { name: 'Eddard',   score: 125, avatarId: 'avatar1' },
+  { name: 'Bobbingo', score: 100, avatarId: 'avatar3' },
+  { name: 'Talion',   score: 75,  avatarId: 'avatar1' },
+  { name: 'Coraline', score: 65,  avatarId: 'avatar4' },
+  { name: 'Cinder',   score: 50,  avatarId: 'avatar3' },
+  { name: 'Val',      score: 40,  avatarId: 'avatar3' },
+  { name: 'Dan',      score: 30,  avatarId: 'avatar2' }
 ];
 
 function loadHighScores() {
@@ -41,11 +41,12 @@ function saveHighScores(list) {
  * Attempt to insert a new score.
  * Returns { updatedList, isHighScore }.
  */
-function submitHighScore(name, score) {
+// highScores.js
+function submitHighScore(name, score, avatarId = 'avatar1') {
   const list = loadHighScores();
 
   // Add and sort descending
-  list.push({ name, score });
+  list.push({ name, score, avatarId });
   list.sort((a, b) => b.score - a.score);
 
   // Keep top 10
@@ -53,7 +54,10 @@ function submitHighScore(name, score) {
   saveHighScores(trimmed);
 
   const isHighScore = trimmed.some(
-    entry => entry.name === name && entry.score === score
+    entry =>
+      entry.name === name &&
+      entry.score === score &&
+      entry.avatarId === avatarId
   );
 
   return { updatedList: trimmed, isHighScore };

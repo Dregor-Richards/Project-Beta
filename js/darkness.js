@@ -47,11 +47,13 @@ function initDarkness(difficulty, spawnCornerIndices) {
 
   // Brazier: only on dark levels
   const shouldSpawnBrazier =
+    isDarkLevel &&
     unusedCorners.length > 0 &&
     (
-      (difficulty >= 11 && difficulty <= 12) ||
-      (difficulty >= 13 && Math.random() < 0.75) // 25% chance to skip
+      difficulty >= 11 &&              
+      (difficulty <= 12 || Math.random() < 0.75)   // 25% to skip
     );
+
 
   if (shouldSpawnBrazier) {
     const brazierIdx = unusedCorners.splice(
