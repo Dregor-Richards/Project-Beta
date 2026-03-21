@@ -7,13 +7,14 @@ let movesThisTurn = 0;
 let playerDead = false;
 let lives = 3;
 let score = 0;
+let doorUnlockedByKey = false;
 let heartIndex = null;
 let levelNumber = 1;
 let skipTileIndex = null;
 let skipNextTurn = false;
 let brazierLit = false;
 
-// CHest & Mimic
+// Chest & Mimic
 let chestIndex = null;
 let chestOpened = false;
 let mimicChestIndex = null;      // where the hidden mimic chest sits (looks like chest)

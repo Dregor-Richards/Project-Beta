@@ -18,18 +18,25 @@ function resetPlayerInventoryAndEquipment() {
 function applyStartingItemInventory() {
   const startingItemId = sessionStorage.getItem('startingItemId');
 
-  // Fire-wand starter
   if (startingItemId === 'start_item_3') {
     pickupWand('fire');
     pickupWand('fire');
     pickupWand('fire');
   }
 
-  // Coin Pouch starter
   if (startingItemId === 'start_item_1') {
     const slot = findFirstEmptySlot();
     if (slot !== -1) {
       inventory[slot] = { type: 'coin_pouch', count: 1 };
+    }
+    sessionStorage.setItem('inventory', JSON.stringify(inventory));
+    renderInventory();
+  }
+
+  if (startingItemId === 'start_item_2') {
+    const slot = findFirstEmptySlot();
+    if (slot !== -1) {
+      inventory[slot] = { type: 'door_key', count: 1 };
     }
     sessionStorage.setItem('inventory', JSON.stringify(inventory));
     renderInventory();
@@ -65,7 +72,12 @@ function damageEffect() {
 const ENEMY_STEP_DELAY_MS = 75; // tweak for faster/slower animations
 
 function checkForWin() {
-  if (allEnemiesDead() && avatarIndex === doorIndex && !playerDead) {
+  const atDoor = avatarIndex === doorIndex && !playerDead;
+
+  const enemiesCleared = allEnemiesDead();
+  const keyUnlocked = doorUnlockedByKey === true;
+
+  if (atDoor && (enemiesCleared || keyUnlocked)) {
     spawnParticlesAtCell(doorIndex, 'door');
 
     const storedDifficulty = sessionStorage.getItem('currentDifficulty');
@@ -132,6 +144,7 @@ window.addEventListener('DOMContentLoaded', () => {
   resetDarkness();
   loadLevelNumber();
   playMusic('level');
+  doorUnlockedByKey = false;
 
   // Restore lives and score from previous levels
   const storedLives = sessionStorage.getItem('playerLives');

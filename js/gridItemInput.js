@@ -6,7 +6,38 @@ function handleGridClick(event) {
 
   const tileIndex = Number(cell.dataset.index);
 
-  // Wands
+  // ===== Door Key: click door to unlock, consume key, but don't win yet =====
+  if (armedItem.type === 'door_key') {
+    if (tileIndex !== doorIndex) {
+      // Clicked somewhere else → do nothing, keep key armed
+      return;
+    }
+
+    // Consume the key immediately
+    const slotIndex = armedItem.slotIndex;
+    const item = inventory[slotIndex];
+    if (item && item.type === 'door_key') {
+      item.count -= 1;
+      if (item.count <= 0) {
+        inventory[slotIndex] = null;
+      }
+    }
+
+    armedItem = null;
+    clearInventorySelection();
+    renderInventory();
+    sessionStorage.setItem('inventory', JSON.stringify(inventory));
+
+    // Mark door as unlocked by key; enemies still move, no win yet
+    doorUnlockedByKey = true;
+    if (typeof playSfx === 'function') {
+      playSfx('useKey'); // or reuse an existing SFX
+    }
+
+    return;
+  }
+
+  // ===== Wands =====
   if (armedItem.type === 'wand') {
     if (armedItem.subtype === 'ice') {
       applyIceWandAtTile(tileIndex);
@@ -29,8 +60,6 @@ function handleGridClick(event) {
       return;
     }
 
-
-
     if (armedItem.subtype === 'fire') {
       // Boss hit by Fire wand (difficulty 10)
       const storedDifficulty = sessionStorage.getItem('currentDifficulty');
@@ -51,7 +80,7 @@ function handleGridClick(event) {
         }
       }
 
-            // Mimic hit by Fire wand
+      // Mimic hit by Fire wand
       if (mimicActive && mimicIndex != null && tileIndex === mimicIndex) {
         playSfx('useFireWand');
 
@@ -164,7 +193,6 @@ function handleGridClick(event) {
       sessionStorage.setItem('inventory', JSON.stringify(inventory));
       return;
     }
-
 
     return;
   }

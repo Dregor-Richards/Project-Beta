@@ -124,9 +124,20 @@ function renderInventory() {
       const icon = document.createElement('div');
       icon.className = item.iconClass || 'inventory-equipment-generic';
       slot.appendChild(icon);
+
     } else if (item.type === 'coin_pouch') {
       const icon = document.createElement('div');
       icon.className = 'inventory-coin-pouch';
+      slot.appendChild(icon);
+
+      const countLabel = document.createElement('div');
+      countLabel.textContent = String(item.count);
+      countLabel.className = 'inventory-stack-count';
+      slot.appendChild(countLabel);
+
+    } else if (item.type === 'door_key') {
+      const icon = document.createElement('div');
+      icon.className = 'inventory-door-key';
       slot.appendChild(icon);
 
       const countLabel = document.createElement('div');
@@ -150,6 +161,7 @@ function getInventoryItemName(item) {
   if (item.type === 'ring') return item.title || 'Ring';
   if (item.type === 'equipment') return item.title || 'Equipment';
   if (item.type === 'coin_pouch') return 'Coin Pouch';
+  if (item.type === 'door_key') return 'Door Key';
   return 'Item';
 }
 
@@ -305,6 +317,35 @@ window.addEventListener('DOMContentLoaded', () => {
         if (coinModal) {
           coinModal.classList.remove('hidden');
         }
+        return;
+      }
+
+      // Door Key selection
+      if (item.type === 'door_key') {
+        const allSlots = Array.from(document.querySelectorAll('.inventory-slot'));
+        const currentIndex = allSlots.indexOf(slot);
+
+        const isSameKey =
+          armedItem &&
+          armedItem.type === 'door_key' &&
+          armedItem.slotIndex === currentIndex;
+
+        if (isSameKey) {
+          armedItem = null;
+        } else {
+          armedItem = { type: 'door_key', slotIndex: currentIndex };
+        }
+
+        document.querySelectorAll('.inventory-slot')
+          .forEach((s, i) => {
+            s.classList.toggle(
+              'inventory-selected',
+              !!armedItem &&
+                armedItem.type === 'door_key' &&
+                i === armedItem.slotIndex
+            );
+          });
+
         return;
       }
 

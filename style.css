@@ -1419,7 +1419,6 @@ body.level-screen {
   background-position: center;
 }
 
-/* On-board Ice Wand */
 .lightning-wand {
   width: 70%;
   height: 70%;
@@ -1429,7 +1428,6 @@ body.level-screen {
   background-position: center;
 }
 
-/* Inventory Ice Wand */
 .inventory-lightning-wand {
   width: 80%;
   height: 80%;
@@ -1484,6 +1482,29 @@ body.level-screen {
   height: 70%;
   margin: 0;
   background-image: url('./assets/sprites/HeartStone.png'); /* same sprite */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.hyllow-stone {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
+  background-image: url('./assets/sprites/HyllowStone.png');
+  background-size: contain;      /* keep full sprite visible */
+  background-repeat: no-repeat;
+  background-position: center;   /* center inside that 50% box */
+}
+
+.inventory-hyllow-stone {
+  position: relative;
+  width: 70%;
+  height: 70%;
+  margin: 0;
+  background-image: url('./assets/sprites/HyllowStone.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -1636,6 +1657,16 @@ body.level-screen {
   width: 50px;
   height: 50px;
   background-image: url('./assets/sprites/CoinPouch.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+}
+
+.inventory-door-key {
+  width: 60px;
+  height: 60px;
+  background-image: url('./assets/sprites/StartDoorKey.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
