@@ -368,6 +368,54 @@ body {
   pointer-events: none;
 }
 
+/* Starting item selector: roughly half-size of character wheel */
+.item-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.item-wheel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 6px;
+}
+
+.item-slot {
+  width: 50px;   /* smaller than char slots */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-slot img {
+  width: 46px;
+  height: 46px;
+  image-rendering: pixelated;
+}
+
+.item-slot-center {
+  transform: scale(1.1); /* subtle emphasis */
+}
+
+.item-arrow {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 18px;
+  padding: 6px 10px;
+  cursor: pointer;
+  background-color: #1f7a1f;  /* medium green */
+  color: #000000;             /* black arrow glyph */
+  border: 2px solid #0f3d0f;  /* darker green border */
+  border-radius: 4px;
+}
+
+.item-arrow:hover {
+  background-color: #289628;  /* slightly brighter on hover */
+}
+
 /* Spacer under the selector for “Starting Item” */
 .setup-spacer {
   height: 40px;

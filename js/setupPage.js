@@ -157,12 +157,90 @@ window.addEventListener('DOMContentLoaded', () => {
   // Initial draw for selector
   updateWheel();
 
-  // When Begin is clicked, store the chosen avatar index and go to level
+  // --- Starting item selector wiring (mouse only) ---
+
+  const startingItems = [
+    {
+      id: 'none',
+      img: '../assets/sprites/Empty.png',
+    },
+    {
+      id: 'start_item_1',
+      img: '../assets/sprites/CoinPouch.png',
+    },
+    {
+      id: 'start_item_2',
+      img: '../assets/sprites/StartDoorKey.png',
+    },
+    {
+      id: 'start_item_3',
+      img: '../assets/sprites/FireWand.png',
+    },
+  ];
+
+  let selectedItemIndex = 0; // start on "none"
+
+  function updateItemWheel() {
+    const leftItemImg = document.getElementById('item-left-img');
+    const centerItemImg = document.getElementById('item-center-img');
+    const rightItemImg = document.getElementById('item-right-img');
+
+    if (!leftItemImg || !centerItemImg || !rightItemImg) return;
+
+    const len = startingItems.length;
+    const center = selectedItemIndex;
+    const left = (center - 1 + len) % len;
+    const right = (center + 1) % len;
+
+    leftItemImg.src = startingItems[left].img;
+    centerItemImg.src = startingItems[center].img;
+    rightItemImg.src = startingItems[right].img;
+  }
+
+  const itemLeftBtn = document.getElementById('item-left');
+  const itemRightBtn = document.getElementById('item-right');
+
+  if (itemLeftBtn && itemRightBtn) {
+    itemLeftBtn.addEventListener('click', () => {
+      selectedItemIndex =
+        (selectedItemIndex - 1 + startingItems.length) % startingItems.length;
+      playSfx('uiClick');
+      updateItemWheel();
+    });
+
+    itemRightBtn.addEventListener('click', () => {
+      selectedItemIndex =
+        (selectedItemIndex + 1) % startingItems.length;
+      playSfx('uiClick');
+      updateItemWheel();
+    });
+
+    // Initial draw for item wheel
+    updateItemWheel();
+  }
+
+  // When Begin is clicked, store the chosen avatar index + starting item, then go to level
   if (goButton) {
     goButton.addEventListener('click', () => {
       if (typeof setSelectedAvatarIndex === 'function') {
         setSelectedAvatarIndex(currentIndex);
       }
+
+      // Persist selected starting item for the run
+      const selectedItem = startingItems[selectedItemIndex];
+
+      sessionStorage.setItem(
+        'startingItemId',
+        selectedItem ? selectedItem.id : 'none'
+      );
+
+      // Apply score penalty flag if non-empty choice
+      if (selectedItem && selectedItem.id !== 'none') {
+        sessionStorage.setItem('startingItemScorePenalty', '-10');
+      } else {
+        sessionStorage.removeItem('startingItemScorePenalty');
+      }
+
       goToLevel();
     });
   }
@@ -174,7 +252,7 @@ window.addEventListener('DOMContentLoaded', () => {
       (menuModal && !menuModal.classList.contains('hidden')) ||
       (controlModal && !controlModal.classList.contains('hidden'));
 
-      // Character wheel: A / D / Arrow keys
+    // Character wheel: A / D / Arrow keys
     if (!anyModalOpen) {
       const key = event.key;
 
@@ -204,7 +282,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
     }
-    
+
     // Enter/E: trigger Begin when no modal is open
     if (!anyModalOpen &&
         (event.key === 'Enter' || event.key === 'e' || event.key === 'E')) {
