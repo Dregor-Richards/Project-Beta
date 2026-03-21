@@ -4,14 +4,28 @@
  > Hyllow Stone, Summons Eldritch Horror*
  > Starting Item Select
      > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
-     > A Coin Pouch That Gives Points Equal To Half The Value Of The Enemies Present
  > Add Equipment Effects (6 Items Are Current Existent, But All Do Nothing)
- > Add Jewelry Effects (5 Rings Are Current Existent, But All Do Nothing)
+ > Add Jewelry Effects (4 Rings Are Current Existent, But All Do Nothing)
  > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)
       > Every turn, lgiths 3 more; has move set: Move erratic 3, move towards 3, move away 3;
       > If frozen, starts summoning enemies (Specifics undecided)
       > Worth 12 points, doubles point gain on level, doesn't disappear on boss reset map (Perhaps takes an empty boss spawn tile)
       > Should have his own music, ubruptly ends upon death
+
+ > Update Glossary With:
+      - Starting Coin Pouch
+      - Starting Key
+      - Hyllow Stone
+      - Mining Helm
+      - Dodge Boots
+      - Protect Chest
+      - Hammer Retal
+      - Book Of Wands
+      - Book Of Stones
+      - Ring Of Chests
+      - Ring Of Fruit
+      - Ring Of Shadow
+      - Ring Of Prisms
 
  <---> Refractoring     <--->
 

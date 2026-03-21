@@ -68,14 +68,14 @@ const RING_POOL = [
     type: 'ring',
     effect: 'extra_fruit'
   },
-  {
-    id: 'ring_betrayal',
-    title: 'Ring of Betrayal',
-    description: 'Each level brings a 1% chance that an enemy will betray their comrades, in your favour.',
-    iconClass: 'ring-betrayal',
-    type: 'ring',
-    effect: 'enemy_betrayal'
-  },
+//  {
+//    id: 'ring_betrayal',
+//    title: 'Ring of Betrayal',
+//    description: 'Each level brings a 1% chance that an enemy will betray their comrades, in your favour.',
+//    iconClass: 'ring-betrayal',
+//    type: 'ring',
+//    effect: 'enemy_betrayal'
+//  },
   {
     id: 'ring_shadow_step',
     title: 'Ring of Fading',

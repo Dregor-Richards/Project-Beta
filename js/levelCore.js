@@ -18,12 +18,21 @@ function resetPlayerInventoryAndEquipment() {
 function applyStartingItemInventory() {
   const startingItemId = sessionStorage.getItem('startingItemId');
 
+  // Fire-wand starter
   if (startingItemId === 'start_item_3') {
-    // inventory has just been reset to all nulls at this point
     pickupWand('fire');
     pickupWand('fire');
     pickupWand('fire');
-    // pickupWand handles renderInventory() and sessionStorage('inventory')
+  }
+
+  // Coin Pouch starter
+  if (startingItemId === 'start_item_1') {
+    const slot = findFirstEmptySlot();
+    if (slot !== -1) {
+      inventory[slot] = { type: 'coin_pouch', count: 1 };
+    }
+    sessionStorage.setItem('inventory', JSON.stringify(inventory));
+    renderInventory();
   }
 }
 
@@ -78,6 +87,20 @@ function redrawLives() {
   dots.forEach((dot, index) => {
     dot.style.opacity = index < lives ? '1' : '0.2';
   });
+}
+
+// Calculates base enemy scores, for Coin Pouch
+function getTotalEnemyBaseValue() {
+  let total = 0;
+  const NORMAL_VALUE = 1;
+  const FAST_VALUE = 2;
+  const TRACKER_VALUE = 2;
+  const MORTAR_VALUE = 2;
+  total += enemies.length * NORMAL_VALUE;
+  total += fastEnemies.length * FAST_VALUE;
+  total += trackerEnemies.length * TRACKER_VALUE;
+  total += mortarEnemies.length * MORTAR_VALUE;
+  return total;
 }
 
 function redrawScore() {

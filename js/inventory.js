@@ -124,6 +124,15 @@ function renderInventory() {
       const icon = document.createElement('div');
       icon.className = item.iconClass || 'inventory-equipment-generic';
       slot.appendChild(icon);
+    } else if (item.type === 'coin_pouch') {
+      const icon = document.createElement('div');
+      icon.className = 'inventory-coin-pouch';
+      slot.appendChild(icon);
+
+      const countLabel = document.createElement('div');
+      countLabel.textContent = String(item.count);
+      countLabel.className = 'inventory-stack-count';
+      slot.appendChild(countLabel);
     }
   });
 }
@@ -140,6 +149,7 @@ function getInventoryItemName(item) {
   if (item.type === 'heart_stone') return 'Heart Stone';
   if (item.type === 'ring') return item.title || 'Ring';
   if (item.type === 'equipment') return item.title || 'Equipment';
+  if (item.type === 'coin_pouch') return 'Coin Pouch';
   return 'Item';
 }
 
@@ -208,6 +218,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const heartModal = document.getElementById('heart-modal');
   const heartConfirmBtn = document.getElementById('heart-confirm');
   const heartCancelBtn = document.getElementById('heart-cancel');
+  const coinModal = document.getElementById('coin-modal');
+  const coinConfirmBtn = document.getElementById('coin-confirm');
+  const coinCancelBtn = document.getElementById('coin-cancel');
   const tooltip = document.getElementById('inventory-tooltip');
 
   const slots = document.querySelectorAll('.inventory-slot');
@@ -278,6 +291,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (heartModal) {
           heartModal.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // Coin Pouch
+      if (item.type === 'coin_pouch') {
+        armedItem = { type: 'coin_pouch', slotIndex: currentIndex };
+        document.querySelectorAll('.inventory-slot')
+          .forEach((s, i) => {
+            s.classList.toggle('inventory-selected', i === currentIndex);
+          });
+        if (coinModal) {
+          coinModal.classList.remove('hidden');
         }
         return;
       }
@@ -592,4 +618,49 @@ window.addEventListener('DOMContentLoaded', () => {
       heartModal.classList.add('hidden');
     });
   }
+
+  // ===== Coin Pouch confirm/cancel =====
+  if (coinConfirmBtn && coinModal) {
+    coinConfirmBtn.addEventListener('click', () => {
+      if (!armedItem || armedItem.type !== 'coin_pouch') {
+        coinModal.classList.add('hidden');
+        return;
+      }
+
+      // Compute bonus: half total enemy base value (rounded down)
+      if (typeof getTotalEnemyBaseValue === 'function' &&
+          typeof addScore === 'function') {
+        const total = getTotalEnemyBaseValue();
+        const bonus = Math.floor(total / 2);
+        addScore(bonus);
+      }
+
+      // Consume the Coin Pouch itself
+      const slotIndex = armedItem.slotIndex;
+      const item = inventory[slotIndex];
+      if (item && item.type === 'coin_pouch') {
+        item.count -= 1;
+        if (item.count <= 0) {
+          inventory[slotIndex] = null;
+        }
+      }
+
+      armedItem = null;
+      clearInventorySelection();
+      renderInventory();
+      sessionStorage.setItem('inventory', JSON.stringify(inventory));
+
+      coinModal.classList.add('hidden');
+      playSfx && playSfx('useWyrdStone'); // or a new coin SFX if you have one
+    });
+  }
+
+  if (coinCancelBtn && coinModal) {
+    coinCancelBtn.addEventListener('click', () => {
+      armedItem = null;
+      clearInventorySelection();
+      coinModal.classList.add('hidden');
+    });
+  }
+
 });
