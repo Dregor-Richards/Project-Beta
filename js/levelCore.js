@@ -15,6 +15,18 @@ function resetPlayerInventoryAndEquipment() {
   sessionStorage.removeItem('equippedEquipment');
 }
 
+function applyStartingItemInventory() {
+  const startingItemId = sessionStorage.getItem('startingItemId');
+
+  if (startingItemId === 'start_item_3') {
+    // inventory has just been reset to all nulls at this point
+    pickupWand('fire');
+    pickupWand('fire');
+    pickupWand('fire');
+    // pickupWand handles renderInventory() and sessionStorage('inventory')
+  }
+}
+
 function applyCameraTransform() {
   const wrapper = document.querySelector('.level-grid-wrapper');
   if (!wrapper) return;
@@ -113,9 +125,16 @@ window.addEventListener('DOMContentLoaded', () => {
         inventory = parsed;
       }
     } catch (e) {
-      // if bad data, fall back to whatever default set elsewhere
+      // bad data → leave inventory as whatever default was set
     }
+  } else {
+    // No inventory in sessionStorage → this is a fresh run.
+    // Start from a clean 21-slot inventory and apply starting item.
+    inventory = new Array(21).fill(null);
+    applyStartingItemInventory();  // will give 3 Fire Wands for start_item_3
+    // pickupWand inside applyStartingItemInventory will save inventory for later levels
   }
+
 
   // Matches upper-right avatar icon to chosen character
   const hudAvatar = document.getElementById('hud-avatar');

@@ -267,17 +267,23 @@ window.addEventListener('DOMContentLoaded', () => {
       sessionStorage.removeItem('equippedRings');
       sessionStorage.removeItem('equippedEquipment');
 
+      // NEW: reapply starting item penalty for the new run
+      const penalty =
+        Number(sessionStorage.getItem('startingItemScorePenalty')) || 0;
+      const initialScore = 0 + penalty;
+      sessionStorage.setItem('playerScore', String(initialScore));
+
       setTimeout(() => {
         window.location.href = 'level.html';
       }, 250);
     });
   }
 
-function finishAndReturnToMenu() {
-  setTimeout(() => {
-    resetRunAndGoToMenu();
-  }, 250);
-}
+  function finishAndReturnToMenu() {
+    setTimeout(() => {
+      resetRunAndGoToMenu();
+    }, 250);
+  }
 
   function handlePostDeath() {
     // If highscore modal is visible, wait for Save/Skip instead

@@ -226,20 +226,24 @@ window.addEventListener('DOMContentLoaded', () => {
         setSelectedAvatarIndex(currentIndex);
       }
 
-      // Persist selected starting item for the run
       const selectedItem = startingItems[selectedItemIndex];
-
       sessionStorage.setItem(
         'startingItemId',
         selectedItem ? selectedItem.id : 'none'
       );
 
-      // Apply score penalty flag if non-empty choice
       if (selectedItem && selectedItem.id !== 'none') {
         sessionStorage.setItem('startingItemScorePenalty', '-10');
       } else {
         sessionStorage.removeItem('startingItemScorePenalty');
       }
+
+      // NEW: initialize score once for this run
+      let baseScore = 0;
+      const penalty =
+        Number(sessionStorage.getItem('startingItemScorePenalty')) || 0;
+      const initialScore = baseScore + penalty;
+      sessionStorage.setItem('playerScore', String(initialScore));
 
       goToLevel();
     });

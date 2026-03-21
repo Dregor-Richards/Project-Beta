@@ -1,7 +1,22 @@
 // inventory.js
 // Functions for rendering inventory, tracking item collection, and allowing for item usage.
 
-console.log('inventory.js loaded');
+function initRunInventory() {
+  inventory = new Array(21).fill(null);
+
+  const startingItemId = sessionStorage.getItem('startingItemId');
+
+  // If player chose the Fire Wand starting item, give a stack of 3
+  if (startingItemId === 'start_item_3') {
+    pickupWand('fire');
+    pickupWand('fire');
+    pickupWand('fire');
+    // pickupWand handles renderInventory() and sessionStorage
+  } else {
+    // If you want to persist an empty inventory:
+    sessionStorage.setItem('inventory', JSON.stringify(inventory));
+  }
+}
 
 function pickWandSubtype() {
   const r = Math.random();

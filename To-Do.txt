@@ -2,10 +2,9 @@
 
  > New Music For Boss Fight
  > Hyllow Stone, Summons Eldritch Horror*
- > Starting Item Select (Takes 10 Away From Score On Start With An Item?)
+ > Starting Item Select
      > A Key That Can Be Used On Door, To Skip Killing Enemies For 1 Level
      > A Coin Pouch That Gives Points Equal To Half The Value Of The Enemies Present
-     > A Bundle Of 3 Fire Wands
  > Add Equipment Effects (6 Items Are Current Existent, But All Do Nothing)
  > Add Jewelry Effects (5 Rings Are Current Existent, But All Do Nothing)
  > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)

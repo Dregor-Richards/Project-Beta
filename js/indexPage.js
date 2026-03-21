@@ -43,6 +43,13 @@ window.addEventListener('DOMContentLoaded', () => {
           sessionStorage.removeItem('playerLives');
           sessionStorage.removeItem('playerScore');
           sessionStorage.removeItem('inventory');
+          sessionStorage.removeItem('pbo_usedCheats');
+
+          // NEW: if there is a starting item penalty, apply it now
+          const penalty =
+            Number(sessionStorage.getItem('startingItemScorePenalty')) || 0;
+          const initialScore = 0 + penalty;
+          sessionStorage.setItem('playerScore', String(initialScore));
 
           window.location.href = 'level.html';
         } else {
