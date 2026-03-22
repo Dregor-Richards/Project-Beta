@@ -51,8 +51,26 @@ const GLOSSARY_ITEMS_BOSS = [
 
 // Equipment glossary
 const GLOSSARY_ITEMS_EQUIPMENT = [
-  { id: 'equip1', title: 'To Fill', iconClass: 'boss-enemy1',
+  { id: 'equip1', title: 'Mining Helm', iconClass: 'equip-mining-helm',
+    description: 'Coming Later'},
+  { id: 'equip1', title: 'Plated Armor', iconClass: 'equip-plated-armor',
     description: 'FILL'},
+  { id: 'equip1', title: 'Greaves Of Dodging', iconClass: 'equip-dodge-pants',
+    description: 'FILL'},
+  { id: 'equip1', title: 'Hammer Of Retaliation', iconClass: 'equip-retaliation-hammer',
+    description: 'Coming Later'},
+  { id: 'equip1', title: 'Book Of Wands', iconClass: 'equip-book-wands',
+    description: 'FILL'},
+  { id: 'equip1', title: 'Book Of Stones', iconClass: 'equip-book-stones',
+    description: 'FILL'},
+  { id: 'equip1', title: 'Ring Of Chests', iconClass: 'ring-chests',
+    description: 'FILL'},
+  { id: 'equip1', title: 'Ring Of Prisms', iconClass: 'ring-prisms',
+    description: 'FILL'},
+  { id: 'equip1', title: 'Ring Of Freshness', iconClass: 'ring-extra-fruit',
+    description: 'Coming Later'},
+  { id: 'equip1', title: 'Ring Of Fading', iconClass: 'ring-shadow-step',
+    description: 'Coming Later'},
 ];
 
 const GLOSSARY_TYPES = {

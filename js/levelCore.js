@@ -234,12 +234,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     skipTileIndex = chooseSkipTileIndex();
 
+    let spawnChest = false;
+
+    // First: guaranteed 6th-level rule
     if (shouldSpawnChest()) {
+      spawnChest = true;
+    } else {
+      // Only apply Ring of Chests on non-6th levels
+      const bonusChance = getExtraChestChanceFromRings();
+      if (bonusChance > 0 && Math.random() < bonusChance) {
+        spawnChest = true;
+      }
+    }
+
+    if (spawnChest) {
       chestIndex = chooseFreeIndex();
       chestOpened = false;
 
-      // 25% chance to spawn a second chest that is secretly a mimic
-      if (Math.random() < 0.25) {     // 0.25
+      // 25% chance to spawn mimic chest, etc. (your existing code)
+      if (Math.random() < 0.25) {
         mimicChestIndex = chooseFreeIndex();
       } else {
         mimicChestIndex = null;

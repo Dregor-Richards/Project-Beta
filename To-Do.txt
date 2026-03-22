@@ -1,16 +1,16 @@
 03/20/2026 ---
 
- > Update Glossary With:
-      - Mining Helm          (Arms)
+ > Update Glossary With: (Just Need Descriptions)
       - Dodge Boots          (Arms)
       - Protect Chestpiece   (Arms)
       - Hammer Retal         (Arms)
       - Book Of Wands        (Arms)
       - Book Of Stones       (Arms)
+      - Mining Helm          (Arms)
       - Ring Of Chests       (Arms)
+      - Ring Of Prisms       (Arms)
       - Ring Of Fruit        (Arms)
       - Ring Of Shadow       (Arms)
-      - Ring Of Prisms       (Arms)
  > Mortars need to not target player tile
  > Hyllow Stone, Summons Eldritch Horror*
  > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)
@@ -18,8 +18,17 @@
       > If frozen, starts summoning enemies (Specifics undecided)
       > Worth 12 points, doubles point gain on level, doesn't disappear on boss reset map (Perhaps takes an empty boss spawn tile)
       > Should have his own music, ubruptly ends upon death
- > Add Equipment Effects (6 Items Are Current Existent, But All Do Nothing)
- > Add Jewelry Effects (4 Rings Are Current Existent, But All Do Nothing)
+ > Add Equipment & Jewelry Effects:
+      > Book Of Wands
+      > Book Of Stones
+      > Ring Of Prisms
+      > Greaves of Dodging
+      > Plated Armor
+      --- More Difficult Ones ---
+      > Ring Of Freshness
+      > Mining Helm
+      > Hammer Of Retaliation
+      > Ring Of Fading
 
  <---> Refractoring     <--->
 
