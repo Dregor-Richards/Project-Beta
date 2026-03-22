@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-  playMusic('highscore');
+  playHighscoreMusic();
   const tbody = document.getElementById('hs-table-body');
   if (!tbody) return;
 

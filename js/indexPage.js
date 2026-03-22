@@ -1,7 +1,7 @@
 // Javascript Specific to index.html
 
 window.addEventListener('DOMContentLoaded', () => {
-  playMusic('index');
+  playMenuMusic();
   const startButton = document.getElementById('start-button');
   const quickStartBtn = document.getElementById('quick-start');
   const highscoreBtn = document.querySelector('.highscore-button');

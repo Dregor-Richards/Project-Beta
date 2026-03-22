@@ -1,7 +1,7 @@
 // Javascript for the credits page specifically
 
 window.addEventListener('DOMContentLoaded', () => {
-  playMusic('credits');
+  playCreditsMusic();
   const backBtn = document.getElementById('credits-back');
   if (backBtn) {
     backBtn.addEventListener('click', () => {

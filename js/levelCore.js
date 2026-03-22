@@ -143,7 +143,6 @@ window.addEventListener('DOMContentLoaded', () => {
   resetLevelState();
   resetDarkness();
   loadLevelNumber();
-  playMusic('level');
   doorUnlockedByKey = false;
 
   // Restore lives and score from previous levels
@@ -189,6 +188,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const diffEl = document.getElementById('difficulty-text');
   if (diffEl) {
     diffEl.textContent = `Difficulty: ${difficulty}`;
+  }
+
+  // Decide music BEFORE we branch into boss vs normal
+  if (difficulty >= 10 && difficulty % 10 === 0) {
+    // Boss floors: play boss track
+    playBossMusic();
+  } else {
+    // Normal / post-boss / endless: regular level track
+    playLevelMusic();
   }
 
   // Boss level: skip normal config and use custom setup

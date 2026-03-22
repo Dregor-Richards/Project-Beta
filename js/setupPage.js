@@ -38,7 +38,7 @@ function goToLevel() {
 
 // Wait for DOM before wiring events
 window.addEventListener('DOMContentLoaded', () => {
-  playMusic('setup');
+  playMenuMusic();
 
   const controlButton = document.querySelector('.control-button');
   const controlModal = document.getElementById('control-modal');

@@ -11,7 +11,7 @@
       - Ring Of Fruit        (Arms)
       - Ring Of Shadow       (Arms)
       - Ring Of Prisms       (Arms)
- > New Music For Boss Fight
+ > Mortars need to not target player tile
  > Hyllow Stone, Summons Eldritch Horror*
  > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)
       > Every turn, lgiths 3 more; has move set: Move erratic 3, move towards 3, move away 3;
@@ -65,6 +65,7 @@
  $ FIll Map Cheat ; Add Inventory Item CHeat ; Give Equipment Preset Cheat
  $ Every 24th LVL, Puzzle Level
  > Add Coin on LVL 21+, Chances For Good/Bad Events When Used (Risky, But High Reward)
+ $ Add Scholar on some LVL 21+, add Discovery tab from index.html, to hold bits of lore in books about divines, countients, etc.
 
 -----
 

@@ -38,7 +38,6 @@ function playSfx(name) {
 }
 
 const music = {
-  index:       new Audio('../assets/music/Goblins_Den_(Regular).wav'),   // index.html        - Will change later
   setup:       new Audio('../assets/music/Goblins_Den_(Regular).wav'),   // levelSetup.html   - Will change later
   level:       new Audio('../assets/music/Goblins_Dance_(Battle).wav'),  // level.html        - Will change later
   boss:        new Audio('../assets/music/Larger_Than_Life_Battle_Sequence.wav'),
@@ -76,6 +75,30 @@ function playMusic(name) {
   currentMusic.play().catch(() => {
     // Ignore autoplay errors; page interactions will unlock it
   });
+}
+
+function playMenuMusic() {
+  playMusic('setup');    // index.html, levelSetup.html
+}
+
+function playLevelMusic() {
+  playMusic('level');    // normal levels
+}
+
+function playBossMusic() {
+  playMusic('boss');     // boss floors
+}
+
+function playDarkLevelMusic() {
+  playMusic('levelDark');  // dark variant
+}
+
+function playHighscoreMusic() {
+  playMusic('highscore');
+}
+
+function playCreditsMusic() {
+  playMusic('credits');
 }
 
 function stopMusic() {

@@ -235,7 +235,7 @@ if (mortarIndex !== -1) {
     // Brazier: if carrying lantern, clear all darkness for this level
     if (lanternCollected && avatarIndex === brazierTile && !brazierLit) {
       brazierLit = true;
-      playMusic('level');
+      playLevelMusic();
 
       // Permanently clear darkness for this level
       litTiles.clear();

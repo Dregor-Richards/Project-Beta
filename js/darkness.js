@@ -70,7 +70,7 @@ function activateFullDarkness() {
   fullDarkActive = true;
   firstTurnDone = true;
   recomputeDarkness();
-  playMusic('levelDark');
+  playDarkLevelMusic();
   return true;
 }
 
