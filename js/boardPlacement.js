@@ -156,7 +156,7 @@ function shouldSpawnHeart() {
 }
 
 function shouldSpawnChest() {
-  return levelNumber % 6 === 0;
+  return levelNumber % 6 === 0;     // % 6
 }
 
 function chooseFreeIndex() {

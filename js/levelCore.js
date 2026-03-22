@@ -294,6 +294,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     placeStoneForConfig(config);
+    // Per-level equipment procs
+    maybeGrantBookOfWandsReward();
+    maybeGrantBookOfStonesReward();
+    
     buildGrid(gridSize);
 
     // If dark level and full-dark not yet active, add global overlay

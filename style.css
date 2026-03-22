@@ -1836,6 +1836,24 @@ body.level-screen {
   border-width: 3px;
 }
 
+/* Glossary equipment icons */
+.glossary-icon-inner.equip-mining-helm,
+.glossary-icon-inner.equip-plated-armor,
+.glossary-icon-inner.equip-dodge-pants,
+.glossary-icon-inner.equip-retaliation-hammer,
+.glossary-icon-inner.equip-book-wands,
+.glossary-icon-inner.equip-book-stones,
+.glossary-icon-inner.ring-extra-fruit,
+.glossary-icon-inner.ring-shadow-step,
+.glossary-icon-inner.ring-prisms,
+.glossary-icon-inner.ring-chests {
+  width: 70px;
+  height: 70px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 /* =========================================
    9. High score screen
    ========================================= */

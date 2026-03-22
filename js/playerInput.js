@@ -153,6 +153,10 @@ if (mortarIndex !== -1) {
       pickupWand(picked.subtype);
       spawnParticlesAtCell(next, 'pickup');
       playSfx('itemPickup');
+      const bonus = getPrismsPickupBonus();
+      if (bonus > 0) {
+        addScore(bonus);
+      }
       wandsOnBoard.splice(wandIdx, 1); // remove from board
     }
   }
@@ -163,6 +167,10 @@ if (mortarIndex !== -1) {
     pickupStone(stoneType);
     spawnParticlesAtCell(next, 'pickup');
     playSfx('stonePickup');
+    const bonus = getPrismsPickupBonus();
+    if (bonus > 0) {
+      addScore(bonus);
+    }
     stonePresent = false;
     stoneIndex = null;
     stoneType = null;

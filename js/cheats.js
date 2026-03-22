@@ -76,13 +76,13 @@ function runCheatCode(rawCode) {
       markCheatUsed(code);
       break;
 
-    case 'allwands':
-      cheatGiveAllWands();
+    case 'armorup':
+      cheatPresetEquipment1();
       markCheatUsed(code);
       break;
 
-    case 'firestorm':
-      cheatGiveFireWands();
+    case 'dinlorknowledgeseeker':
+      cheatGiveAllWands();
       markCheatUsed(code);
       break;
 
@@ -117,15 +117,24 @@ function cheatFillMapWithGhosts() {
 }
 
 // Give 1 of each wand to the player
-function PresetEquipment1() {
+function cheatPresetEquipment1() {
   // TODO: implement adding a full set of gear to the equipment tab, replacing former and filling empty.
 }
 
-// Give 3 Fire wands to the player
-function cheatGiveFireWands() {
-  // TODO: implement adding 3 Fire wands to inventory.
-  // After modifying inventory, call renderInventory().
+// Give 1 of each Wand subtype to the player
+function cheatGiveAllWands() {
+  if (typeof pickupWand !== 'function') {
+    return;
+  }
+  // Ensure inventory is initialized; in practice it already is on a level
+  pickupWand('fire');
+  pickupWand('ice');
+  pickupWand('lightning');
+  if (typeof renderInventory === 'function') {
+    renderInventory();
+  }
 }
+
 
 // === Global key handling for the cheat console ===
 

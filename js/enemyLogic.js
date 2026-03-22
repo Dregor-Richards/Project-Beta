@@ -82,6 +82,7 @@ function pickMortarTargets(countPerMortar = 5) {
     }
 
     const blocked = new Set([
+      avatarIndex,
       doorIndex,
       skipTileIndex,
       lanternTile,
@@ -131,6 +132,7 @@ function hitMimic() {
 
   if (mimicHealth === 0) {
     // Death: drop one chest-style loot item
+    addScore(6);
     spawnParticlesAtCell(mimicIndex, 'mimicKill');
     playSfx('killMimic');
 

@@ -12,15 +12,15 @@ const EQUIP_POOL = [
     slotType: 'legs',         
     effect: 'dodge_pants'
   },
-  {
-    id: 'equip_mining_helm',
-    title: 'Mining Helm',
-    description: 'Shines a 5-tile long beam of light in the direction you last moved.',
-    iconClass: 'equip-mining-helm',
-    type: 'equipment',
-    slotType: 'head',
-    effect: 'light_beam'
-  },
+//  {
+//    id: 'equip_mining_helm',
+//    title: 'Mining Helm',
+//    description: 'Shines a 5-tile long beam of light in the direction you last moved.',
+//    iconClass: 'equip-mining-helm',
+//    type: 'equipment',
+//    slotType: 'head',
+//    effect: 'light_beam'
+//  },
   {
     id: 'equip_plated_armor',
     title: 'Plated Armor',
@@ -30,15 +30,15 @@ const EQUIP_POOL = [
     slotType: 'chest',
     effect: 'armor_plate'
   },
-  {
-    id: 'equip_retaliation_hammer',
-    title: 'Hammer Of Retaliation',
-    description: 'Hits the first enemy who attacks you each level.',
-    iconClass: 'equip-retaliation-hammer',
-    type: 'equipment',
-    slotType: 'hand',
-    effect: 'retaliation_strike'
-  },
+//  {
+//    id: 'equip_retaliation_hammer',
+//    title: 'Hammer Of Retaliation',
+//    description: 'Hits the first enemy who attacks you each level.',
+//    iconClass: 'equip-retaliation-hammer',
+//    type: 'equipment',
+//    slotType: 'hand',
+//    effect: 'retaliation_strike'
+//  },
   {
     id: 'equip_book_of_wands',
     title: 'Book Of Wands',
@@ -60,14 +60,14 @@ const EQUIP_POOL = [
 ];
 
 const RING_POOL = [
-  {
-    id: 'ring_extra_fruit',
-    title: 'Ring of Freshness',
-    description: 'Allows you to hold 3 fruit in inventory, and increases the chance of their spawn (5%).',
-    iconClass: 'ring-extra-fruit',   // CSS class for icon sprite
-    type: 'ring',
-    effect: 'extra_fruit'
-  },
+//  {
+//    id: 'ring_extra_fruit',
+//    title: 'Ring of Freshness',
+//    description: 'Allows you to hold 3 fruit in inventory, and increases the chance of their spawn (5%).',
+//    iconClass: 'ring-extra-fruit',
+//    type: 'ring',
+//    effect: 'extra_fruit'
+//  },
 //  {
 //    id: 'ring_betrayal',
 //    title: 'Ring of Betrayal',
@@ -76,14 +76,14 @@ const RING_POOL = [
 //    type: 'ring',
 //    effect: 'enemy_betrayal'
 //  },
-  {
-    id: 'ring_shadow_step',
-    title: 'Ring of Fading',
-    description: 'Every fifth turn, become a pale phantom, avoiding damage.',
-    iconClass: 'ring-shadow-step',
-    type: 'ring',
-    effect: 'shadow_step'
-  },
+//  {
+//    id: 'ring_shadow_step',
+//    title: 'Ring of Fading',
+//    description: 'Every fifth turn, become a pale phantom, avoiding damage.',
+//    iconClass: 'ring-shadow-step',
+//    type: 'ring',
+//    effect: 'shadow_step'
+//  },
   {
     id: 'ring_prisms',
     title: 'Ring of Prisms',
@@ -189,6 +189,10 @@ function showChestLootModal(equipDef) {
   card.addEventListener('click', () => {
     const item = makeEquipmentInventoryItem(equipDef);
     addItemToInventory(item);
+    const bonus = getPrismsPickupBonus();
+    if (bonus > 0) {
+      addScore(bonus);
+    }
     modal.classList.add('hidden');
     playSfx('selectLoot');
   });

@@ -7,6 +7,15 @@ async function applyPlayerHit(
   newEnemyPos = null,
   skipDeathModal = false
 ) {
+  // Greaves of Dodging: chance to avoid all damage
+  if (typeof getTotalDodgeChance === 'function') {
+    const dodgeChance = getTotalDodgeChance();
+    if (dodgeChance > 0 && Math.random() < dodgeChance) {
+      playSfx && playSfx('playerDodge');
+      return false; // treated as "player survived without losing lives"
+    }
+  }
+
   if (heartStoneActive) {
     lives = 0;
   } else {

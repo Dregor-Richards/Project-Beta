@@ -51,26 +51,26 @@ const GLOSSARY_ITEMS_BOSS = [
 
 // Equipment glossary
 const GLOSSARY_ITEMS_EQUIPMENT = [
-  { id: 'equip1', title: 'Mining Helm', iconClass: 'equip-mining-helm',
-    description: 'Coming Later'},
-  { id: 'equip1', title: 'Plated Armor', iconClass: 'equip-plated-armor',
-    description: 'FILL'},
+  { id: 'equip1', title: 'Mining Helm (Coming Later)', iconClass: 'equip-mining-helm',
+    description: 'A strange cubicle of wax and flame reside within this headpiece, and despite its simple appearance, it does in fact function. Light shines forth whereever you face, to illuminate the darkness of your descent.'},
+  { id: 'equip1', title: 'Plated Armor (Coming Later)', iconClass: 'equip-plated-armor',
+    description: 'Magically fitted and gradually repaired, this suit of armor may protect your form from individual strikes... But it will not make you invincible.'},
   { id: 'equip1', title: 'Greaves Of Dodging', iconClass: 'equip-dodge-pants',
-    description: 'FILL'},
-  { id: 'equip1', title: 'Hammer Of Retaliation', iconClass: 'equip-retaliation-hammer',
-    description: 'Coming Later'},
+    description: 'Every so often, these slippery greaves may accurately predict your foes, and force your avoidance of their wrath. However, one cannot recommend reliance, for their accuracy is fickle at best.'},
+  { id: 'equip1', title: 'Hammer Of Retaliation (Coming Later)', iconClass: 'equip-retaliation-hammer',
+    description: 'With this hefty slab of metal and stone in hand, those who would dare strike you, will face your wrath soon after. However, the sheer weight of this weapon makes it impractical for long-term combat, so one can only swing it once per floor.'},
   { id: 'equip1', title: 'Book Of Wands', iconClass: 'equip-book-wands',
-    description: 'FILL'},
+    description: 'Studying this tome may allow one to gleam various elements of wand-craft, but in this dangerous environment, periods for such study may be few and far between.'},
   { id: 'equip1', title: 'Book Of Stones', iconClass: 'equip-book-stones',
-    description: 'FILL'},
+    description: 'The study of tomes such as this are banned in most civilized lands... But here, under glass-like sands, we are far from such laws. Perhaps something of its necromanic powers may be useful, if treasure is what you seek.'},
   { id: 'equip1', title: 'Ring Of Chests', iconClass: 'ring-chests',
-    description: 'FILL'},
+    description: 'Donning this small jewel will draw chests from deep within the dungeon, to creep ever closer to the surface. If luck is on your side, you may yet encounter one on its ascent...'},
   { id: 'equip1', title: 'Ring Of Prisms', iconClass: 'ring-prisms',
-    description: 'FILL'},
-  { id: 'equip1', title: 'Ring Of Freshness', iconClass: 'ring-extra-fruit',
-    description: 'Coming Later'},
-  { id: 'equip1', title: 'Ring Of Fading', iconClass: 'ring-shadow-step',
-    description: 'Coming Later'},
+    description: 'The boon of wealth and the curse of greed are united in this jewel, as its power will grant greater reward for each wealthy acquisition.'},
+  { id: 'equip1', title: 'Ring Of Freshness (Coming Later)', iconClass: 'ring-extra-fruit',
+    description: 'This jewel counteracts the foulness in the air (And your hunger) to allow for long-term storage of fruit. Not only can you carry some for later, it seems to draw up more from beneath the corpse soil...'},
+  { id: 'equip1', title: 'Ring Of Fading (Coming Later)', iconClass: 'ring-shadow-step',
+    description: 'If you can master its pattern, this jewel will allow for defense periodic, avoidance not on chance but on prediction. If you can master it.'},
 ];
 
 const GLOSSARY_TYPES = {
@@ -83,7 +83,7 @@ let currentGlossaryType = GLOSSARY_TYPES.MAIN;
 // Page sizes per glossary
 const GLOSSARY_PAGE_SIZE_MAIN = 5;
 const GLOSSARY_PAGE_SIZE_BOSS = 3;
-const GLOSSARY_PAGE_SIZE_EQUIPMENT = 5;
+const GLOSSARY_PAGE_SIZE_EQUIPMENT = 4;
 let glossaryPage = 0;
 
 function getCurrentGlossaryConfig() {
