@@ -21,15 +21,15 @@ const EQUIP_POOL = [
 //    slotType: 'head',
 //    effect: 'light_beam'
 //  },
-  {
-    id: 'equip_plated_armor',
-    title: 'Plated Armor',
-    description: 'Protects you from a single point of damage; has a 5% chance to regen each level.',
-    iconClass: 'equip-plated-armor',
-    type: 'equipment',
-    slotType: 'chest',
-    effect: 'armor_plate'
-  },
+//  {
+//    id: 'equip_plated_armor',
+//    title: 'Plated Armor',
+//    description: 'Protects you from a single point of damage; has a 5% chance to regen each level.',
+//    iconClass: 'equip-plated-armor',
+//    type: 'equipment',
+//    slotType: 'chest',
+//    effect: 'armor_plate'
+//  },
 //  {
 //    id: 'equip_retaliation_hammer',
 //    title: 'Hammer Of Retaliation',
