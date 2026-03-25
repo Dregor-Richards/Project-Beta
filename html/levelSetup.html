@@ -51,7 +51,7 @@
         class="size-input"
         type="number"
         min="1"
-        max="10"
+        max="12"
         step="1"
         value="1"
       >
@@ -73,27 +73,35 @@
         </div>
         <button id="char-right" class="char-arrow">&gt;</button>
       </div>
-      <!-- Spacer for future Starting Item selector -->
+
       <label class="setup-label">Starting Item:</label>
       <div id="item-selector" class="item-selector">
         <button id="item-left" class="item-arrow">&lt;</button>
 
         <div class="item-wheel">
-          <div class="item-slot item-slot-left">
+        <div class="item-slot item-slot-left">
+          <div id="item-left-display">
             <img id="item-left-img" src="../assets/sprites/FireWand.png" alt="Left item">
           </div>
-          <div class="item-slot item-slot-center">
+        </div>
+        <div class="item-slot item-slot-center">
+          <div id="item-center-display">
             <img id="item-center-img" src="../assets/sprites/Empty.png" alt="Selected item">
           </div>
-          <div class="item-slot item-slot-right">
+        </div>
+        <div class="item-slot item-slot-right">
+          <div id="item-right-display">
             <img id="item-right-img" src="../assets/sprites/CoinPouch.png" alt="Right item">
           </div>
+        </div>
         </div>
 
         <button id="item-right" class="item-arrow">&gt;</button>
       </div>
 
-      <div class="setup-spacer"></div>
+      <p class="item-warning">
+        Taking a starting item will start you with -10 points.
+      </p>
 
     <button id="go-button" class="go-button">
       Begin (E)

@@ -297,6 +297,18 @@ body {
   cursor: pointer;
 }
 
+.item-warning {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #ffcc66;
+  text-align: center;
+  max-width: 260px;
+
+  display: block;
+  margin-left: auto;
+  margin-right: auto;   /* hard‑center the block */
+}
+
 #character-selector {
   margin-top: 16px;
   display: flex;
@@ -416,9 +428,37 @@ body {
   background-color: #289628;  /* slightly brighter on hover */
 }
 
-/* Spacer under the selector for “Starting Item” */
-.setup-spacer {
+#item-left-display,
+#item-center-display,
+#item-right-display {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The Red Circle With A Slash */
+.no-start-item {
+  position: relative;
+  width: 40px;
   height: 40px;
+  border-radius: 50%;
+  border: 6px solid #cc0000;
+  box-sizing: border-box;
+}
+
+/* Centered diagonal slash */
+.no-start-item::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 40px;                      /* match circle height so it stays inside */
+  background-color: #cc0000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);  /* true center */
+  transform-origin: center;
 }
 
 /* =========================================
@@ -498,6 +538,22 @@ body.level-screen {
 
 .hud-avatar4 {
   background-image: url('./assets/sprites/Avatar4.png');
+}
+
+.hud-avatar5 {
+  background-image: url('./assets/sprites/Avatar5.png');
+}
+
+.hud-avatar6 {
+  background-image: url('./assets/sprites/Avatar6.png');
+}
+
+.hud-avatar7 {
+  background-image: url('./assets/sprites/Avatar7.png');
+}
+
+.hud-avatar8 {
+  background-image: url('./assets/sprites/Avatar8.png');
 }
 
 #left-side-tabs {
@@ -935,6 +991,10 @@ body.level-screen {
 .avatar2,
 .avatar3,
 .avatar4,
+.avatar5,
+.avatar6,
+.avatar7,
+.avatar8,
 .enemy,
 .fast-enemy,
 .tracker-enemy,
@@ -947,7 +1007,11 @@ body.level-screen {
 .avatar1,
 .avatar2,
 .avatar3,
-.avatar4 {
+.avatar4,
+.avatar5,
+.avatar6,
+.avatar7,
+.avatar8 {
   width: 100%;
   height: 100%;
   background-size: contain;      /* fit inside the cell */
@@ -969,6 +1033,22 @@ body.level-screen {
 
 .avatar4 {
   background-image: url('./assets/sprites/Avatar4.png');
+}
+
+.avatar5 {
+  background-image: url('./assets/sprites/Avatar5.png');
+}
+
+.avatar6 {
+  background-image: url('./assets/sprites/Avatar6.png');
+}
+
+.avatar7 {
+  background-image: url('./assets/sprites/Avatar7.png');
+}
+
+.avatar8 {
+  background-image: url('./assets/sprites/Avatar8.png');
 }
 
 .enemy {
@@ -1166,6 +1246,13 @@ body.level-screen {
 .level-grid,
 .grid-cell,
 .avatar1,
+.avatar2,
+.avatar3,
+.avatar4,
+.avatar5,
+.avatar6,
+.avatar7,
+.avatar8,
 .enemy,
 .fast-enemy,
 .tracker-enemy,

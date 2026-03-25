@@ -177,7 +177,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const idx = (typeof getSelectedAvatarIndex === 'function')
     ? getSelectedAvatarIndex()
     : 0;
-  const classes = ['hud-avatar1', 'hud-avatar2', 'hud-avatar3', 'hud-avatar4'];
+  const classes = ['hud-avatar1', 'hud-avatar2', 'hud-avatar3', 'hud-avatar4', 'hud-avatar5', 'hud-avatar6', 'hud-avatar7', 'hud-avatar8'];
   hudAvatar.classList.remove(...classes);
   hudAvatar.classList.add(`hud-avatar${idx + 1}`);
 

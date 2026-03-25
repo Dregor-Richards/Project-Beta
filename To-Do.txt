@@ -2,18 +2,12 @@
 
  > Make an item pop-up notification below score whenever item it picked up (Tells player to right-click in inventory
           for more information); if clicked before disappears, should open inventory, highlight item as armed, for easy use.
-          Stones should cuase the modal to pop-up if used this way.
+          Stones should cause the modal to pop-up if used this way.
  > Make an item tooltip pop-up, when the player right-clicks any of their items in Inventory/Equipment/Jewelry sections.
  > Add more characters to character wheel (2-4 new additions, since old are working)
- > Lower per-level Wand chance (2 20% comes out to above 50% total)
  > Add unique SFX for Fire Wand
- > Setup Page Needs Fix: The Difficulty Selector works for typing, but the click arrows cap at 10 for some reason...
- > Equipment looting modal needs to change, currently speaks of rings the same way the ring modal does (Make generic, or make 
-          two separate modals).
- > Add a warning that you lose 10 points for taking a starting item.
  > Change coin pouch use SFX (Currently uses Stone SFX, which is haunting, not greedy).
  > Change fire to Red/Orange, the yellow looks to inviting.
- > Add a "N/A" Or red slash icon for the "No Start Item" slot of the setup page.
  > Inventory Needs Fix: The rightmost column item names are written off the screen, need to change it to where the names
           are listed to the left of the cursor for that last column.
 
@@ -30,6 +24,7 @@
       > Mining Helm
       > Hammer Of Retaliation
       > Ring Of Fading
+ > Make Bat (Fast enemy) move two turns, then freeze for turn, then move two turns, etc.
  > Add "playerDodge" audio sfx
  $ FIll Map Cheat ; Give Equipment Preset Cheat
 
@@ -45,7 +40,7 @@
  > Summoner Enemy (Slow, Summons Basic, or Trackers?) Pink Particles
     > High Chance TO Summon Norms, Lowering Chance Each Turn TO Summon Next Type
     > If Fails All Checks, Summons One Of Each
-    > Moves Until Summons Die, THen Summons More
+    > Moves Until Summons Die, Then Summons More
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
  % Sniper Enemy? (Instead of the Falling Floor Above^)
       > This sniper enemy should telegraph his fire lanes with redish orange highlight
@@ -59,7 +54,6 @@
  <--->                  <--->
 
  <---> For Levels 21-30 <--->
-
  > Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
  > Every 24th LVL, Puzzle Level ???
  > Add Coin on LVL 21+, Chances For Good/Bad Events When Used (Risky, But High Reward)

@@ -220,7 +220,7 @@ function chooseSkipTileIndex() {
 }
 
 function shouldSpawnWand() {
-  const wandChance = 0.20;  // 0.20%
+  const wandChance = 0.15;  // 0.15%, Comes out to roughly 26% of a wand being on a level at all, since checked twice
   return Math.random() < wandChance;
 }
 

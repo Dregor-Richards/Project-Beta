@@ -98,6 +98,10 @@ window.addEventListener('DOMContentLoaded', () => {
     '../assets/sprites/Avatar2.png',
     '../assets/sprites/Avatar3.png',
     '../assets/sprites/Avatar4.png',
+    '../assets/sprites/Avatar5.png',
+    '../assets/sprites/Avatar6.png',
+    '../assets/sprites/Avatar7.png',
+    '../assets/sprites/Avatar8.png',
   ];
 
   const leftImg = document.getElementById('char-left-img');
@@ -115,9 +119,8 @@ window.addEventListener('DOMContentLoaded', () => {
     : 0;
 
   function wrapIndex(i) {
-    if (i < 0) return 3;
-    if (i > 3) return 0;
-    return i;
+    const len = avatarPaths.length;
+    return (i + len) % len;   // modular wrap for any size
   }
 
   function updateWheel() {
@@ -180,21 +183,40 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let selectedItemIndex = 0; // start on "none"
 
+  function setItemDisplay(displayEl, imgEl, item) {
+    // Clear any previous "no item" state
+    displayEl.classList.remove('no-start-item');
+
+    if (item.id === 'none') {
+      imgEl.style.display = 'none';
+      displayEl.classList.add('no-start-item');
+    } else {
+      imgEl.style.display = 'block';
+      imgEl.src = item.img;
+      imgEl.alt = item.id;
+    }
+  }
+
   function updateItemWheel() {
+    const leftDisplay = document.getElementById('item-left-display');
+    const centerDisplay = document.getElementById('item-center-display');
+    const rightDisplay = document.getElementById('item-right-display');
+
     const leftItemImg = document.getElementById('item-left-img');
     const centerItemImg = document.getElementById('item-center-img');
     const rightItemImg = document.getElementById('item-right-img');
 
-    if (!leftItemImg || !centerItemImg || !rightItemImg) return;
+    if (!leftDisplay || !centerDisplay || !rightDisplay ||
+        !leftItemImg || !centerItemImg || !rightItemImg) return;
 
     const len = startingItems.length;
     const center = selectedItemIndex;
     const left = (center - 1 + len) % len;
     const right = (center + 1) % len;
 
-    leftItemImg.src = startingItems[left].img;
-    centerItemImg.src = startingItems[center].img;
-    rightItemImg.src = startingItems[right].img;
+    setItemDisplay(leftDisplay, leftItemImg, startingItems[left]);
+    setItemDisplay(centerDisplay, centerItemImg, startingItems[center]);
+    setItemDisplay(rightDisplay, rightItemImg, startingItems[right]);
   }
 
   const itemLeftBtn = document.getElementById('item-left');
