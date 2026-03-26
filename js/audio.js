@@ -11,9 +11,11 @@ const sfx = {
   itemPickup:       new Audio('../assets/sfx/Check 1.wav'),
   stonePickup:      new Audio('../assets/sfx/Ghost_moan_2.wav'),
   useIceWand:       new Audio('../assets/sfx/13_Ice_explosion_01.wav'),
-  useFireWand:      new Audio('../assets/sfx/24_orc_death_spin.wav'),  // Could later switch to fire specific
+  useFireWand:      new Audio('../assets/sfx/fire_lighting.wav'),  // Could be longer
   useLightningWand: new Audio('../assets/sfx/08_human_charge_2.wav'), // Same as Heart pickup for now
   useWyrdStone:     new Audio('../assets/sfx/Spooky Ambience.wav'),  // Could Make Shorter
+  useCoinPouch:     new Audio('../assets/sfx/Success 3.wav'),
+  playerDodge:      new Audio('../assets/sfx/88_Teleport_02.wav'),
   lootChest:        new Audio('../assets/sfx/Metal_resonance.wav'),
   selectLoot:       new Audio('../assets/sfx/sci_fi_confirm.wav'),
   mimicTransform:   new Audio('../assets/sfx/Ghost_scream_3.wav'),

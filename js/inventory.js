@@ -692,7 +692,7 @@ window.addEventListener('DOMContentLoaded', () => {
       sessionStorage.setItem('inventory', JSON.stringify(inventory));
 
       coinModal.classList.add('hidden');
-      playSfx && playSfx('useWyrdStone'); // or a new coin SFX if you have one
+      playSfx && playSfx('useCoinPouch');
     });
   }
 
