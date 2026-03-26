@@ -18,6 +18,31 @@ function initRunInventory() {
   }
 }
 
+function positionTooltip(e, tooltip) {
+  if (!tooltip || tooltip.classList.contains('hidden')) return;
+
+  const padding = 12;
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+
+  tooltip.style.left = (mouseX + padding) + 'px';
+  tooltip.style.top  = (mouseY + padding) + 'px';
+
+  const rect = tooltip.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  if (rect.right > vw) {
+    const newLeft = mouseX - rect.width - padding;
+    tooltip.style.left = Math.max(0, newLeft) + 'px';
+  }
+
+  if (rect.bottom > vh) {
+    const newTop = mouseY - rect.height - padding;
+    tooltip.style.top = Math.max(0, newTop) + 'px';
+  }
+}
+
 function pickWandSubtype() {
   const r = Math.random();
   if (r < 0.4) return 'fire';
@@ -413,9 +438,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     slot.addEventListener('mousemove', (e) => {
-      if (!tooltip || tooltip.classList.contains('hidden')) return;
-      tooltip.style.left = e.clientX + 'px';
-      tooltip.style.top = e.clientY + 'px';
+      positionTooltip(e, tooltip);
     });
 
     slot.addEventListener('mouseleave', () => {
@@ -495,9 +518,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
 
       slot.addEventListener('mousemove', (e) => {
-        if (tooltip.classList.contains('hidden')) return;
-        tooltip.style.left = e.clientX + 'px';
-        tooltip.style.top = e.clientY + 'px';
+        positionTooltip(e, tooltip);
       });
 
       slot.addEventListener('mouseleave', () => {

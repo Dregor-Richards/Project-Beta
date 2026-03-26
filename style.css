@@ -1180,29 +1180,26 @@ body.level-screen {
   background-position: center;
 }
 
-/* Mortar target (re-uses skip-tile shape) */
-.mortar-target-a {
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  width: 80%;
-  height: 80%;
-  background-image: url('./assets/sprites/MortarTargetA.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
+/* Mortar target */
+.mortar-target-a,
 .mortar-target-b {
   position: absolute;
   top: 10%;
   left: 10%;
   width: 80%;
   height: 80%;
-  background-image: url('./assets/sprites/MortarTargetB.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  filter: hue-rotate(-65deg) saturate(15) brightness(1.05);
+}
+
+.mortar-target-a {
+  background-image: url('./assets/sprites/MortarTargetA.png');
+}
+
+.mortar-target-b {
+  background-image: url('./assets/sprites/MortarTargetB.png');
 }
 
 .lantern-tile {

@@ -5,9 +5,6 @@
           Stones should cause the modal to pop-up if used this way.
  > Make an item tooltip pop-up, when the player right-clicks any of their items in Inventory/Equipment/Jewelry sections.
  > Add more characters to character wheel (2-4 new additions, since old are working)
- > Change fire to Red/Orange, the yellow looks to inviting.
- > Inventory Needs Fix: The rightmost column item names are written off the screen, need to change it to where the names
-          are listed to the left of the cursor for that last column.
 
 03/20/2026 ---
  > Hyllow Stone, Summons Eldritch Horror*
@@ -16,6 +13,7 @@
       > If frozen, starts summoning enemies (Specifics undecided)
       > Worth 12 points, doubles point gain on level, doesn't disappear on boss reset map (Perhaps takes an empty boss spawn tile)
       > Should have his own music, ubruptly ends upon death
+      > For fire, match mortar-target-a/b, but filter :   filter: hue-rotate(-100deg) saturate(12) brightness(1.1);
  > Add Equipment & Jewelry Effects:
       > Plated Armor
       > Ring Of Freshness
