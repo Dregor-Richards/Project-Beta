@@ -96,6 +96,7 @@ function placeFastEnemies(count) {
     if (mortarEnemies.includes(candidate)) continue;
 
     fastEnemies.push(candidate);
+    fastEnemyPhases.push(randomInt(0, 2));
   }
 }
 

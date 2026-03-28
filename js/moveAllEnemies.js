@@ -131,6 +131,19 @@ async function moveFastEnemies(size, maxIndex) {
   for (let i = 0; i < fastEnemies.length; i++) {
     let idx = fastEnemies[i];
 
+    // Guard if phases array got out of sync for any reason
+    if (fastEnemyPhases.length <= i) {
+      fastEnemyPhases[i] = randomInt(0, 2);
+    }
+
+    // Advance this bat’s phase: 0 → 1 → 2 → 0 ...
+    fastEnemyPhases[i] = (fastEnemyPhases[i] + 1) % 3;
+
+    // On phase 2, this bat rests for this enemy turn
+    if (fastEnemyPhases[i] === 2) {
+      continue;
+    }
+
     // If they start on an icy tile, they are already frozen
     if (frozenEnemyTiles.has(idx)) {
       continue;
@@ -158,19 +171,19 @@ async function moveFastEnemies(size, maxIndex) {
         if (next === idx) continue;
         if (isBlockedBossTile(next)) continue;
 
-        // Hit player: damage, but DON'T move into their tile
+        // Hit player
         if (next === avatarIndex) {
           const died = await applyPlayerHit(
             1,
-            true,            // moveIntoPlayerTile
-            fastEnemies,     // enemyArray
-            i,               // enemyIndex
-            next             // newEnemyPos
+            true,           // moveIntoPlayerTile
+            fastEnemies,    // enemyArray
+            i,              // enemyIndex
+            next            // newEnemyPos
           );
           if (died) return;
 
           moved = true;
-          step = stepsThisTurn; // stop remaining steps for this fast enemy
+          step = stepsThisTurn; // stop remaining steps for this bat
           break;
         }
 
@@ -192,20 +205,19 @@ async function moveFastEnemies(size, maxIndex) {
         redrawBoard();
         await sleep(ENEMY_STEP_DELAY_MS);
 
-        // New: if we just stepped onto an icy tile, lock immediately and stop all movement
+        // If we just stepped onto an icy tile, lock and stop all movement
         if (frozenEnemyTiles.has(idx)) {
-          step = stepsThisTurn; // end outer loop
-          break;                // end attempts loop
+          step = stepsThisTurn;
+          break;
         }
       }
 
       if (!moved) {
-        break; // can't move further this turn
+        break;
       }
     }
   }
 }
-
 
 async function moveTrackerEnemies(size, maxIndex) {
   trackerTurnParity = 1 - trackerTurnParity; // toggle each enemy phase

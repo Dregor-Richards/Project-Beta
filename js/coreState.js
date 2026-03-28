@@ -37,6 +37,7 @@ let panOriginY = 0;
 // Enemies
 let enemies = [];
 let fastEnemies = [];
+let fastEnemyPhases = [];
 let trackerEnemies = [];
 let mortarEnemies = [];
 let trackerTurnParity = 0;      // 0 = rest, 1 = active

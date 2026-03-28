@@ -71,7 +71,7 @@ function runCheatCode(rawCode) {
       markCheatUsed(code);
       break;
 
-    case 'ghostparty':
+    case 'minionsofthecolddark':
       cheatFillMapWithGhosts();
       markCheatUsed(code);
       break;
@@ -110,15 +110,81 @@ function cheatWinLevel() {
   // TODO: implement forced win (e.g., move avatar to door, clear enemies, then call checkForWin()).
 }
 
-// Fill the map with ghosts
+// Fill the map with ghosts (normal enemies for now)
 function cheatFillMapWithGhosts() {
-  // TODO: implement spawning a large number of normal enemies across the board.
-  // Likely needs access to gridSize, avatarIndex, doorIndex, etc., then call redrawBoard().
+  if (typeof redrawBoard !== 'function') return;
+  const maxIndex = gridSize * gridSize;
+  // Start from scratch: no existing enemies
+  enemies = [];
+  for (let tile = 1; tile <= maxIndex; tile++) {
+    // Skip the avatar and any special / already‑occupied tiles
+    if (tile === avatarIndex) continue;
+    if (tile === doorIndex) continue;
+    if (tile === heartIndex) continue;
+    if (tile === skipTileIndex) continue;
+    if (tile === wandIndex) continue;
+    if (tile === stoneIndex) continue;
+
+    if (enemies.includes(tile)) continue;
+    if (fastEnemies.includes(tile)) continue;
+    if (trackerEnemies.includes(tile)) continue;
+    if (mortarEnemies.includes(tile)) continue;
+
+    enemies.push(tile); // Change this line when changing spawned enemy-type
+  }
+  redrawBoard();
 }
 
-// Give 1 of each wand to the player
 function cheatPresetEquipment1() {
-  // TODO: implement adding a full set of gear to the equipment tab, replacing former and filling empty.
+  // Safety: ensure helpers / globals exist
+  if (typeof renderEquipment !== 'function') return;
+  if (typeof EQUIP_POOL === 'undefined') return;
+  if (typeof equippedEquipment === 'undefined') return;
+
+  // Look up the specific equipment defs from the global pool
+  const greavesDef = EQUIP_POOL.find(e => e.id === 'equip_dodge_pants') || null;
+  const bookWandsDef = EQUIP_POOL.find(e => e.id === 'equip_book_of_wands') || null;
+  const bookStonesDef = EQUIP_POOL.find(e => e.id === 'equip_book_of_stones') || null;
+
+  // Clear all equipment slots first
+  equippedEquipment.head = null;
+  equippedEquipment.chest = null;
+  equippedEquipment.legs = null;
+  equippedEquipment['hand-left'] = null;
+  equippedEquipment['hand-right'] = null;
+
+  // Helper to turn a def into the actual equipped item payload
+  function makeEquipItem(def) {
+    // Mirror makeEquipmentInventoryItem’s shape so existing logic/tooltip works
+    return {
+      type: 'equipment',
+      id: def.id,
+      title: def.title,
+      description: def.description,
+      iconClass: def.iconClass,
+      effect: def.effect,
+      slotType: def.slotType,
+    };
+  }
+
+  // Legs → Greaves of Dodging (if present)
+  if (greavesDef) {
+    equippedEquipment.legs = makeEquipItem(greavesDef);
+  }
+
+  // Left hand → Book of Wands
+  if (bookWandsDef) {
+    equippedEquipment['hand-left'] = makeEquipItem(bookWandsDef);
+  }
+
+  // Right hand → Book of Stones
+  if (bookStonesDef) {
+    equippedEquipment['hand-right'] = makeEquipItem(bookStonesDef);
+  }
+
+  // Persist and redraw
+  sessionStorage.setItem('equippedEquipment', JSON.stringify(equippedEquipment));
+  renderEquipment();
 }
 
 // Give 1 of each Wand subtype to the player
