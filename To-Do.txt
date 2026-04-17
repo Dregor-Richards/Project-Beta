@@ -19,8 +19,6 @@
       > Mining Helm
       > Hammer Of Retaliation
       > Ring Of Fading
- > Make Bat (Fast enemy) move two turns, then freeze for turn, then move two turns, etc.
- $ FIll Map Cheat ; Give Equipment Preset Cheat
  > Add Inventory Tooltip ("I" icon) to explain how to equip/use/confirm
 
  <---> Refractoring     <--->

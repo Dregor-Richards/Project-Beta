@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
       playSfx('uiConfirm');
       setTimeout(() => {
-        window.location.href = 'levelSetup.html';
+        window.location.href = 'html/levelSetup.html';
       }, 250);
     });
   }
@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
     highscoreBtn.addEventListener('click', () => {
       playSfx('uiClick');
       setTimeout(() => {
-        window.location.href = 'highScore.html';
+        window.location.href = 'html/highScore.html';
       }, 250);
     });
   }
@@ -51,10 +51,10 @@ window.addEventListener('DOMContentLoaded', () => {
           const initialScore = 0 + penalty;
           sessionStorage.setItem('playerScore', String(initialScore));
 
-          window.location.href = 'level.html';
+          window.location.href = 'html/level.html';
         } else {
           // No prior run this session → go to setup
-          window.location.href = 'levelSetup.html';
+          window.location.href = 'html/levelSetup.html';
         }
       }, 250);
     });
@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
     creditsBtn.addEventListener('click', () => {
       playSfx('uiClick');             // or uiConfirm/uiCancel as you prefer
       setTimeout(() => {
-        window.location.href = 'credits.html';
+        window.location.href = 'html/credits.html';
       }, 200);                        // match your other UI delays
     });
   }

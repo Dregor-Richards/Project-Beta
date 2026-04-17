@@ -7,7 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
     backBtn.addEventListener('click', () => {
       playSfx('uiCancel');
       setTimeout(() => {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
       }, 200);
     });
   }
@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
     backBtn.addEventListener('click', () => {
       playSfx('uiCancel');
       setTimeout(() => {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
       }, 200);
     });
   }

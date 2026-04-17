@@ -71,7 +71,7 @@ window.addEventListener('DOMContentLoaded', () => {
     menuYes.addEventListener('click', () => {
       playSfx('uiCancel');
       setTimeout(() => {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
       }, 250);
     });
   }

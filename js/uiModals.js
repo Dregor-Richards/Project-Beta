@@ -30,7 +30,7 @@ function resetRunAndGoToMenu() {
   sessionStorage.removeItem('equippedRings');
   sessionStorage.removeItem('equippedEquipment');
 
-  window.location.href = 'index.html';
+  window.location.href = '../index.html';
 }
 
 let pendingRingChoices = null;
