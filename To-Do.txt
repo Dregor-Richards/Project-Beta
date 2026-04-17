@@ -20,6 +20,7 @@
       > Hammer Of Retaliation
       > Ring Of Fading
  > Add Inventory Tooltip ("I" icon) to explain how to equip/use/confirm
+ > Itch.io version Highscore page avatars won't load...
 
  <---> Refractoring     <--->
 
