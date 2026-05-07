@@ -1284,7 +1284,7 @@ body.level-screen {
   border-radius: 50%;
   opacity: 0;
   z-index: 10;
-  animation: particle-burst 320ms ease-out forwards;
+  animation: particle-move 320ms ease-out forwards;
 }
 
 .particle--wand {
@@ -1304,6 +1304,56 @@ body.level-screen {
 .particle--wand.particle-shape-orb {
   border-radius: 40%;
   transform: scale(1.1);
+}
+
+.particle--kill-sprite {
+  background-image: url('assets/sprites/KillEffect.png');
+  background-repeat: no-repeat !important;
+  background-size: contain;
+  background-position: center center;
+  background-color: transparent !important;
+  border-radius: 0;
+
+  width: 100px;
+  height: 100px;
+
+  filter: drop-shadow(0 0 6px rgba(150, 255, 255, 0.6));
+
+  animation:
+    kill-soul-fade 300ms ease-out forwards,
+    particle-move   300ms ease-out forwards;
+}
+
+.particle--fire-sprite {
+  background-image: url('assets/sprites/FireEffect.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%; /* we’re using raw positions now */
+  background-color: transparent !important;
+  border-radius: 0;
+  width: 90px;
+  height: 90px;
+  animation:
+    fire-wand-sprite-frames 400ms steps(3) forwards,
+    particle-move           400ms ease-out forwards;
+}
+
+/* Ice wand sprite particles override base visuals */
+.particle--ice-sprite {
+  background-image: url('assets/sprites/IceEffect.png');
+  background-repeat: no-repeat;
+  background-size: 500% 100%; /* 5 frames horizontally */
+  background-color: transparent !important;
+  border-radius: 0;
+  /* Use actual frame size here */
+  width: 110px;   
+  height: 90px;  
+  /* Override base animation with two animations:
+     1) sprite frames
+     2) movement/fade
+  */
+  animation:
+    ice-wand-sprite-frames 10000ms steps(5) forwards,
+    particle-move 320ms ease-out forwards;
 }
 
 /* Default particle colors */
@@ -1353,19 +1403,38 @@ body.level-screen {
   animation-duration: 650ms;
 }
 
-@keyframes particle-burst {
+@keyframes particle-move {
   0% {
-    transform: translate(0, 0) scale(0.8);
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.8);
     opacity: 1;
   }
   60% {
-    transform: translate(var(--px, 0), var(--py, 0)) scale(1.05);
+    transform: translate(-50%, -50%) translate(var(--px, 0), var(--py, 0)) scale(1.05);
     opacity: 1;
   }
   100% {
-    transform: translate(var(--px, 0), var(--py, 0)) scale(0.7);
+    transform: translate(-50%, -50%) translate(var(--px, 0), var(--py, 0)) scale(0.7);
     opacity: 0;
   }
+}
+
+@keyframes kill-soul-fade {
+  0%   { opacity: 0.5; }  /* start half-transparent */
+  100% { opacity: 0.0; }  /* fade away */
+}
+
+@keyframes fire-wand-sprite-frames {
+  0%   { background-position: 5%   0%; }  /* sprite 1 center-ish */
+  50%  { background-position: 50%  0%; }  /* sprite 3 center-ish */
+  100% { background-position: 95%  0%; }  /* sprite 5 center-ish */
+}
+
+@keyframes ice-wand-sprite-frames {
+  0%   { background-position: 0% 0%; }     /* frame 0 */
+  /*25%  { background-position: 25% 0%; }    /* frame 1 */
+  50%  { background-position: 50% 0%; }    /* frame 2 */
+  /*75%  { background-position: 75% 0%; }    /* frame 3 */
+  100% { background-position: 100% 0%; }   /* frame 4 */
 }
 
 /* =========================================

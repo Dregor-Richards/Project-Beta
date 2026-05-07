@@ -21,6 +21,10 @@
       > Ring Of Fading
  > Add Inventory Tooltip ("I" icon) to explain how to equip/use/confirm
  > Itch.io version Highscore page avatars won't load...
+ > Itch.io version Credits page won't scroll...
+
+  > Update Fire Particles For Boss & Mimic
+  > Update Pick-Up Particles ?
 
  <---> Refractoring     <--->
 
@@ -90,30 +94,3 @@
 -----
 
  % Area control boss: Periodically drops zones on the grid that force you to keep moving (safe vs unsafe tiles).
-
-
-
-
-
-Install Pygame
-
-Install Flask or FlashAPI
-
-To get ready in your venv, you’d install either:
-
-FastAPI + Uvicorn:
-
-bash
-pip install "fastapi[standard]" uvicorn
-FastAPI docs explicitly recommend installing with the extras like that.
-
-Or Flask:
-
-bash
-pip install Flask
-(Ideally inside a virtualenv, which you’re already comfortable with.)
-
-Then you’ll expose a small /api/generate-level endpoint that takes difficulty 
-and returns JSON.
-
-Need to install Pygame

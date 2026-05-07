@@ -317,8 +317,15 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
     const p = document.createElement('div');
     p.className = `particle particle--${kind}`;
 
+    if (kind === 'iceWand') {
+      p.classList.add('particle--ice-sprite');
+    }
+    if (kind === 'fireWand') {
+      p.classList.add('particle--fire-sprite');
+    }
+
     if (kind === 'wand') {
-      const shape = Math.random() < 0.6 ? 'shard' : 'orb'; // 60% shards, 40% orbs
+      const shape = Math.random() < 0.6 ? 'shard' : 'orb';
       p.classList.add(`particle-shape-${shape}`);
     }
 
@@ -336,9 +343,10 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
     p.style.setProperty('--px', `${px}px`);
     p.style.setProperty('--py', `${py}px`);
 
-    // Per‑particle color: randomly pick from palette
-    const color = palette[Math.floor(Math.random() * palette.length)];
-    p.style.backgroundColor = color;
+    if (kind !== 'iceWand' && kind !== 'fireWand') {
+      const color = palette[Math.floor(Math.random() * palette.length)];
+      p.style.backgroundColor = color;
+    }
 
     p.addEventListener('animationend', () => {
       p.remove();
