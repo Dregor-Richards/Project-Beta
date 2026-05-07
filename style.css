@@ -1306,22 +1306,18 @@ body.level-screen {
   transform: scale(1.1);
 }
 
-.particle--kill-sprite {
-  background-image: url('assets/sprites/KillEffect.png');
-  background-repeat: no-repeat !important;
+.particle--pickup-sprite {
+  background-image: url('assets/sprites/PickupEffect.png');
+  background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
-  background-color: transparent !important;
+  background-color: transparent;
   border-radius: 0;
 
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
 
-  filter: drop-shadow(0 0 6px rgba(150, 255, 255, 0.6));
-
-  animation:
-    kill-soul-fade 300ms ease-out forwards,
-    particle-move   300ms ease-out forwards;
+  animation: pickup-fade 400ms ease-out forwards;
 }
 
 .particle--fire-sprite {
@@ -1418,9 +1414,19 @@ body.level-screen {
   }
 }
 
-@keyframes kill-soul-fade {
-  0%   { opacity: 0.5; }  /* start half-transparent */
-  100% { opacity: 0.0; }  /* fade away */
+@keyframes pickup-fade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(4px, -4px) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(4px, -4px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(4px, -4px) scale(1.15);
+  }
 }
 
 @keyframes fire-wand-sprite-frames {

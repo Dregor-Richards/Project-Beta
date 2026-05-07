@@ -294,6 +294,7 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
   if (kind === 'kill') baseCount = 10;
   if (kind === 'pickup') baseCount = 8;
   if (kind === 'door') baseCount = 14;
+  if (kind === 'pickupSprite') baseCount = 1;
 
   const particleCount = countOverride ?? baseCount;
 
@@ -323,6 +324,10 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
     if (kind === 'fireWand') {
       p.classList.add('particle--fire-sprite');
     }
+    // NEW: pickup sprite
+    if (kind === 'pickupSprite') {
+      p.classList.add('particle--pickup-sprite');
+    }
 
     if (kind === 'wand') {
       const shape = Math.random() < 0.6 ? 'shard' : 'orb';
@@ -343,7 +348,8 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
     p.style.setProperty('--px', `${px}px`);
     p.style.setProperty('--py', `${py}px`);
 
-    if (kind !== 'iceWand' && kind !== 'fireWand') {
+    // Exclude all sprite-based kinds from color fill
+    if (kind !== 'iceWand' && kind !== 'fireWand' && kind !== 'pickupSprite') {
       const color = palette[Math.floor(Math.random() * palette.length)];
       p.style.backgroundColor = color;
     }

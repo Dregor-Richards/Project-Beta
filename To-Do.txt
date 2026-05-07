@@ -24,7 +24,6 @@
  > Itch.io version Credits page won't scroll...
 
   > Update Fire Particles For Boss & Mimic
-  > Update Pick-Up Particles ?
 
  <---> Refractoring     <--->
 
