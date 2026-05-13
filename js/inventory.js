@@ -317,6 +317,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const tooltip = document.getElementById('inventory-tooltip');
   const inventoryItemModal = document.getElementById('inventory-item-modal');
 
+    // ===== Inventory info button =====
+  const inventoryInfoButton = document.getElementById('inventory-info-button');
+
+  if (inventoryInfoButton) {
+    inventoryInfoButton.addEventListener('click', () => {
+      const title = 'How To Use Items';
+      const description = 'Left-click items to arm or use them. Wands, equipment, rings, and most start items are armed, and then may be used either on game tiles, or inserted into equipment/ring slots by left-clicking the chosen slot. Stones and other start items will instead open confirmation dialogs upon selection. Right-click any item for detailed information.';
+      
+      if (typeof window.showInventoryItemModal === 'function') {
+        window.showInventoryItemModal(title, description);
+      }
+      
+      playSfx('uiClick');
+    });
+  }
+
   const slots = document.querySelectorAll('.inventory-slot');
   if (!slots.length) return;
 

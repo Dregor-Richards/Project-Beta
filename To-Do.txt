@@ -18,7 +18,6 @@
       > Mining Helm
       > Hammer Of Retaliation
       > Ring Of Fading
- > Add Inventory Tooltip ("I" icon) to explain how to equip/use/confirm
  > Itch.io version Highscore page avatars won't load...
  > Itch.io version Credits page won't scroll...
 
