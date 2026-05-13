@@ -33,6 +33,35 @@ function resetRunAndGoToMenu() {
   window.location.href = '../index.html';
 }
 
+let pendingItemInfo = null;
+
+window.showInventoryItemModal = function (title, description) {
+  pendingItemInfo = {
+    title: title || 'Item',
+    description: description || 'No description available.',
+  };
+
+  const modal = document.getElementById('inventory-item-modal');
+  const titleEl = document.getElementById('inventory-item-title');
+  const descEl = document.getElementById('inventory-item-desc');
+
+  if (!modal || !titleEl || !descEl) return;
+
+  titleEl.textContent = pendingItemInfo.title;
+  descEl.textContent = pendingItemInfo.description;
+  modal.classList.remove('hidden');
+
+  playSfx('uiClick');
+};
+
+window.closeInventoryItemModal = function () {
+  const modal = document.getElementById('inventory-item-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+  pendingItemInfo = null;
+};
+
 let pendingRingChoices = null;
 let onRingChoiceComplete = null;
 
@@ -165,6 +194,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (instructionsModal && !instructionsModal.classList.contains('hidden')) {
       instructionsModal.classList.add('hidden');
+      closed = true;
+    }
+
+    if (inventoryItemModal && !inventoryItemModal.classList.contains('hidden')) {
+      inventoryItemModal.classList.add('hidden');
       closed = true;
     }
 
@@ -426,6 +460,17 @@ window.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
     }
   });
+
+
+  const inventoryItemModal = document.getElementById('inventory-item-modal');
+  const inventoryItemOk = document.getElementById('inventory-item-ok');
+
+  if (inventoryItemOk && inventoryItemModal) {
+    inventoryItemOk.addEventListener('click', () => {
+      inventoryItemModal.classList.add('hidden');
+      playSfx('uiCancel');
+    });
+  }
 
   // ===== Glossary wiring =====
 

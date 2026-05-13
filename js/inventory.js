@@ -190,6 +190,51 @@ function getInventoryItemName(item) {
   return 'Item';
 }
 
+function getInventoryItemDescription(item) {
+  if (!item) return '';
+
+  if (item.description) return item.description;
+
+  if (item.type === 'wand') {
+    if (item.subtype === 'ice') {
+      return 'Select any tile on the map with this wand, to freeze the chosen tile and up to 8 adjacent tiles.';
+    }
+    if (item.subtype === 'fire') {
+      return 'Select any enemy on the map to deal a single point of damage (Kills most enemies).';
+    }
+    if (item.subtype === 'lightning') {
+      return 'Select the player avatar to double current movement speed (Effect stacks) for the level.';
+    }
+    return 'A magical wand with combat effects.';
+  }
+
+  if (item.type === 'wyrd_stone') {
+    return 'Triples all enemy movement and doubles score earnings for the level.';
+  }
+
+  if (item.type === 'heart_stone') {
+    return 'Causes any damage to the player avatar to result in instant death and triples the score earnings for the level.';
+  }
+
+  if (item.type === 'coin_pouch') {
+    return 'Consume this to gain bonus points based on the total value of enemies on the level.';
+  }
+
+  if (item.type === 'door_key') {
+    return 'Use this to unlock the exit door and advance to the next level without defeating all enemies.';
+  }
+
+  if (item.type === 'ring') {
+    return item.description || 'A ring that grants a passive bonus when equipped.';
+  }
+
+  if (item.type === 'equipment') {
+    return item.description || 'A piece of equipment that can be equipped for its bonuses.';
+  }
+
+  return 'No description available.';
+}
+
 function renderJewelry() {
   const slots = document.querySelectorAll('.jewelry-slot');
   if (!slots.length) return;
@@ -259,6 +304,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const coinConfirmBtn = document.getElementById('coin-confirm');
   const coinCancelBtn = document.getElementById('coin-cancel');
   const tooltip = document.getElementById('inventory-tooltip');
+  const inventoryItemModal = document.getElementById('inventory-item-modal');
 
   const slots = document.querySelectorAll('.inventory-slot');
   if (!slots.length) return;
@@ -420,6 +466,29 @@ window.addEventListener('DOMContentLoaded', () => {
             s.classList.toggle('inventory-selected', selected);
           });
         return;
+      }
+    }
+  );
+
+      slot.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+
+      const allSlots = Array.from(document.querySelectorAll('.inventory-slot'));
+      const currentIndex = allSlots.indexOf(slot);
+      const item = inventory[currentIndex];
+      if (!item) return;
+
+      const title = getInventoryItemName(item);
+      const description = getInventoryItemDescription(item);
+
+      if (typeof window.showInventoryItemModal === 'function') {
+        window.showInventoryItemModal(title, description);
+      } else if (inventoryItemModal) {
+        const titleEl = document.getElementById('inventory-item-title');
+        const descEl = document.getElementById('inventory-item-desc');
+        if (titleEl) titleEl.textContent = title;
+        if (descEl) descEl.textContent = description;
+        inventoryItemModal.classList.remove('hidden');
       }
     });
 
