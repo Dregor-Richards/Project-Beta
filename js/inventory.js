@@ -235,6 +235,17 @@ function getInventoryItemDescription(item) {
   return 'No description available.';
 }
 
+function openInventoryItemInfo(item) {
+  if (!item) return;
+
+  const title = getInventoryItemName(item);
+  const description = getInventoryItemDescription(item);
+
+  if (typeof window.showInventoryItemModal === 'function') {
+    window.showInventoryItemModal(title, description);
+  }
+}
+
 function renderJewelry() {
   const slots = document.querySelectorAll('.jewelry-slot');
   if (!slots.length) return;
@@ -532,6 +543,24 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   renderJewelry();
 
+  const jewelryContainer = document.getElementById('jewelry-slots');
+
+  if (jewelryContainer) {
+    jewelryContainer.addEventListener('contextmenu', (event) => {
+      const slot = event.target.closest('.jewelry-slot');
+      if (!slot) return;
+
+      const idx = Number(slot.dataset.slot);
+      if (Number.isNaN(idx)) return;
+
+      const ring = equippedRings[idx] || null;
+      if (!ring) return;
+
+      event.preventDefault();
+      openInventoryItemInfo(ring);
+    });
+  }
+
   if (jewelrySlots.length) {
     jewelrySlots.forEach(slot => {
       slot.addEventListener('click', () => {
@@ -611,6 +640,24 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
   renderEquipment();
+
+  const equipmentContainer = document.getElementById('equipment-slots');
+
+  if (equipmentContainer) {
+    equipmentContainer.addEventListener('contextmenu', (event) => {
+      const slot = event.target.closest('.equipment-slot');
+      if (!slot) return;
+
+      const slotKey = slot.dataset.slot;
+      if (!slotKey) return;
+
+      const equip = equippedEquipment[slotKey] || null;
+      if (!equip) return;
+
+      event.preventDefault();
+      openInventoryItemInfo(equip);
+    });
+  }
 
   if (equipmentSlots.length) {
     equipmentSlots.forEach(slot => {
