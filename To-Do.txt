@@ -21,7 +21,6 @@
  > Itch.io version Highscore page avatars won't load...
 
   > Update Fire Particles For Boss & Mimic
-  > Revert Pickup Animation To Gold Sparkles (New Too Flashy)
 
  <---> Refractoring     <--->
 
