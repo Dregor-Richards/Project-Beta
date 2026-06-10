@@ -19,9 +19,9 @@
       > Hammer Of Retaliation
       > Ring Of Fading
  > Itch.io version Highscore page avatars won't load...
- > Itch.io version Credits page won't scroll...
 
   > Update Fire Particles For Boss & Mimic
+  > Revert Pickup Animation To Gold Sparkles (New Too Flashy)
 
  <---> Refractoring     <--->
 
@@ -52,6 +52,7 @@
  > Every 24th LVL, Puzzle Level ???
  > Add Coin on LVL 21+, Chances For Good/Bad Events When Used (Risky, But High Reward)
  > Add Scholar on some LVL 21+, add Discovery tab from index.html, to hold bits of lore in books about divines, countients, etc.
+ > Fog that moves through the map, disorienting player/enemy movement (Extra effects?)
 
  <--->                  <--->
 
