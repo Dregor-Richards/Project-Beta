@@ -139,7 +139,7 @@ if (mortarIndex !== -1) {
       sessionStorage.setItem('playerLives', String(lives));
       redrawLives();
     }
-    spawnParticlesAtCell(next, 'pickupSprite');
+    spawnParticlesAtCell(next, 'pickup');
     playSfx('heartPickup');
     addScore(1);
     heartIndex = null;
@@ -151,7 +151,7 @@ if (mortarIndex !== -1) {
     if (wandIdx !== -1) {
       const picked = wandsOnBoard[wandIdx];
       pickupWand(picked.subtype);
-      spawnParticlesAtCell(next, 'pickupSprite');
+      spawnParticlesAtCell(next, 'pickup');
       playSfx('itemPickup');
       const bonus = getPrismsPickupBonus();
       if (bonus > 0) {
@@ -165,7 +165,7 @@ if (mortarIndex !== -1) {
   // Stone pickup
   if (next === stoneIndex && stonePresent) {
     pickupStone(stoneType);
-    spawnParticlesAtCell(next, 'pickupSprite');
+    spawnParticlesAtCell(next, 'pickup');
     playSfx('stonePickup');
     const bonus = getPrismsPickupBonus();
     if (bonus > 0) {
