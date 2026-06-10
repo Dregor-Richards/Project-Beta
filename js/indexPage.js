@@ -119,6 +119,13 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const collectionsButton = document.getElementById('collections-button');
+  if (collectionsButton) {
+    collectionsButton.addEventListener('click', () => {
+      window.location.href = 'html/collections.html';
+    });
+  }
+
   // Escape closes any open modal
   window.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;

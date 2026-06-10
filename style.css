@@ -2184,3 +2184,40 @@ body.level-screen.credits-page {
   font-size: 1.8rem;
   color: gold;
 }
+
+/* =========================================
+   11. Collections screen
+   ========================================= */
+
+/* Collections page layout */
+#collections-body {
+  overflow-y: hidden;
+}
+
+.collections-main {
+  height: calc(100vh - 56px); /* full height minus header, like .main-screen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.collections-content {
+  text-align: center;
+}
+
+.collections-text {
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: #dddddd;
+}
+
+.collections-back-button {
+  padding: 12px 24px;
+  font-size: 18px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'MedievalSharp', "Segoe UI", system-ui, -apple-system, sans-serif;
+}
