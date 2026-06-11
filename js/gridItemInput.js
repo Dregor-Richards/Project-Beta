@@ -60,6 +60,12 @@ function handleGridClick(event) {
       return;
     }
 
+    const firePalette = [
+      '#ffff66', // yellow
+      '#ff9933', // orange
+      '#ff3333', // red
+    ];
+
     if (armedItem.subtype === 'fire') {
       // Boss hit by Fire wand (difficulty 10)
       const storedDifficulty = sessionStorage.getItem('currentDifficulty');
@@ -68,6 +74,7 @@ function handleGridClick(event) {
       if (difficulty === 10 && typeof bossIndex === 'number') {
         const bossTileIndex = bossIndex + 1; // 0-based -> 1-based
         if (tileIndex === bossTileIndex) {
+          spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
           playSfx('useFireWand');
           consumeWandCharge(armedItem.slotIndex);
           armedItem = null;
@@ -82,6 +89,7 @@ function handleGridClick(event) {
 
       // Mimic hit by Fire wand
       if (mimicActive && mimicIndex != null && tileIndex === mimicIndex) {
+        spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
         playSfx('useFireWand');
 
         // Fire wand deals 1 damage to the mimic (does NOT guarantee a kill)
@@ -106,11 +114,7 @@ function handleGridClick(event) {
       if (normalIndex !== -1) {
         enemies.splice(normalIndex, 1);
         addScore(1);
-        spawnParticlesAtCell(tileIndex, 'fireWand', undefined, [
-          '#ffff66', // yellow
-          '#ff9933', // orange
-          '#ff3333', // red
-        ]);
+        spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
         removed = true;
       } else {
         // Fast
@@ -118,11 +122,7 @@ function handleGridClick(event) {
         if (fastIndex !== -1) {
           fastEnemies.splice(fastIndex, 1);
           addScore(2);
-          spawnParticlesAtCell(tileIndex, 'fireWand', undefined, [
-            '#ffff66', // yellow
-            '#ff9933', // orange
-            '#ff3333', // red
-          ]);
+          spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
           removed = true;
         } else {
           // Tracker
@@ -130,11 +130,7 @@ function handleGridClick(event) {
           if (trackerIndex !== -1) {
             trackerEnemies.splice(trackerIndex, 1);
             addScore(1);
-            spawnParticlesAtCell(tileIndex, 'fireWand', undefined, [
-              '#ffff66', // yellow
-              '#ff9933', // orange
-              '#ff3333', // red
-            ]);
+            spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
             removed = true;
           } else {
             // Mortar
@@ -142,11 +138,7 @@ function handleGridClick(event) {
             if (mortarIndex !== -1) {
               mortarEnemies.splice(mortarIndex, 1);
               addScore(2);
-              spawnParticlesAtCell(tileIndex, 'fireWand', undefined, [
-                '#ffff66', // yellow
-                '#ff9933', // orange
-                '#ff3333', // red
-              ]);
+              spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
               removed = true;
 
               // If no mortars remain, clear their targets
