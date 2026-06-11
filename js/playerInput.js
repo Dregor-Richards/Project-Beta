@@ -3,6 +3,56 @@ function getAllowedMovesThisTurn() {
   return 1 << extraMoves; // bit shift, equivalent to Math.pow(2, extraMoves)
 }
 
+let itemToastTimeoutId = null;
+
+function showItemPickupToast(options) {
+  const toast = document.getElementById('item-pickup-toast');
+  const nameEl = document.getElementById('item-pickup-name');
+  const iconEl = toast ? toast.querySelector('.item-pickup-icon') : null;
+
+  if (!toast || !nameEl || !iconEl) return;
+
+  const { name, iconClass } = options;
+
+  // Set text
+  nameEl.textContent = name;
+
+  // Reset icon classes and apply sprite class if provided
+  iconEl.className = 'item-pickup-icon';
+  if (iconClass) {
+    iconEl.classList.add(iconClass);
+  }
+
+  // Show toast
+  toast.classList.remove('hidden');
+
+  // Clear any existing timer
+  if (itemToastTimeoutId !== null) {
+    clearTimeout(itemToastTimeoutId);
+  }
+
+  // Auto-hide after ~10 seconds
+  itemToastTimeoutId = window.setTimeout(() => {
+    toast.classList.add('hidden');
+    itemToastTimeoutId = null;
+  }, 5000);
+}
+
+// Click → open inventory and hide toast
+window.addEventListener('DOMContentLoaded', () => {
+  const toast = document.getElementById('item-pickup-toast');
+  if (toast) {
+    toast.addEventListener('click', () => {
+      toggleInventory();
+      toast.classList.add('hidden');
+      if (itemToastTimeoutId !== null) {
+        clearTimeout(itemToastTimeoutId);
+        itemToastTimeoutId = null;
+      }
+    });
+  }
+});
+
 async function handleMove(event) {
   // Block if cheat console is open OR any text input/textarea is focused
   const active = document.activeElement;
@@ -158,6 +208,14 @@ if (mortarIndex !== -1) {
         addScore(bonus);
       }
       wandsOnBoard.splice(wandIdx, 1); // remove from board
+
+      // show item pickup toast
+      const wandName = getItemDisplayName('wand', picked.subtype);
+
+      showItemPickupToast({
+        name: wandName,
+        iconClass: `icon-wand-${picked.subtype}`
+      });
     }
   }
 
@@ -173,7 +231,16 @@ if (mortarIndex !== -1) {
     }
     stonePresent = false;
     stoneIndex = null;
+
+    const pickedStoneType = stoneType;
     stoneType = null;
+
+    const stoneName = getItemDisplayName('stone', pickedStoneType);
+
+    showItemPickupToast({
+      name: stoneName,
+      iconClass: pickedStoneType ? `icon-stone-${pickedStoneType}` : null
+    });
   }
 
   // Chest pickup / open

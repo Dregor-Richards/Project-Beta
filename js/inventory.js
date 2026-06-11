@@ -175,14 +175,17 @@ function renderInventory() {
 
 function getInventoryItemName(item) {
   if (!item) return '';
+  // Wands use shared helper
   if (item.type === 'wand') {
-    if (item.subtype === 'ice') return 'Ice Wand';
-    if (item.subtype === 'fire') return 'Fire Wand';
-    if (item.subtype === 'lightning') return 'Lightning Wand';
-    return 'Wand';
+    return getItemDisplayName('wand', item.subtype);
   }
-  if (item.type === 'wyrd_stone') return 'Wyrd Stone';
-  if (item.type === 'heart_stone') return 'Heart Stone';
+  // Stones use shared helper; map stored type keys to subtypes
+  if (item.type === 'wyrd_stone') {
+    return getItemDisplayName('stone', 'wyrd');
+  }
+  if (item.type === 'heart_stone') {
+    return getItemDisplayName('stone', 'heart');
+  }
   if (item.type === 'ring') return item.title || 'Ring';
   if (item.type === 'equipment') return item.title || 'Equipment';
   if (item.type === 'coin_pouch') return 'Coin Pouch';

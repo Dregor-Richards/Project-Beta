@@ -126,6 +126,25 @@ function isBlockedBossTile(tileIndex) {
   return missingSet.has(tileIndex);
 }
 
+function getItemDisplayName(type, subtype) {
+  if (type === 'wand') {
+    if (subtype === 'fire') return 'Fire Wand';
+    if (subtype === 'ice') return 'Ice Wand';
+    if (subtype === 'lightning') return 'Storm Wand';
+    return 'Mystic Wand';
+  }
+
+  if (type === 'stone') {
+    if (subtype === 'wyrd') return 'Wyrd Stone';
+    if (subtype === 'heart') return 'Vytal Stone';
+    if (subtype === 'hyllow') return 'Hyllow Stone';
+    return 'Ancient Stone';
+  }
+
+  // Default fallback
+  return 'Unknown Item';
+}
+
 function addItemToInventory(item) {
   if (!Array.isArray(inventory)) return;
   const emptyIndex = inventory.findIndex(slot => slot === null);
