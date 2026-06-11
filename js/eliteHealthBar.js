@@ -1,9 +1,12 @@
 function showMimicHealthBar() {
   const wrapper = document.getElementById('boss-health-wrapper');
   const pipsContainer = document.getElementById('boss-health-pips');
+  const nameLabel = document.getElementById('boss-name-label');
   if (!wrapper || !pipsContainer) return;
 
   mimicUsingBossBar = true;
+
+  nameLabel.textContent = 'Mimic';
 
   wrapper.classList.remove('hidden');
 

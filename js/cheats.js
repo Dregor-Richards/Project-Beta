@@ -96,7 +96,7 @@ function hasUsedCheatsThisRun() {
   return usedCheats.size > 0;
 }
 
-// === Cheat handlers (empty templates for now) ===
+// === Cheat handlers ===
 
 // Instantly win the current level
 function cheatWinLevel() {
@@ -107,7 +107,6 @@ function cheatWinLevel() {
   resetLevelState();
   advanceLevel();
   window.location.href = 'level.html';
-  // TODO: implement forced win (e.g., move avatar to door, clear enemies, then call checkForWin()).
 }
 
 // Fill the map with ghosts (normal enemies for now)
@@ -120,10 +119,13 @@ function cheatFillMapWithGhosts() {
     // Skip the avatar and any special / already‑occupied tiles
     if (tile === avatarIndex) continue;
     if (tile === doorIndex) continue;
-    if (tile === heartIndex) continue;
+    if (tile === chestIndex) continue;
     if (tile === skipTileIndex) continue;
+    if (tile === heartIndex) continue;
     if (tile === wandIndex) continue;
     if (tile === stoneIndex) continue;
+
+    if (tile === mimicIndex) continue;
 
     if (enemies.includes(tile)) continue;
     if (fastEnemies.includes(tile)) continue;

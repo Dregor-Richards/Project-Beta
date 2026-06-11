@@ -20,8 +20,6 @@
       > Ring Of Fading
  > Itch.io version Highscore page avatars won't load...
 
-  > Update Fire Particles For Boss & Mimic
-
  <---> Refractoring     <--->
 
  > Stone spawn stuff isn't in the same place as the rest of the spawns (Chest, Heart, Wands), and uses slightly different mechanics
@@ -35,7 +33,7 @@
     > If Fails All Checks, Summons One Of Each
     > Moves Until Summons Die, Then Summons More
  > Walls (Various Designs In Larger Rooms, Some Way Of Ensuring They Don't Block Paths)
- % Sniper Enemy? (Instead of the Falling Floor Above^)
+ % Sniper Enemy
       > This sniper enemy should telegraph his fire lanes with redish orange highlight
       > Next turn, lights those on fire, telegraphs new lanes
       > Next turn, fire deals damage, disappears, telegraphs are lit, and new telegraphs From
