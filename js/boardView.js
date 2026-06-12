@@ -111,7 +111,10 @@ function redrawBoard() {
         wand.className = 'fire-wand';
       } else if (w.subtype === 'lightning') {
         wand.className = 'lightning-wand';
+      } else if (w.subtype === 'wallbreak') {
+        wand.className = 'wallbreak-wand';
       }
+
       wandCell.appendChild(wand);
     });
   }

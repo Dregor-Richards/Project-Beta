@@ -24,8 +24,8 @@ function resetDarkness() {
 function initDarkness(difficulty, spawnCornerIndices) {
   resetDarkness();
 
-  // difficulty 11–12: always dark; 13+: 60% dark
-  if (difficulty >= 11 && difficulty <= 12) {
+  // difficulty 11–12 & 19: always dark; 13-18 & 20+: 60% dark
+  if ((difficulty >= 11 && difficulty <= 12) || difficulty === 19) {
     isDarkLevel = true;
   } else if (difficulty >= 13) {
     isDarkLevel = Math.random() < 0.6;

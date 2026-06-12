@@ -181,6 +181,28 @@ function placeWallTiles(gridSize, wallPercent) {
     ? wandsOnBoard.map(w => w.index)
     : (wandIndex != null ? [wandIndex] : []);
 
+  // Spawn safety tiles: player spawn + three immediate neighbors
+  const safetyTiles = new Set();
+  if (typeof avatarIndex === 'number') {
+    const spawn = avatarIndex;
+    safetyTiles.add(spawn);
+
+    const right = spawn + 1;
+    const up = spawn - gridSize;
+    const upRight = spawn - gridSize + 1;
+
+    // Bounds checks so we don’t accidentally add off-board indices on small grids
+    if (right <= totalTiles && spawn % gridSize !== 0) {
+      safetyTiles.add(right);
+    }
+    if (up > 0) {
+      safetyTiles.add(up);
+    }
+    if (up > 0 && spawn % gridSize !== 0) {
+      safetyTiles.add(upRight);
+    }
+  }
+
   const blocked = new Set([
     avatarIndex,
     doorIndex,
@@ -196,7 +218,8 @@ function placeWallTiles(gridSize, wallPercent) {
     ...trackerEnemies,
     ...mortarEnemies,
     ...existingWandIndices,
-    ...pickupIndices,     // avoid any existing pickups (wands/stones)
+    ...pickupIndices,   // avoid any existing pickups (wands/stones)
+    ...safetyTiles,     // protect tiles around spawn
   ]);
 
   const candidates = [];
@@ -290,19 +313,23 @@ function isLevelReachable(size) {
 
 function placeWallsWithConnectivity(gridSize, wallPercent) {
   const maxAttempts = 5;
+  let currentPercent = wallPercent;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    placeWallTiles(gridSize, wallPercent);
+    placeWallTiles(gridSize, currentPercent);
 
     if (isLevelReachable(gridSize)) {
       return; // success
     }
 
-    // If not reachable, clear walls and try again (optionally reduce density)
+    // If not reachable, clear walls and try again with fewer walls
     wallIndices = [];
+
+    // Reduce density by 20% of original each attempt (tune as needed)
+    currentPercent = Math.max(5, Math.floor(currentPercent * 0.7));
   }
 
-  // If after maxAttempts it’s still bad, fall back to no walls for safety
+  // If after maxAttempts it’s still bad, keep no walls for safety
   wallIndices = [];
 }
 

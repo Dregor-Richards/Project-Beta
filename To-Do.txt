@@ -2,6 +2,7 @@
  > Update Trackers (Too Dumb Around Walls)
  > New Wand Idea: Relocator - Target Enemy, Move Them (And 1-3 other random enemies) To Random Locations [Sprite Present]
      > Make sure they don't end up behind walls
+ > Upgrade Crusher Wall Visual Use (Have Sprite Saved)
 
  > Hyllow Stone, Summons Eldritch Horror*
  > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)
@@ -35,7 +36,6 @@
       > Next turn, lights those on fire, telegraphs new lanes
       > Next turn, fire deals damage, disappears, telegraphs are lit, and new telegraphs From
       > If lane hits internal wall, should spread for some number of tiles (1/2 or 1/3 of distance traveled before wall?)
- > Wand to turn wall into walkways (Should Spawn With High Isolated Rate, 75% or more)
  > Should this be a candle instead, place it in dark to illumate some tiles (Larger range but timed, or smaller?)
 
  <--->                  <--->

@@ -1681,7 +1681,7 @@ body.level-screen {
   background-image: url('./assets/sprites/LightningWand.png');
 }
 
-/* On-board Ice Wand */
+/* On-board Crusher Wand */
 .wallbreak-wand {
   width: 70%;
   height: 70%;
@@ -1691,7 +1691,7 @@ body.level-screen {
   background-position: center;
 }
 
-/* Inventory Ice Wand */
+/* Inventory Crusher Wand */
 .inventory-wallbreak-wand {
   width: 80%;
   height: 80%;
