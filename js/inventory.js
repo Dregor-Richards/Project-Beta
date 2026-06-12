@@ -113,6 +113,9 @@ function renderInventory() {
       } else if (item.subtype === 'lightning') {
         icon.className = 'inventory-lightning-wand';
       }
+        else if (item.subtype === 'wallbreak') {
+        icon.className = 'inventory-wallbreak-wand';
+      }
       slot.appendChild(icon);
 
       const countLabel = document.createElement('div');
@@ -207,6 +210,9 @@ function getInventoryItemDescription(item) {
     }
     if (item.subtype === 'lightning') {
       return 'Select the player avatar to double current movement speed (Effect stacks) for the level.';
+    }
+    if (item.subtype === 'wallbreak') {
+      return 'Select any wall tile on the map to remove the chosen wall (Rendering the tile walkable by friend and foe).';
     }
     return 'A magical wand with combat effects.';
   }

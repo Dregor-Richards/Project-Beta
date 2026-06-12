@@ -299,6 +299,18 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+    // Extra Tier 2 wand roll on harder levels (13+)
+    if (difficulty >= 13) {
+      if (shouldSpawnWand()) {
+        const idx = chooseWandIndex();
+        if (idx !== null) {
+          const subtype = chooseWandFromTier(2); // Tier 2: for now, just wallbreak
+          if (subtype) {
+            wandsOnBoard.push({ index: idx, subtype });
+          }
+        }
+      }
+    }
 
     placeStoneForConfig(config);
     // Per-level equipment procs

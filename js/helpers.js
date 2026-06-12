@@ -130,7 +130,8 @@ function getItemDisplayName(type, subtype) {
   if (type === 'wand') {
     if (subtype === 'fire') return 'Fire Wand';
     if (subtype === 'ice') return 'Ice Wand';
-    if (subtype === 'lightning') return 'Storm Wand';
+    if (subtype === 'lightning') return 'Lightning Wand';
+    if (subtype === 'wallbreak') return 'Crushing Wand';
     return 'Mystic Wand';
   }
 

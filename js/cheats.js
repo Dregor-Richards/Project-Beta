@@ -198,6 +198,7 @@ function cheatGiveAllWands() {
   pickupWand('fire');
   pickupWand('ice');
   pickupWand('lightning');
+  pickupWand('wallbreak');
   if (typeof renderInventory === 'function') {
     renderInventory();
   }

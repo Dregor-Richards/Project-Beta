@@ -1681,6 +1681,30 @@ body.level-screen {
   background-image: url('./assets/sprites/LightningWand.png');
 }
 
+/* On-board Ice Wand */
+.wallbreak-wand {
+  width: 70%;
+  height: 70%;
+  background-image: url('./assets/sprites/WallBreakWand.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Inventory Ice Wand */
+.inventory-wallbreak-wand {
+  width: 80%;
+  height: 80%;
+  background-image: url('./assets/sprites/WallBreakWand.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.item-pickup-icon.icon-wand-wallbreak {
+  background-image: url('./assets/sprites/WallBreakWand.png');
+}
+
 .wyrd-stone {
   position: absolute;
   top: 15%;

@@ -186,6 +186,37 @@ function handleGridClick(event) {
       return;
     }
 
+      // Wallbreak wand
+    if (armedItem.subtype === 'wallbreak') {
+      // Only work if we clicked a wall tile
+      if (typeof isWallTile === 'function' && isWallTile(tileIndex)) {
+        // Remove the wall
+        removeWallAtIndex(tileIndex);
+
+        // Greenish particles for feedback
+        spawnParticlesAtCell(tileIndex, 'wallBreak', undefined, [
+          '#7CFC00', // lawn green
+          '#ADFF2F', // green-yellow
+          '#98FB98', // pale green
+        ]);
+
+        if (typeof playSfx === 'function') {
+          playSfx('wallBreak');
+        }
+
+        // Consume one charge from this wand stack
+        consumeWandCharge(armedItem.slotIndex);
+
+        armedItem = null;
+        clearInventorySelection();
+        renderInventory();
+        sessionStorage.setItem('inventory', JSON.stringify(inventory));
+      }
+
+      // Clicking a non-wall does nothing; wand stays armed
+      return;
+    }
+
     return;
   }
 

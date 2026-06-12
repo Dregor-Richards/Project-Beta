@@ -310,6 +310,17 @@ function isWallTile(index) {
   return wallIndices && wallIndices.includes(index);
 }
 
+function removeWallAtIndex(index) {
+  if (!wallIndices || wallIndices.length === 0) return;
+
+  const pos = wallIndices.indexOf(index);
+  if (pos === -1) return;
+
+  wallIndices.splice(pos, 1);  // remove from walls list
+  // After changing walls, just redraw the board
+  redrawBoard();
+}
+
 function chooseFreeIndex() {
   const maxIndex = gridSize * gridSize;
 
@@ -386,10 +397,9 @@ const WAND_TIERS = {
     { type: 'ice',       weight: 30 },
     { type: 'lightning', weight: 10 },
   ],
-  //2: [
-  //  { type: 'wallbreak', weight: 75 },
-  //  { type: 'relocate',  weight: 25 },
-  //],
+  2: [
+    { type: 'wallbreak', weight: 100 },
+  ],
 };
 
 function chooseWandFromTier(tierId) {

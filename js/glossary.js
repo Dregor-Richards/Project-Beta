@@ -37,6 +37,8 @@ const GLOSSARY_ITEMS_MAIN = [
     description: 'Light, in these darkening halls, will swiftly be a luxury. But these lanterns, discarded by those who came before, still burn with the Wisps locked within.'},
   { id: 'brazier', title: 'Brazier', iconClass: 'brazier-tile',
     description: 'This sacrifical basin will accept the life of a Wisp, such as those within the grasp of these discarded lanterns. Mayhap their light will burn even brighter, in death.'},
+  { id: 'wallbreak_wand', title: 'Crusher Wand', iconClass: 'inventory-wallbreak-wand',
+    description: 'A primitive wand possessed of fleeting power, but the metallic headpiece may be effective at shattering skulls.'},
   { id: 'coin_pouch', title: 'Coin Pouch', iconClass: 'inventory-coin-pouch',
     description: 'This pouch forever feels empty. Once you open it, however, it will feast upon the life-force of those around you, rewarding you in kind, for half the value it extracts.'},
   { id: 'main_door_key', title: 'Main Door Key', iconClass: 'inventory-door-key',
