@@ -376,13 +376,40 @@ function shouldSpawnWand() {
   return Math.random() < wandChance;
 }
 
-function chooseWandSubtype() {
-  const wandOptions = [
-    { type: 'fire',      weight: 60 }, // 60%
-    { type: 'ice',       weight: 30 }, // 30%
-    { type: 'lightning', weight: 10 }, // 10%
-  ];
-  return chooseWeightedRandom(wandOptions);
+const WAND_TIERS = {
+  0: [
+    { type: 'ice',       weight: 60 }, // guaranteed/pre-boss pool
+    { type: 'lightning', weight: 40 },
+  ],
+  1: [
+    { type: 'fire',      weight: 60 },
+    { type: 'ice',       weight: 30 },
+    { type: 'lightning', weight: 10 },
+  ],
+  //2: [
+  //  { type: 'wallbreak', weight: 75 },
+  //  { type: 'relocate',  weight: 25 },
+  //],
+};
+
+function chooseWandFromTier(tierId) {
+  const tier = WAND_TIERS[tierId];
+  if (!tier || tier.length === 0) {
+    return null;
+  }
+  // Weighted pick
+  let totalWeight = 0;
+  for (const item of tier) {
+    totalWeight += item.weight;
+  }
+  let roll = Math.random() * totalWeight;
+  for (const item of tier) {
+    roll -= item.weight;
+    if (roll <= 0) {
+      return item.type;
+    }
+  }
+  return tier[tier.length - 1].type; // fallback
 }
 
 function chooseWandIndex() {

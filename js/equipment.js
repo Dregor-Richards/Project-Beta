@@ -6,7 +6,7 @@ const EQUIP_POOL = [
   {
     id: 'equip_dodge_pants',
     title: 'Greaves Of Dodging',
-    description: 'Gives you a 3% chance of dodging an attack.',
+    description: 'Gives you a 5% chance of dodging an attack.',
     iconClass: 'equip-dodge-pants',
     type: 'equipment',
     slotType: 'legs',         
@@ -42,7 +42,7 @@ const EQUIP_POOL = [
   {
     id: 'equip_book_of_wands',
     title: 'Book Of Wands',
-    description: 'Has a 1% chance to generate a wand directly into your inventory each level.',
+    description: 'Has a 5% chance to generate a wand directly into your inventory each level.',
     iconClass: 'equip-book-wands',
     type: 'equipment',
     slotType: 'hand',
@@ -51,7 +51,7 @@ const EQUIP_POOL = [
   {
     id: 'equip_book_of_stones',
     title: 'Book Of Stones',
-    description: 'Has a 1% chance to generate a stone directly into your inventory each level.',
+    description: 'Has a 5% chance to generate a stone directly into your inventory each level.',
     iconClass: 'equip-book-stones',
     type: 'equipment',
     slotType: 'hand',

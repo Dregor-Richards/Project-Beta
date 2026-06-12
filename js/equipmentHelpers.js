@@ -1,8 +1,8 @@
 const RING_CHESTS_PER_RING = 0.03; // 3% per Ring of Chests
-const BOOK_WANDS_CHANCE_PER = 0.01;  // 1% per Book of Wands
-const BOOK_STONES_CHANCE_PER = 0.01; // 1% per Book of Stones
+const BOOK_WANDS_CHANCE_PER = 0.05;  // Updated to 5%, was 1% per Book of Wands
+const BOOK_STONES_CHANCE_PER = 0.05; // Updated to 5%, was 1% per Book of Stones
 const PRISMS_BONUS_PER_RING = 1; // +1 Point per Ring Of Prisms
-const DODGE_PANTS_CHANCE_PER = 0.03; // 3% per Greaves of Dodging
+const DODGE_PANTS_CHANCE_PER = 0.05; // Updated to 5%, was 3% per Greaves of Dodging
 
 // Count equipped equipment pieces by effect id
 function countEquippedEquipmentByEffect(effectId) {

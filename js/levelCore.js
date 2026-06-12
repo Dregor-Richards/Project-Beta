@@ -280,8 +280,10 @@ window.addEventListener('DOMContentLoaded', () => {
     if (config.guaranteeWand) {
       const guaranteedIdx = chooseWandIndex();
       if (guaranteedIdx !== null) {
-        const guaranteedSubtype = chooseWandSubtype();
-        wandsOnBoard.push({ index: guaranteedIdx, subtype: guaranteedSubtype });
+        const guaranteedSubtype = chooseWandFromTier(0); // Tier 0: pre-boss pool
+        if (guaranteedSubtype) {
+          wandsOnBoard.push({ index: guaranteedIdx, subtype: guaranteedSubtype });
+        }
       }
     }
     const wandRolls = 2;
@@ -289,8 +291,11 @@ window.addEventListener('DOMContentLoaded', () => {
       if (shouldSpawnWand()) {
         const idx = chooseWandIndex();
         if (idx !== null) {
-          const subtype = chooseWandSubtype();
-          wandsOnBoard.push({ index: idx, subtype });
+          // For now, all random wands come from Tier 1
+          const subtype = chooseWandFromTier(1);
+          if (subtype) {
+            wandsOnBoard.push({ index: idx, subtype });
+          }
         }
       }
     }

@@ -1,8 +1,7 @@
  > Update Darkness So Level 19 Is Always Darkness
- > Update Wand Dropper: Increase Chance 1-10, Add Another Dropper & Increase Chance 11-20, Make Tiers
-     > Fire & Relocate Tier 1, Ice & Lightning Tier 2 (Different Chances)
  > Update Trackers (Too Dumb Around Walls)
  > New Wand Idea: Relocator - Target Enemy, Move Them (And 1-3 other random enemies) To Random Locations [Sprite Present]
+     > Make sure they don't end up behind walls
 
  > Hyllow Stone, Summons Eldritch Horror*
  > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)
@@ -37,8 +36,7 @@
       > Next turn, fire deals damage, disappears, telegraphs are lit, and new telegraphs From
       > If lane hits internal wall, should spread for some number of tiles (1/2 or 1/3 of distance traveled before wall?)
  > Wand to turn wall into walkways (Should Spawn With High Isolated Rate, 75% or more)
- > Empty Lanterns To Pickup For Later Levels, Use Fire Wand To Light
-      > Or Should this be a candle instead, place it in dark to illumate some tiles (Larger range but timed, or smaller?)
+ > Should this be a candle instead, place it in dark to illumate some tiles (Larger range but timed, or smaller?)
 
  <--->                  <--->
 
