@@ -68,6 +68,8 @@ function placeNormalEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
+    // if summon
+    if (isWallTile(candidate)) continue;
     
     enemies.push(candidate);
   }
@@ -94,6 +96,8 @@ function placeFastEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
+    // if summon
+    if (isWallTile(candidate)) continue;
 
     fastEnemies.push(candidate);
     fastEnemyPhases.push(randomInt(0, 2));
@@ -121,6 +125,8 @@ function placeTrackerEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
+    // if summon
+    if (isWallTile(candidate)) continue;
 
     trackerEnemies.push(candidate);
   }
@@ -147,6 +153,8 @@ function placeMortarEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
+    // if summon
+    if (isWallTile(candidate)) continue;
 
     mortarEnemies.push(candidate);
   }
@@ -158,6 +166,148 @@ function shouldSpawnHeart() {
 
 function shouldSpawnChest() {
   return levelNumber % 6 === 0;     // % 6
+}
+
+let wallIndices = [];
+
+function placeWallTiles(gridSize, wallPercent) {
+  wallIndices = [];
+  if (!wallPercent || wallPercent <= 0) return;
+
+  const totalTiles = gridSize * gridSize;
+  const wallTileCount = Math.round((totalTiles * wallPercent) / 100);
+
+  const existingWandIndices = Array.isArray(wandsOnBoard)
+    ? wandsOnBoard.map(w => w.index)
+    : (wandIndex != null ? [wandIndex] : []);
+
+  const blocked = new Set([
+    avatarIndex,
+    doorIndex,
+    heartIndex,
+    skipTileIndex,
+    stoneIndex,
+    chestIndex,
+    lanternTile,
+    brazierTile,
+    mimicChestIndex,
+    ...enemies,
+    ...fastEnemies,
+    ...trackerEnemies,
+    ...mortarEnemies,
+    ...existingWandIndices,
+    ...pickupIndices,     // avoid any existing pickups (wands/stones)
+  ]);
+
+  const candidates = [];
+  for (let i = 1; i <= totalTiles; i++) {
+    if (!blocked.has(i)) {
+      candidates.push(i);
+    }
+  }
+
+  // Shuffle candidates
+  for (let i = candidates.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+  }
+
+  const count = Math.min(wallTileCount, candidates.length);
+  for (let i = 0; i < count; i++) {
+    wallIndices.push(candidates[i]);
+  }
+}
+
+function getNeighbors(idx, size, maxIndex) {
+  const neighbors = [];
+
+  // up
+  if (idx > size) neighbors.push(idx - size);
+  // down
+  if (idx <= maxIndex - size) neighbors.push(idx + size);
+  // left
+  if ((idx - 1) % size !== 0) neighbors.push(idx - 1);
+  // right
+  if (idx % size !== 0) neighbors.push(idx + 1);
+
+  return neighbors;
+}
+
+// Check if door and all enemies are reachable from player given current walls
+function isLevelReachable(size) {
+  const maxIndex = size * size;
+
+  const wallSet = new Set(wallIndices || []);
+
+  const blocked = new Set([...wallSet]);
+
+  const visited = new Set();
+  const queue = [];
+
+  // Start BFS from player
+  if (blocked.has(avatarIndex)) {
+    // Player spawned in a blocked tile? Should never happen, but guard anyway
+    return false;
+  }
+  visited.add(avatarIndex);
+  queue.push(avatarIndex);
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    const neighbors = getNeighbors(current, size, maxIndex);
+
+    for (const n of neighbors) {
+      if (blocked.has(n)) continue;
+      if (visited.has(n)) continue;
+      visited.add(n);
+      queue.push(n);
+    }
+  }
+
+  // Door must be reachable
+  if (doorIndex != null && !visited.has(doorIndex)) {
+    return false;
+  }
+
+  // All core enemies must be reachable
+  const allEnemyIndices = [
+    ...enemies,
+    ...fastEnemies,
+    ...trackerEnemies,
+    ...mortarEnemies,
+    //...summonerEnemies, 
+    //...beamerEnemies,
+  ];
+
+  for (const idx of allEnemyIndices) {
+    if (!visited.has(idx)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function placeWallsWithConnectivity(gridSize, wallPercent) {
+  const maxAttempts = 5;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    placeWallTiles(gridSize, wallPercent);
+
+    if (isLevelReachable(gridSize)) {
+      return; // success
+    }
+
+    // If not reachable, clear walls and try again (optionally reduce density)
+    wallIndices = [];
+  }
+
+  // If after maxAttempts it’s still bad, fall back to no walls for safety
+  wallIndices = [];
+}
+
+function isWallTile(index) {
+  return wallIndices && wallIndices.includes(index);
 }
 
 function chooseFreeIndex() {
@@ -172,6 +322,7 @@ function chooseFreeIndex() {
     doorIndex,
     heartIndex,
     skipTileIndex,
+    ...wallIndices,
     ...enemies,
     ...fastEnemies,
     ...trackerEnemies,
@@ -194,7 +345,7 @@ function chooseFreeIndex() {
 
 function chooseHeartIndex() {
   const maxIndex = gridSize * gridSize;
-  const blocked = new Set([avatarIndex, doorIndex, ...enemies]);
+  const blocked = new Set([avatarIndex, doorIndex, ...enemies, ...wallIndices]);
   const candidates = [];
 
   for (let i = 1; i <= maxIndex; i++) {
@@ -208,7 +359,7 @@ function chooseHeartIndex() {
 
 function chooseSkipTileIndex() {
   const maxIndex = gridSize * gridSize;
-  const blocked = new Set([avatarIndex, doorIndex, heartIndex, ...enemies]);
+  const blocked = new Set([avatarIndex, doorIndex, heartIndex, ...enemies, ...wallIndices]);
   const candidates = [];
 
   for (let i = 1; i <= maxIndex; i++) {
@@ -221,7 +372,7 @@ function chooseSkipTileIndex() {
 }
 
 function shouldSpawnWand() {
-  const wandChance = 0.15;  // 0.15%, Comes out to roughly 26% of a wand being on a level at all, since checked twice
+  const wandChance = 0.3;  // 0.30%, Comes out to roughly 51% of a wand being on a level at all, since checked twice
   return Math.random() < wandChance;
 }
 
@@ -246,6 +397,7 @@ function chooseWandIndex() {
     doorIndex,
     heartIndex,
     skipTileIndex,
+    ...wallIndices,
     ...enemies,
     ...fastEnemies,
     ...trackerEnemies,

@@ -306,8 +306,6 @@ function clearInventorySelection() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('inventory wiring running');
-
   const wyrdModal = document.getElementById('wyrd-modal');
   const wyrdConfirmBtn = document.getElementById('wyrd-confirm');
   const wyrdCancelBtn = document.getElementById('wyrd-cancel');

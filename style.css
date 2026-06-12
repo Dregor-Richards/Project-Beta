@@ -1159,6 +1159,13 @@ body.level-screen {
   z-index: 3;
 }
 
+.wall-tile {
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/tiles/Wall1.png');
+  background-size: cover;
+}
+
 .door {
   position: absolute;
   inset: 0%;              /* same as width/height/margin combo */

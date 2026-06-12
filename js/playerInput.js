@@ -114,6 +114,10 @@ async function handleMove(event) {
 
   if (next === avatarIndex) return;
 
+  if (isWallTile && isWallTile(next)) {
+    return; // do nothing; treat as solid tile
+  }
+
   // Prevent walking into missing tiles on boss level (difficulty 10)
 const storedDifficultyBoss = sessionStorage.getItem('currentDifficulty');
 const difficultyBoss =

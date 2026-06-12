@@ -87,6 +87,7 @@ function pickMortarTargets(countPerMortar = 5) {
       skipTileIndex,
       lanternTile,
       brazierTile,
+      ...wallIndices,
       ...enemies,
       ...fastEnemies,
       ...trackerEnemies,

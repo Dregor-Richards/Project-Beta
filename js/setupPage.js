@@ -12,8 +12,8 @@ function goToLevel() {
   const raw = document.getElementById("size-input").value;
   const n = Number(raw);
 
-  // Difficulty must be 1–12
-  if (!Number.isInteger(n) || n < 1 || n > 12) {
+  // Difficulty must be 1–19
+  if (!Number.isInteger(n) || n < 1 || n > 19) {
     const rangeModal = document.getElementById('range-modal');
     if (rangeModal) {
       rangeModal.classList.remove('hidden');

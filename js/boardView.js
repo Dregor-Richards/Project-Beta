@@ -29,6 +29,16 @@ function redrawBoard() {
     c.innerHTML = '';
   });
 
+  if (Array.isArray(wallIndices) && wallIndices.length > 0) {
+    wallIndices.forEach(idx => {
+      const cell = findCellByIndex(cells, idx);
+      if (!cell) return;
+      const wallDiv = document.createElement('div');
+      wallDiv.className = 'wall-tile';
+      cell.appendChild(wallDiv);
+    });
+  }
+
   frozenEnemyTiles.forEach(index => {
     const frozenCell = findCellByIndex(cells, index);
     if (frozenCell) {

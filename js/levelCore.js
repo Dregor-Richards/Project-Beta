@@ -223,6 +223,8 @@ window.addEventListener('DOMContentLoaded', () => {
     placeFastEnemies(config.fastCount);
     placeTrackerEnemies(config.trackerCount);
     placeMortarEnemies(config.mortarCount);
+    // placeSummonerEnemies(config.summonerCount);
+    // placeBeamerEnemies(config.beamerCount);
 
     doorIndex = chooseDoorIndex();
 
@@ -297,6 +299,9 @@ window.addEventListener('DOMContentLoaded', () => {
     // Per-level equipment procs
     maybeGrantBookOfWandsReward();
     maybeGrantBookOfStonesReward();
+
+    // DO THIS LAST OUT OF PLACEMENTS
+    placeWallsWithConnectivity(gridSize, config.wallPercent);
     
     buildGrid(gridSize);
 

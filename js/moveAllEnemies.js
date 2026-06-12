@@ -98,6 +98,10 @@ async function moveNormalEnemies(size, maxIndex) {
       if (next === idx) continue;
       if (isBlockedBossTile(next)) continue;
 
+      if (typeof isWallTile === 'function' && isWallTile(next)) {
+        continue;
+      }
+
       // Hit player
       if (next === avatarIndex) {
         const died = await applyPlayerHit(1, true, enemies, i, next);
@@ -170,6 +174,10 @@ async function moveFastEnemies(size, maxIndex) {
 
         if (next === idx) continue;
         if (isBlockedBossTile(next)) continue;
+
+        if (typeof isWallTile === 'function' && isWallTile(next)) {
+          continue;
+        }
 
         // Hit player
         if (next === avatarIndex) {
@@ -255,6 +263,10 @@ async function moveTrackerEnemies(size, maxIndex) {
 
       if (next === idx) break;
       if (isBlockedBossTile(next)) continue;
+
+      if (typeof isWallTile === 'function' && isWallTile(next)) {
+        continue;
+      }
 
       // Hit player: damage and move into their tile if they kill the player
       if (next === avatarIndex) {
@@ -361,6 +373,10 @@ async function moveMimic(size, maxIndex) {
     if (next === idx) continue;
     if (isBlockedBossTile(next)) continue;
 
+    if (typeof isWallTile === 'function' && isWallTile(next)) {
+      continue;
+    }
+
     // Hit player
     if (next === avatarIndex) {
       const died = await applyPlayerHit(
@@ -407,7 +423,7 @@ async function handleMortarPhase() {
   // If all mortars are on frozen tiles, they do nothing
   const anyUnfrozen = mortarEnemies.some(idx => !frozenEnemyTiles.has(idx));
   if (!anyUnfrozen) {
-    // NEW: cancel any already-telegraphed shots
+    // cancel any already-telegraphed shots
     mortarTargets = [];
     mortarJustTargeted = false;
     return;
