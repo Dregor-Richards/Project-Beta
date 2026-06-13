@@ -1,4 +1,3 @@
- > Update Darkness So Level 19 Is Always Darkness
  > Update Trackers (Too Dumb Around Walls)
  > New Wand Idea: Relocator - Target Enemy, Move Them (And 1-3 other random enemies) To Random Locations [Sprite Present]
      > Make sure they don't end up behind walls
@@ -83,4 +82,11 @@
 
 -----
 
+ > Add Forge some LVL 31+, with Upgrade/Reroll/Secret Recipes.
+     > Needs mini version of the inventory, with grey scrolls bar, rounded edges.
+     > Use "W" "S" to move up and down inventory view, "A" "D" to move through inventory items, "E" to add items to the forge grid (9x9)
+     > First item goes in center tile, which is special for which item is being upgraded or combined
+     > If specific combo of items (Location doesn't matter) is added to grid, secret recipe button appears, and new item can be made
+     > Upgrade/Reroll/Secret all have a number key (1, 2, 3), for keyboard compatible, some letter closes forge
+     > To use Forge again, must walk off and back onto the forge tile, can't just reopen
  % Area control boss: Periodically drops zones on the grid that force you to keep moving (safe vs unsafe tiles).
