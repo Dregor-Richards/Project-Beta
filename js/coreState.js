@@ -40,11 +40,25 @@ let fastEnemies = [];
 let fastEnemyPhases = [];
 let trackerEnemies = [];
 let mortarEnemies = [];
+let summonerEnemies = [];
+let summonerStages = [];           // 0=Normal, 1=Fast, 2=Tracker, 3=Mortar
+let summonerFailStreaks = [];
+let summonerMustCombo = [];        // boolean per summoner: next turn = combo summon
 let trackerTurnParity = 0;      // 0 = rest, 1 = active
 let mortarTargets = [];  // tiles targeted by mortars
 let mortarJustTargeted = false; // tracks targeting/firing phase
 let mortarFireCount = 0;
 let blockedMortarTiles = new Set();
+// Pink-tinted enemies (summoned by Summoners)
+let enemyIsSummoned = [];
+let fastEnemyIsSummoned = [];
+let trackerEnemyIsSummoned = [];
+let mortarEnemyIsSummoned = [];
+// For each summonerEnemies[i], track indices of its children in each enemy array
+let summonerChildNormalIndices = [];   // array of arrays
+let summonerChildFastIndices = [];
+let summonerChildTrackerIndices = [];
+let summonerChildMortarIndices = [];
 
 // Get-Hit globals
 let shakeTime = 0;

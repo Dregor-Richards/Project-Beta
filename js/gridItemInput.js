@@ -101,55 +101,126 @@ function handleGridClick(event) {
         renderInventory();
         sessionStorage.setItem('inventory', JSON.stringify(inventory));
 
-        // Board and boss/mimic bar are updated inside hitMimic()
-        // but we can safely ensure visuals are current:
         redrawBoard();
         return;
       }
 
       let removed = false;
 
-      // Normal
-      const normalIndex = enemies.indexOf(tileIndex);
-      if (normalIndex !== -1) {
-        enemies.splice(normalIndex, 1);
-        addScore(1);
+      // Summoner
+      const summonerIndex = summonerEnemies.indexOf(tileIndex);
+      if (summonerIndex !== -1) {
+        summonerEnemies.splice(summonerIndex, 1);
+
+        // Clear any child ownership for this Summoner
+        summonerChildNormalIndices.splice(summonerIndex, 1);
+        summonerChildFastIndices.splice(summonerIndex, 1);
+        summonerChildTrackerIndices.splice(summonerIndex, 1);
+        summonerChildMortarIndices.splice(summonerIndex, 1);
+
+        addScore(3);
         spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
         removed = true;
       } else {
-        // Fast
-        const fastIndex = fastEnemies.indexOf(tileIndex);
-        if (fastIndex !== -1) {
-          fastEnemies.splice(fastIndex, 1);
-          addScore(2);
+        // Normal
+        const normalIndex = enemies.indexOf(tileIndex);
+        if (normalIndex !== -1) {
+          enemies.splice(normalIndex, 1);
+          enemyIsSummoned.splice(normalIndex, 1);
+
+          // Update summoner child tracking (normal)
+          for (let s = 0; s < summonerChildNormalIndices.length; s++) {
+            const arr = summonerChildNormalIndices[s];
+            for (let k = 0; k < arr.length; k++) {
+              if (arr[k] === normalIndex) {
+                arr[k] = -1;
+              } else if (arr[k] > normalIndex) {
+                arr[k] -= 1;
+              }
+            }
+          }
+
+          addScore(1);
           spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
           removed = true;
         } else {
-          // Tracker
-          const trackerIndex = trackerEnemies.indexOf(tileIndex);
-          if (trackerIndex !== -1) {
-            trackerEnemies.splice(trackerIndex, 1);
-            addScore(1);
+          // Fast
+          const fastIndex = fastEnemies.indexOf(tileIndex);
+          if (fastIndex !== -1) {
+            fastEnemies.splice(fastIndex, 1);
+            fastEnemyIsSummoned.splice(fastIndex, 1);
+
+            // Update summoner child tracking (fast)
+            for (let s = 0; s < summonerChildFastIndices.length; s++) {
+              const arr = summonerChildFastIndices[s];
+              for (let k = 0; k < arr.length; k++) {
+                if (arr[k] === fastIndex) {
+                  arr[k] = -1;
+                } else if (arr[k] > fastIndex) {
+                  arr[k] -= 1;
+                }
+              }
+            }
+
+            addScore(2);
             spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
             removed = true;
           } else {
-            // Mortar
-            const mortarIndex = mortarEnemies.indexOf(tileIndex);
-            if (mortarIndex !== -1) {
-              mortarEnemies.splice(mortarIndex, 1);
-              addScore(2);
+            // Tracker
+            const trackerIndex = trackerEnemies.indexOf(tileIndex);
+            if (trackerIndex !== -1) {
+              trackerEnemies.splice(trackerIndex, 1);
+              trackerEnemyIsSummoned.splice(trackerIndex, 1);
+
+              // Update summoner child tracking (tracker)
+              for (let s = 0; s < summonerChildTrackerIndices.length; s++) {
+                const arr = summonerChildTrackerIndices[s];
+                for (let k = 0; k < arr.length; k++) {
+                  if (arr[k] === trackerIndex) {
+                    arr[k] = -1;
+                  } else if (arr[k] > trackerIndex) {
+                    arr[k] -= 1;
+                  }
+                }
+              }
+
+              addScore(1);
               spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
               removed = true;
+            } else {
+              // Mortar
+              const mortarIndex = mortarEnemies.indexOf(tileIndex);
+              if (mortarIndex !== -1) {
+                mortarEnemies.splice(mortarIndex, 1);
+                mortarEnemyIsSummoned.splice(mortarIndex, 1);
 
-              // If no mortars remain, clear their targets
-              if (mortarEnemies.length === 0) {
-                mortarTargets = [];
+                // Update summoner child tracking (mortar)
+                for (let s = 0; s < summonerChildMortarIndices.length; s++) {
+                  const arr = summonerChildMortarIndices[s];
+                  for (let k = 0; k < arr.length; k++) {
+                    if (arr[k] === mortarIndex) {
+                      arr[k] = -1;
+                    } else if (arr[k] > mortarIndex) {
+                      arr[k] -= 1;
+                    }
+                  }
+                }
+
+                addScore(2);
+                spawnParticlesAtCell(tileIndex, 'fireWand', undefined, firePalette);
+                removed = true;
+
+                // If no mortars remain, clear their targets
+                if (mortarEnemies.length === 0) {
+                  mortarTargets = [];
+                }
               }
             }
           }
         }
       }
 
+      // No enemy/boss/mimic on this tile: wand stays armed, do nothing
       if (!removed) return;
 
       playSfx('useFireWand');

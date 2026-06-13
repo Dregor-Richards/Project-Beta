@@ -7,10 +7,6 @@ const GLOSSARY_ITEMS_MAIN = [
     description: 'Reach the door, once all foes have been slain, to delve deeper into these expansive dungeons.' },
   { id: 'skip', title: 'Altar Of Phelos', iconClass: 'skip-tile',
     description: 'Pray if you will, to this god of Time. He may stall the passage for a breath, but what good will it do you, if your foes march on all the same?'},
-  { id: 'enemy_normal', title: 'Cloak-&-Dagger', iconClass: 'enemy',
-    description: 'Nothing remains of this once-adventurer, but the blade they gripped beyond expiration, and a cloak that warmed them in life. If they can reach you, they will stab. STAY AWAY.'},
-  { id: 'enemy_fast', title: 'Bat', iconClass: 'fast-enemy',
-    description: 'A wild animal of the winged sort. Nothing too threatening, but it can move up to thrice that of most. And yes, it bites.'},
   { id: 'heart', title: 'Fresh Apple', iconClass: 'heart',
     description: 'A simple apple. It will rot before you even make it through the door, from the dark magic creeping through the air. But if you find yourself injured, it may ease your pain, for a time.'},
   { id: 'fire_wand', title: 'Fire Wand', iconClass: 'inventory-fire-wand',
@@ -19,12 +15,8 @@ const GLOSSARY_ITEMS_MAIN = [
     description: 'Whatever wood this once was made of, has long since departed. Now only frost remains, and its lethality is minimal. But still, it may prove to slow your foes.' },
   { id: 'lightning_wand', title: 'Lightning Wand', iconClass: 'inventory-lightning-wand',
     description: 'Despite common sense, you will be aiming this one at yourself. It shall spark your heart, and add a spring to your step. For every stride you used to take, you may take another.' },
-  { id: 'enemy_tracker', title: 'Hound', iconClass: 'tracker-enemy',
-    description: 'Your only advantage against this feral beast, is its own laziness. While it waits, you can scheme... But when it chooses to move, it will outmatch your stride, and will forever close in.'},
   { id: 'closed_chest', title: 'Chest', iconClass: 'chest-closed',
     description: 'Whatever was left behind within this ornate container could be of great value... Just be wary, no one bothers to use two of these, when one will suffice.'},
-  { id: 'enemy_mortar', title: 'Acolyte Of Voca', iconClass: 'mortar-enemy',
-    description: 'Though incapable of hand-to-hand combat, this disciple wields a meager blessing from the god of Magic, and will rain fire from afar until silenced.'},
   { id: 'mortar_strike', title: 'Arcane Flames', iconClass: 'mortar-target-a',
     description: 'Before you try it, fire burns faster than your stride can carry you through the inferno. Avoid these blazes, and turn your blade upon the Acolytes to quell the scorch.'},
   { id: 'wyrd_stone', title: 'Wyrd Stone', iconClass: 'inventory-wyrd-stone',
@@ -49,6 +41,16 @@ const GLOSSARY_ITEMS_MAIN = [
 const GLOSSARY_ITEMS_BOSS = [
   { id: 'boss_1', title: 'Acolyte Of Voca', iconClass: 'boss-enemy1',
     description: 'Devoted to the God of Magic, this charalatan was loyal through life and into undeath, but still is unworthy of holding the title of Champion. Beware, their god has still gifted them token powers, to reflect their dark efforts to gain favour.' },
+  { id: 'enemy_normal', title: 'Cloak-&-Dagger', iconClass: 'enemy',
+    description: 'Nothing remains of this once-adventurer, but the blade they gripped beyond expiration, and a cloak that warmed them in life. If they can reach you, they will stab. STAY AWAY.'},
+  { id: 'enemy_fast', title: 'Bat', iconClass: 'fast-enemy',
+    description: 'A wild animal of the winged sort. Nothing too threatening, but it can move up to thrice that of most. And yes, it bites.'},
+  { id: 'enemy_tracker', title: 'Hound', iconClass: 'tracker-enemy',
+    description: 'Your only advantage against this feral beast, is its own laziness. While it waits, you can scheme... But when it chooses to move, it will outmatch your stride, and will forever close in.'},
+  { id: 'enemy_mortar', title: 'Acolyte Of Voca', iconClass: 'mortar-enemy',
+    description: 'Though incapable of hand-to-hand combat, this disciple wields a meager blessing from the god of Magic, and will rain fire from afar until silenced.'},
+  { id: 'enemy_summoner', title: 'Evoker Of Merci', iconClass: 'summoner-enemy',
+    description: 'Frail and unseeming, this creature has been gifted the power to raise the dead from their slumber. Slay them quickly, lest you be overrun.'}
 ];
 
 // Equipment glossary
@@ -159,7 +161,7 @@ function renderGlossaryPage() {
   indicator.textContent = `Page ${glossaryPage + 1} of ${totalPages}`;
 
   if (typeLabelEl) {
-    typeLabelEl.textContent = label; // e.g., “Basics” or “Bosses”
+    typeLabelEl.textContent = label;
   }
 }
 

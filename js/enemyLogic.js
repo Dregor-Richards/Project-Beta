@@ -92,6 +92,7 @@ function pickMortarTargets(countPerMortar = 5) {
       ...fastEnemies,
       ...trackerEnemies,
       ...mortarEnemies,
+      ...summonerEnemies,
       ...mortarTargets, // already chosen targets
     ]);
 
@@ -210,6 +211,7 @@ function allEnemiesDead() {
     enemies.length === 0 &&
     fastEnemies.length === 0 &&
     trackerEnemies.length === 0 &&
-    mortarEnemies.length === 0
+    mortarEnemies.length === 0 &&
+    summonerEnemies.length === 0
   );
 }

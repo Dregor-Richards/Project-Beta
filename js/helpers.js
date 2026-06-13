@@ -44,6 +44,10 @@ function resetLevelState() {
   mortarTargets = [];
   mortarJustTargeted = false;
   mortarFireCount = 0;
+  enemyIsSummoned = [];
+  fastEnemyIsSummoned = [];
+  trackerEnemyIsSummoned = [];
+  mortarEnemyIsSummoned = [];
 
   // Per-level effects
   frozenEnemyTiles = new Set();

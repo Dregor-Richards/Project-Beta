@@ -1049,6 +1049,7 @@ body.level-screen {
 .fast-enemy,
 .tracker-enemy,
 .mortar-enemy,
+.summoner-enemy,
 .heart {
   position: relative;
   z-index: 2;
@@ -1138,6 +1139,19 @@ body.level-screen {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.summoner-enemy {
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/sprites/Summoner.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.enemy-summoned-pink {
+  filter: hue-rotate(-75deg) saturate(10) brightness(1.1);
 }
 
 .mimic-enemy {
@@ -1312,6 +1326,7 @@ body.level-screen {
 .tracker-enemy,
 .mortar-enemy,
 .mimic-enemy,
+.summoner-enemy,
 .heart,
 .door,
 .skip-tile,

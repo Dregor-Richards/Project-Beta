@@ -51,6 +51,7 @@ function getUnsafeSpawnTilesNearPlayer() {
 
 function placeNormalEnemies(count) {
   enemies = [];
+  enemyIsSummoned = [];
   const maxIndex = gridSize * gridSize;
   const unsafe = new Set(getUnsafeSpawnTilesNearPlayer());
 
@@ -68,15 +69,17 @@ function placeNormalEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
-    // if summon
+    if (summonerEnemies.includes(candidate)) continue;
     if (isWallTile(candidate)) continue;
     
     enemies.push(candidate);
+    enemyIsSummoned.push(false);
   }
 }
 
 function placeFastEnemies(count) {
   fastEnemies = [];
+  fastEnemyIsSummoned = [];
   if (count <= 0) return;
 
   const maxIndex = gridSize * gridSize;
@@ -96,16 +99,18 @@ function placeFastEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
-    // if summon
+    if (summonerEnemies.includes(candidate)) continue;
     if (isWallTile(candidate)) continue;
 
     fastEnemies.push(candidate);
     fastEnemyPhases.push(randomInt(0, 2));
+    fastEnemyIsSummoned.push(false);
   }
 }
 
 function placeTrackerEnemies(count) {
   trackerEnemies = [];
+  trackerEnemyIsSummoned = [];
   if (count <= 0) return;
 
   const maxIndex = gridSize * gridSize;
@@ -125,15 +130,17 @@ function placeTrackerEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
-    // if summon
+    if (summonerEnemies.includes(candidate)) continue;
     if (isWallTile(candidate)) continue;
 
     trackerEnemies.push(candidate);
+    trackerEnemyIsSummoned.push(false);
   }
 }
 
 function placeMortarEnemies(count) {
   mortarEnemies = [];
+  mortarEnemyIsSummoned = [];
   if (count <= 0) return;
 
   const maxIndex = gridSize * gridSize;
@@ -153,10 +160,61 @@ function placeMortarEnemies(count) {
     if (fastEnemies.includes(candidate)) continue;
     if (trackerEnemies.includes(candidate)) continue;
     if (mortarEnemies.includes(candidate)) continue;
-    // if summon
+    if (summonerEnemies.includes(candidate)) continue;
     if (isWallTile(candidate)) continue;
 
     mortarEnemies.push(candidate);
+    mortarEnemyIsSummoned.push(false);
+  }
+}
+
+function placeSummonerEnemies(count) {
+  // Reset all Summoner-related state
+  summonerEnemies = [];
+  summonerStages = [];
+  summonerFailStreaks = [];
+  summonerMustCombo = [];
+
+  // IMPORTANT: reset per-summoner child lists here, not with a single push
+  summonerChildNormalIndices = [];
+  summonerChildFastIndices = [];
+  summonerChildTrackerIndices = [];
+  summonerChildMortarIndices = [];
+
+  if (count <= 0) return;
+
+  const maxIndex = gridSize * gridSize;
+  const unsafe = new Set(getUnsafeSpawnTilesNearPlayer());
+
+  while (summonerEnemies.length < count) {
+    const candidate = getRandomInt(1, maxIndex);
+
+    if (candidate === avatarIndex) continue;
+    if (unsafe.has(candidate)) continue;
+    if (candidate === doorIndex) continue;
+    if (candidate === heartIndex) continue;
+    if (candidate === skipTileIndex) continue;
+    if (candidate === wandIndex) continue;
+    if (candidate === stoneIndex) continue;
+    if (isWallTile(candidate)) continue;
+
+    if (enemies.includes(candidate)) continue;
+    if (fastEnemies.includes(candidate)) continue;
+    if (trackerEnemies.includes(candidate)) continue;
+    if (mortarEnemies.includes(candidate)) continue;
+    if (summonerEnemies.includes(candidate)) continue;
+
+    // Place this Summoner
+    summonerEnemies.push(candidate);
+    summonerStages.push(0);        // start at Normal
+    summonerFailStreaks.push(0);   // no fails yet
+    summonerMustCombo.push(false); // no combo queued yet
+
+    // Create empty child lists for THIS summoner (index = summonerEnemies.length - 1)
+    summonerChildNormalIndices.push([]);
+    summonerChildFastIndices.push([]);
+    summonerChildTrackerIndices.push([]);
+    summonerChildMortarIndices.push([]);
   }
 }
 
@@ -217,6 +275,7 @@ function placeWallTiles(gridSize, wallPercent) {
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
+    ...summonerEnemies,
     ...existingWandIndices,
     ...pickupIndices,   // avoid any existing pickups (wands/stones)
     ...safetyTiles,     // protect tiles around spawn
@@ -298,7 +357,7 @@ function isLevelReachable(size) {
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
-    //...summonerEnemies, 
+    ...summonerEnemies, 
     //...beamerEnemies,
   ];
 
@@ -365,6 +424,7 @@ function chooseFreeIndex() {
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
+    ...summonerEnemies,
     ...existingWandIndices,
     ...pickupIndices, // avoid any existing pickups (wands/stones)
   ]);
@@ -466,6 +526,7 @@ function chooseWandIndex() {
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
+    ...summonerEnemies,
     ...existingWandIndices,
     ...pickupIndices,            // <- NEW: avoid any existing pickups
   ]);

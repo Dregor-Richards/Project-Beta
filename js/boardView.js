@@ -148,38 +148,59 @@ function redrawBoard() {
   }
 
   // enemies
-  enemies.forEach(idx => {
+  enemies.forEach((idx, i) => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
     const enemy = document.createElement('div');
     enemy.className = 'enemy';
+    if (enemyIsSummoned[i]) {
+      enemy.classList.add('enemy-summoned-pink');
+    }
     cell.appendChild(enemy);
   });
 
   // fast enemies
-  fastEnemies.forEach(idx => {
+  fastEnemies.forEach((idx, i) => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
     const enemy = document.createElement('div');
     enemy.className = 'fast-enemy';
+    if (fastEnemyIsSummoned[i]) {
+      enemy.classList.add('enemy-summoned-pink');
+    }
     cell.appendChild(enemy);
   });
 
   // tracker enemies
-  trackerEnemies.forEach(idx => {
+  trackerEnemies.forEach((idx, i) => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
     const enemy = document.createElement('div');
     enemy.className = 'tracker-enemy';
+    if (trackerEnemyIsSummoned[i]) {
+      enemy.classList.add('enemy-summoned-pink');
+    }
     cell.appendChild(enemy);
   });
 
   // mortar enemies
-  mortarEnemies.forEach(idx => {
+  mortarEnemies.forEach((idx, i) => {
     const cell = findCellByIndex(cells, idx);
     if (!cell) return;
     const enemy = document.createElement('div');
     enemy.className = 'mortar-enemy';
+    if (mortarEnemyIsSummoned[i]) {
+      enemy.classList.add('enemy-summoned-pink');
+    }
+    cell.appendChild(enemy);
+  });
+
+    // summoner enemies
+  summonerEnemies.forEach(idx => {
+    const cell = findCellByIndex(cells, idx);
+    if (!cell) return;
+    const enemy = document.createElement('div');
+    enemy.className = 'summoner-enemy';
     cell.appendChild(enemy);
   });
 
@@ -320,6 +341,7 @@ function spawnParticlesAtCell(index, kind = 'hit', countOverride, colors) {
     chestLoot: ['#ffd700', '#ffffff', '#c0c0c0'],
     mimicHit: ['#a020f0', '#ff3333'],
     mimicKill: ['#a020f0', '#000000', '#1e90ff', '#ff3333'],
+    summon: ['#ff69b4', '#ffb6c1'],
   };
   const palette =
     Array.isArray(colors) && colors.length > 0

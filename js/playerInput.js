@@ -147,6 +147,18 @@ if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
   const enemyIndex = enemies.indexOf(next);
   if (enemyIndex !== -1) {
     enemies.splice(enemyIndex, 1);
+    enemyIsSummoned.splice(enemyIndex, 1);
+    // Update summoner child tracking
+    for (let s = 0; s < summonerChildNormalIndices.length; s++) {
+      const arr = summonerChildNormalIndices[s];
+      for (let k = 0; k < arr.length; k++) {
+        if (arr[k] === enemyIndex) {
+          arr[k] = -1;        // this child is gone
+        } else if (arr[k] > enemyIndex) {
+          arr[k] -= 1;        // shift down
+        }
+      }
+    }
     addScore(1);
     spawnParticlesAtCell(next, 'kill');
     playSfx('enemyDeath');
@@ -155,6 +167,18 @@ if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
   const fastIndex = fastEnemies.indexOf(next);
   if (fastIndex !== -1) {
     fastEnemies.splice(fastIndex, 1);
+    fastEnemyIsSummoned.splice(fastIndex, 1);
+    // Update summoner child tracking
+    for (let s = 0; s < summonerChildFastIndices.length; s++) {
+      const arr = summonerChildFastIndices[s];
+      for (let k = 0; k < arr.length; k++) {
+        if (arr[k] === enemyIndex) {
+          arr[k] = -1;        // this child is gone
+        } else if (arr[k] > enemyIndex) {
+          arr[k] -= 1;        // shift down
+        }
+      }
+    }
     addScore(2);
     spawnParticlesAtCell(next, 'kill');
     playSfx('enemyDeath');
@@ -163,6 +187,18 @@ if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
   const trackerIndex = trackerEnemies.indexOf(next);
   if (trackerIndex !== -1) {
     trackerEnemies.splice(trackerIndex, 1);
+    trackerEnemyIsSummoned.splice(trackerIndex, 1);
+    // Update summoner child tracking
+    for (let s = 0; s < summonerChildTrackerIndices.length; s++) {
+      const arr = summonerChildTrackerIndices[s];
+      for (let k = 0; k < arr.length; k++) {
+        if (arr[k] === enemyIndex) {
+          arr[k] = -1;        // this child is gone
+        } else if (arr[k] > enemyIndex) {
+          arr[k] -= 1;        // shift down
+        }
+      }
+    }
     addScore(2);
     spawnParticlesAtCell(next, 'kill');
     playSfx('enemyDeath');
@@ -171,11 +207,24 @@ if (difficultyBoss === 10 && Array.isArray(BOSS_MISSING_TILES)) {
 const mortarIndex = mortarEnemies.indexOf(next);
 if (mortarIndex !== -1) {
   mortarEnemies.splice(mortarIndex, 1);
+  mortarEnemyIsSummoned.splice(mortarIndex, 1);
 
   const tilesMarked = Array.isArray(mortarTargets) ? mortarTargets.length : 0;
 
   // Always at least 1 point; +1 for every additional 5 tiles beyond the first 5
   const mortarPoints = 1 + Math.max(0, Math.floor((tilesMarked - 5) / 5));
+
+    // Update summoner child tracking
+  for (let s = 0; s < summonerChildMortarIndices.length; s++) {
+    const arr = summonerChildMortarIndices[s];
+    for (let k = 0; k < arr.length; k++) {
+      if (arr[k] === enemyIndex) {
+        arr[k] = -1;        // this child is gone
+      } else if (arr[k] > enemyIndex) {
+        arr[k] -= 1;        // shift down
+      }
+    }
+  }
 
   addScore(mortarPoints);
   spawnParticlesAtCell(next, 'kill');
@@ -197,6 +246,18 @@ if (mortarIndex !== -1) {
     playSfx('heartPickup');
     addScore(1);
     heartIndex = null;
+  }
+
+  const summonerIndex = summonerEnemies.indexOf(next);
+  if (summonerIndex !== -1) {
+    summonerEnemies.splice(summonerIndex, 1);
+    summonerStages.splice(summonerIndex, 1);
+    summonerFailStreaks.splice(summonerIndex, 1);
+    summonerMustCombo.splice(summonerIndex, 1);
+
+    addScore(3); // Update Score?
+    spawnParticlesAtCell(next, 'kill');
+    playSfx('enemyDeath');
   }
 
   // Wand pickup (supports multiple wands)

@@ -108,10 +108,12 @@ function getTotalEnemyBaseValue() {
   const FAST_VALUE = 2;
   const TRACKER_VALUE = 2;
   const MORTAR_VALUE = 2;
+  const SUMMONER_VALUE = 3;
   total += enemies.length * NORMAL_VALUE;
   total += fastEnemies.length * FAST_VALUE;
   total += trackerEnemies.length * TRACKER_VALUE;
   total += mortarEnemies.length * MORTAR_VALUE;
+  total += summonerEnemies.length * SUMMONER_VALUE;
   return total;
 }
 
@@ -223,7 +225,7 @@ window.addEventListener('DOMContentLoaded', () => {
     placeFastEnemies(config.fastCount);
     placeTrackerEnemies(config.trackerCount);
     placeMortarEnemies(config.mortarCount);
-    // placeSummonerEnemies(config.summonerCount);
+    placeSummonerEnemies(config.summonerCount);
     // placeBeamerEnemies(config.beamerCount);
 
     doorIndex = chooseDoorIndex();

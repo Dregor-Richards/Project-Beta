@@ -153,6 +153,7 @@ function spawnBossStageEnemies() {
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
+    ...summonerEnemies,
   ]);
 
   function takeFrom(pool) {
