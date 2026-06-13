@@ -35,7 +35,7 @@ const DIFFICULTY_TABLE = [
     fastRange: [1, 2],
     trackerRange: [0, 0],
     mortarRange: [0, 0],
-    summonerRange: [2, 2],
+    summonerRange: [0, 0],
     wallRange: [0, 0],
     beamerRange: [0, 0],
     guaranteeStone: false,
