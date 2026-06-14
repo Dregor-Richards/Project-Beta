@@ -26,6 +26,25 @@ function goToLevel() {
   sessionStorage.setItem('baseDifficulty', String(difficulty));
   sessionStorage.setItem('currentDifficulty', String(difficulty));
 
+  // Compute skip rewards (bonus wands + equipment)
+  const skipBonus = computeSkipRewards(difficulty);
+
+  // Build wand subtype list
+  const wandSubtypes = [];
+  for (let i = 0; i < skipBonus.wands; i++) {
+    wandSubtypes.push(pickRandomTier1WandSubtype());
+  }
+
+  sessionStorage.setItem(
+    'bonusStartingWands',
+    JSON.stringify(wandSubtypes)
+  );
+
+  sessionStorage.setItem(
+    'bonusStartingEquipment',
+    skipBonus.equipment ? '1' : '0'
+  );
+
   // Lives and level number can still reset as designed
   sessionStorage.removeItem('playerLives');
   resetLevelNumber();
@@ -34,6 +53,35 @@ function goToLevel() {
   setTimeout(() => {
     window.location.href = "level.html";
   }, 250);
+}
+
+function computeSkipRewards(difficulty) {
+  const bonus = {
+    wands: 0,
+    equipment: false,
+  };
+
+  if (difficulty <= 1) {
+    return bonus;
+  }
+
+  // 1 wand every 5-level band: 6, 11, 16, ...
+  // Example: 6 → 1, 11 → 2, 16 → 3
+  const bands = Math.floor((difficulty - 1) / 5);
+  bonus.wands = Math.max(0, bands);
+
+  // Equipment for any start at 11+
+  if (difficulty >= 11) {
+    bonus.equipment = true;
+  }
+
+  return bonus;
+}
+
+function pickRandomTier1WandSubtype() {
+  const subtypes = ['fire', 'ice', 'lightning', 'wallbreak'];
+  const idx = Math.floor(Math.random() * subtypes.length);
+  return subtypes[idx];
 }
 
 // Wait for DOM before wiring events

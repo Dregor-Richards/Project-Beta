@@ -168,8 +168,51 @@ window.addEventListener('DOMContentLoaded', () => {
     // No inventory in sessionStorage → this is a fresh run.
     // Start from a clean 21-slot inventory and apply starting item.
     inventory = new Array(21).fill(null);
-    applyStartingItemInventory();  // will give 3 Fire Wands for start_item_3
-    // pickupWand inside applyStartingItemInventory will save inventory for later levels
+    applyStartingItemInventory();  // starting item only
+
+    // --- NEW: apply skip-based starting rewards ---
+
+    // Bonus starting wands
+    const bonusWandsRaw = sessionStorage.getItem('bonusStartingWands');
+    if (bonusWandsRaw) {
+      try {
+        const list = JSON.parse(bonusWandsRaw);
+        if (Array.isArray(list)) {
+          list.forEach(subtype => {
+            const allowed = ['fire', 'ice', 'lightning', 'wallbreak'];
+            if (allowed.includes(subtype) && typeof pickupWand === 'function') {
+              pickupWand(subtype);
+            }
+          });
+        }
+      } catch (e) {
+        // ignore bad data
+      }
+      // Clear once applied so it doesn't re-apply next level
+      sessionStorage.removeItem('bonusStartingWands');
+    }
+
+    // Bonus starting equipment
+    const bonusEquipFlag = sessionStorage.getItem('bonusStartingEquipment');
+    if (bonusEquipFlag === '1') {
+      if (typeof createRandomStartingEquipment === 'function') {
+        const equip = createRandomStartingEquipment();
+        if (equip) {
+          const slot = typeof findFirstEmptySlot === 'function'
+            ? findFirstEmptySlot()
+            : -1;
+          if (slot !== -1) {
+            inventory[slot] = equip;
+          }
+        }
+      }
+      // Clear flag so equipment only granted at run start
+      sessionStorage.removeItem('bonusStartingEquipment');
+
+      // Persist inventory after direct mutation
+      sessionStorage.setItem('inventory', JSON.stringify(inventory));
+      renderInventory();
+    }
   }
 
 

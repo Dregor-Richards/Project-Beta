@@ -1,10 +1,6 @@
- > // Update Summoner Child Tracking (Search for this in 8 places, normal kills and fire wand, could be turned into Helper)
-
- > GIve Player RNG Wand For Every 5 Levels Skiped, & Random Equipment For Every 10
-
  > Upgrade Wall Flood, currently blocks lanterns and brazier
  
- > Update Trackers (Too Dumb Around Walls)
+ > Update Trackers (Too Dumb Around Walls) - Update all units, too dumb
  > New Wand Idea: Relocator - Target Enemy, Move Them (And 1-3 other random enemies) To Random Locations [Sprite Present]
      > Make sure they don't end up behind walls
  > Upgrade Crusher Wall Visual Use (Have Sprite Saved)
@@ -29,6 +25,7 @@
 
  > Stone spawn stuff isn't in the same place as the rest of the spawns (Chest, Heart, Wands), and uses slightly different mechanics
  > bossLevel1 has several functions that are likely bosses-universal, could be moved to a new bossHelper, for future boss access
+ > // Update Summoner Child Tracking (Search for this in 8 places, normal kills and fire wand, could be turned into Helper)
 
  <--->                  <--->
 

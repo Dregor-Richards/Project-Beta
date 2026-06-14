@@ -1,23 +1,6 @@
 // inventory.js
 // Functions for rendering inventory, tracking item collection, and allowing for item usage.
 
-function initRunInventory() {
-  inventory = new Array(21).fill(null);
-
-  const startingItemId = sessionStorage.getItem('startingItemId');
-
-  // If player chose the Fire Wand starting item, give a stack of 3
-  if (startingItemId === 'start_item_3') {
-    pickupWand('fire');
-    pickupWand('fire');
-    pickupWand('fire');
-    // pickupWand handles renderInventory() and sessionStorage
-  } else {
-    // If you want to persist an empty inventory:
-    sessionStorage.setItem('inventory', JSON.stringify(inventory));
-  }
-}
-
 function positionTooltip(e, tooltip) {
   if (!tooltip || tooltip.classList.contains('hidden')) return;
 
@@ -45,9 +28,41 @@ function positionTooltip(e, tooltip) {
 
 function pickWandSubtype() {
   const r = Math.random();
-  if (r < 0.4) return 'fire';
-  if (r < 0.7) return 'ice';
-  return 'lightning';
+  if (r < 0.25) return 'fire';
+  if (r < 0.50) return 'ice';
+  if (r < 0.75) return 'lightning';
+  return 'wallbreak';
+}
+
+function pickRandomTier1WandSubtype() {
+  const subtypes = ['fire', 'ice', 'lightning', 'wallbreak'];
+  const idx = Math.floor(Math.random() * subtypes.length);
+  return subtypes[idx];
+}
+
+function createRandomStartingEquipment() {
+  if (!Array.isArray(EQUIP_POOL) || EQUIP_POOL.length === 0) {
+    return null;
+  }
+
+  const idx = Math.floor(Math.random() * EQUIP_POOL.length);
+  const equipDef = EQUIP_POOL[idx];
+
+  // Reuse the shared helper from equipment.js
+  if (typeof makeEquipmentInventoryItem === 'function') {
+    return makeEquipmentInventoryItem(equipDef);
+  }
+
+  // Fallback if helper isn’t available for some reason
+  return {
+    type: 'equipment',
+    id: equipDef.id,
+    title: equipDef.title,
+    description: equipDef.description,
+    iconClass: equipDef.iconClass,
+    effect: equipDef.effect,
+    slotType: equipDef.slotType,
+  };
 }
 
 function findFirstEmptySlot() {
