@@ -23,7 +23,7 @@
  > Stone spawn stuff isn't in the same place as the rest of the spawns (Chest, Heart, Wands), and uses slightly different mechanics
  > bossLevel1 has several functions that are likely bosses-universal, could be moved to a new bossHelper, for future boss access
  > // Update Summoner Child Tracking (Search for this in 8 places, normal kills and fire wand, could be turned into Helper)
- > boardPlacement/inventory too big
+ > inventory too big
 
  <--->                  <--->
 
