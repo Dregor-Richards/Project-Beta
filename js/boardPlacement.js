@@ -320,7 +320,6 @@ function isLevelReachable(size) {
   const maxIndex = size * size;
 
   const wallSet = new Set(wallIndices || []);
-
   const blocked = new Set([...wallSet]);
 
   const visited = new Set();
@@ -351,14 +350,26 @@ function isLevelReachable(size) {
     return false;
   }
 
+  // Lantern / brazier must be reachable if they exist
+  if (typeof lanternTile === 'number' && lanternTile >= 1) {
+    if (!visited.has(lanternTile)) {
+      return false;
+    }
+  }
+  if (typeof brazierTile === 'number' && brazierTile >= 1) {
+    if (!visited.has(brazierTile)) {
+      return false;
+    }
+  }
+
   // All core enemies must be reachable
   const allEnemyIndices = [
     ...enemies,
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
-    ...summonerEnemies, 
-    //...beamerEnemies,
+    ...summonerEnemies,
+    // ...beamerEnemies,
   ];
 
   for (const idx of allEnemyIndices) {

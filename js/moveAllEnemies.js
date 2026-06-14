@@ -48,6 +48,72 @@ async function applyPlayerHit(
   }
 }
 
+function getWalkableNeighbors(idx, size, maxIndex) {
+  const neighbors = [];
+
+  const up    = idx - size;
+  const down  = idx + size;
+  const left  = idx - 1;
+  const right = idx + 1;
+
+  const isValid = (i) => i >= 1 && i <= maxIndex;
+
+  if (isValid(up))    neighbors.push(up);
+  if (isValid(down))  neighbors.push(down);
+  if ((idx - 1) % size !== 0 && isValid(left))  neighbors.push(left);
+  if (idx % size !== 0 && isValid(right))       neighbors.push(right);
+
+  return neighbors.filter(n => {
+    if (isBlockedBossTile(n)) return false;
+    if (typeof isWallTile === 'function' && isWallTile(n)) return false;
+
+    // Do allow walking onto the player; combat is handled separately.
+    if (n === avatarIndex) return true;
+
+    // Don’t overlap with other enemies/boss
+    const bossTileIndex = typeof bossIndex === 'number' ? bossIndex + 1 : null;
+    if (enemies.includes(n)) return false;
+    if (fastEnemies.includes(n)) return false;
+    if (trackerEnemies.includes(n)) return false;
+    if (mortarEnemies.includes(n)) return false;
+    if (summonerEnemies.includes(n)) return false;
+    if (bossTileIndex !== null && n === bossTileIndex) return false;
+
+    return true;
+  });
+}
+
+// BFS from a tracker to the player; return the *next step* along the shortest path
+function getNextStepTowardPlayer(startIdx, size, maxIndex, maxDistance = 20) {
+  const visited = new Set();
+  const queue = [];
+
+  visited.add(startIdx);
+  queue.push({ idx: startIdx, firstStep: null, dist: 0 });
+
+  while (queue.length > 0) {
+    const { idx, firstStep, dist } = queue.shift();
+    if (dist > maxDistance) break;
+
+    if (idx === avatarIndex) {
+      // If we started on player tile (rare), stay; otherwise use firstStep
+      return firstStep || startIdx;
+    }
+
+    const neighbors = getWalkableNeighbors(idx, size, maxIndex);
+    for (const n of neighbors) {
+      if (visited.has(n)) continue;
+      visited.add(n);
+
+      const step = firstStep === null ? n : firstStep;
+      queue.push({ idx: n, firstStep: step, dist: dist + 1 });
+    }
+  }
+
+  // No path found
+  return null;
+}
+
 async function moveAllEnemies() {
   if (playerDead) return;
 
@@ -158,6 +224,7 @@ async function moveNormalEnemies(size, maxIndex) {
         fastEnemies.includes(next) ||
         trackerEnemies.includes(next) ||
         mortarEnemies.includes(next) ||
+        summonerEnemies.includes(next) ||
         (bossTileIndex !== null && next === bossTileIndex);
       if (occupiedByOther) continue;
 
@@ -241,6 +308,7 @@ async function moveFastEnemies(size, maxIndex) {
           fastEnemies.some((e, j) => j !== i && e === next) ||
           trackerEnemies.includes(next) ||
           mortarEnemies.includes(next) ||
+          summonerEnemies.includes(next) ||
           (bossTileIndex !== null && next === bossTileIndex);
         if (occupiedByOther) continue;
 
@@ -268,7 +336,6 @@ async function moveFastEnemies(size, maxIndex) {
 
 async function moveTrackerEnemies(size, maxIndex) {
   trackerTurnParity = 1 - trackerTurnParity; // toggle each enemy phase
-
   if (trackerTurnParity !== 1) return;
 
   for (let i = 0; i < trackerEnemies.length; i++) {
@@ -285,24 +352,12 @@ async function moveTrackerEnemies(size, maxIndex) {
     for (let step = 0; step < 2; step++) {
       if (playerDead) return;
 
-      const dir = chooseTrackerStepDirection(idx);
-      if (!dir) break;
-
-      let next = idx;
-
-      if (dir === 'up') {
-        if (idx > size) next = idx - size;
-      } else if (dir === 'down') {
-        if (idx <= maxIndex - size) next = idx + size;
-      } else if (dir === 'left') {
-        if ((idx - 1) % size !== 0) next = idx - 1;
-      } else if (dir === 'right') {
-        if (idx % size !== 0) next = idx + 1;
+      const next = getNextStepTowardPlayer(idx, size, maxIndex);
+      if (!next || next === idx) {
+        break; // no progress possible
       }
 
-      if (next === idx) break;
       if (isBlockedBossTile(next)) continue;
-
       if (typeof isWallTile === 'function' && isWallTile(next)) {
         continue;
       }
@@ -311,10 +366,10 @@ async function moveTrackerEnemies(size, maxIndex) {
       if (next === avatarIndex) {
         const died = await applyPlayerHit(
           1,
-          true,             // moveIntoPlayerTile
-          trackerEnemies,   // enemyArray
-          i,                // enemyIndex
-          next              // newEnemyPos
+          true,
+          trackerEnemies,
+          i,
+          next
         );
         if (died) return;
 
@@ -329,6 +384,7 @@ async function moveTrackerEnemies(size, maxIndex) {
         fastEnemies.includes(next) ||
         trackerEnemies.some((e, j) => j !== i && e === next) ||
         mortarEnemies.includes(next) ||
+        summonerEnemies.includes(next) ||
         (bossTileIndex !== null && next === bossTileIndex);
       if (occupiedByOther) break;
 
@@ -340,11 +396,13 @@ async function moveTrackerEnemies(size, maxIndex) {
       redrawBoard();
       await sleep(ENEMY_STEP_DELAY_MS);
 
-      // New: if we just stepped onto an icy tile, lock immediately and stop all movement
+      // If we just stepped onto an icy tile, lock immediately and stop all movement
       if (frozenEnemyTiles.has(idx)) {
-        break; // stop their remaining step(s)
+        break;
       }
     }
+
+    // fallback random wander when no path exists, add that here later
   }
 }
 
@@ -439,6 +497,7 @@ async function moveMimic(size, maxIndex) {
       fastEnemies.includes(next) ||
       trackerEnemies.includes(next) ||
       mortarEnemies.includes(next) ||
+      summonerEnemies.includes(next) ||
       (bossTileIndex !== null && next === bossTileIndex);
 
     if (occupiedByOther) continue;
