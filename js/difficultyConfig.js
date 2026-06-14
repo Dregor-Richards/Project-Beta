@@ -159,7 +159,7 @@ const DIFFICULTY_TABLE = [
     min: 19,
     max: 19,
     gridSizes: [15],
-    normalRange: [5, 5],
+    normalRange: [0, 0],
     fastRange: [5, 5],
     trackerRange: [5, 5],
     mortarRange: [5, 5],
@@ -176,13 +176,13 @@ function getDifficultyConfig(difficulty) {
   if (difficulty >= 20) {
     return {
       gridSize: 20,
-      normalCount: randomInt(3, 8),
-      fastCount: randomInt(5, 8),
-      trackerCount: randomInt(5, 8),
-      mortarCount: randomInt(5, 8),
-      summonerCount: randomInt(5,8),
+      normalCount: randomInt(1, 3),
+      fastCount: randomInt(2, 4),
+      trackerCount: randomInt(3, 5),
+      mortarCount: randomInt(4, 6),
+      summonerCount: randomInt(5,7),
       wallPercent: randomInt(5,40),
-      beamerCount: randomInt(5,8),
+      beamerCount: randomInt(5,7),
       guaranteeStone: false,
       guaranteeWand: false,
     };

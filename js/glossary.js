@@ -39,8 +39,6 @@ const GLOSSARY_ITEMS_MAIN = [
 
 // Boss glossary
 const GLOSSARY_ITEMS_BOSS = [
-  { id: 'boss_1', title: 'Acolyte Of Voca', iconClass: 'boss-enemy1',
-    description: 'Devoted to the God of Magic, this charalatan was loyal through life and into undeath, but still is unworthy of holding the title of Champion. Beware, their god has still gifted them token powers, to reflect their dark efforts to gain favour.' },
   { id: 'enemy_normal', title: 'Cloak-&-Dagger', iconClass: 'enemy',
     description: 'Nothing remains of this once-adventurer, but the blade they gripped beyond expiration, and a cloak that warmed them in life. If they can reach you, they will stab. STAY AWAY.'},
   { id: 'enemy_fast', title: 'Bat', iconClass: 'fast-enemy',
@@ -49,6 +47,8 @@ const GLOSSARY_ITEMS_BOSS = [
     description: 'Your only advantage against this feral beast, is its own laziness. While it waits, you can scheme... But when it chooses to move, it will outmatch your stride, and will forever close in.'},
   { id: 'enemy_mortar', title: 'Acolyte Of Voca', iconClass: 'mortar-enemy',
     description: 'Though incapable of hand-to-hand combat, this disciple wields a meager blessing from the god of Magic, and will rain fire from afar until silenced.'},
+  { id: 'boss_1', title: 'Acolyte Of Voca', iconClass: 'boss-enemy1',
+    description: 'Devoted to the God of Magic, this charalatan was loyal through life and into undeath, but still is unworthy of holding the title of Champion. Beware, their god has still gifted them token powers, to reflect their dark efforts to gain favour.' },
   { id: 'enemy_summoner', title: 'Evoker Of Merci', iconClass: 'summoner-enemy',
     description: 'Frail and unseeming, this creature has been gifted the power to raise the dead from their slumber. Slay them quickly, lest you be overrun.'}
 ];

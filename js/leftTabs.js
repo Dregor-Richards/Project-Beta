@@ -10,6 +10,7 @@ function getEnemyCounts() {
     { key: 'fast-enemy', label: 'Bat',                 count: fastEnemies.length },
     { key: 'tracker',    label: 'Hound',               count: trackerEnemies.length },
     { key: 'mortar',     label: 'Acolyte Of Voca',     count: mortarEnemies.length },
+    { key: 'summoner',   label: 'Evoker Of Merci',     count: summonerEnemies.length},
   ].filter(e => e.count > 0);
 }
 
