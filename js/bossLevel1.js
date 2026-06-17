@@ -70,44 +70,17 @@ function setupBossLevelA() {
   buildGrid(gridSize);
 
   const cells = getAllCells();
+  markBossMissingTiles(cells, BOSS_MISSING_TILES); // another tiny helper if you like
 
-  BOSS_MISSING_TILES.forEach((idx) => {
-    const cell = cells[idx];
-    if (!cell) return;
-    cell.classList.add('boss-hole');
-  });
-
-  // Center player (convert 0-based spawn to 1-based board index)
   avatarIndex = BOSS_PLAYER_SPAWN + 1;
 
-  // Clear normal level entities
-  enemies = [];
-  fastEnemies = [];
-  trackerEnemies = [];
-  mortarEnemies = [];
-  mortarTargets = [];
-  mortarJustTargeted = false;
-  mortarFireCount = 0;
-  frozenEnemyTiles = new Set();
-  doorIndex = null;
-  heartIndex = null;
-  skipTileIndex = null;
-  wandIndex = null;
-  currentWandSubtype = null;
-  stoneIndex = null;
-  stonePresent = false;
-  stoneType = null;
-  bossMortarTargets = [];
+  resetCommonBossState();
 
-  // Choose boss spawn (0-based)
-  const choice =
-    BOSS_SPAWN_TILES[Math.floor(Math.random() * BOSS_SPAWN_TILES.length)];
+  const choice = BOSS_SPAWN_TILES[Math.floor(Math.random() * BOSS_SPAWN_TILES.length)];
   bossIndex = choice;
 
-  // Stage 1 companion enemies
   spawnBossStageEnemies();
 
-  // Show and fill health bar
   showBossHealthBar();
   updateBossStage();
   redrawBoard();
@@ -340,45 +313,6 @@ function getAllValidBossTiles() {
   return valid;
 }
 
-async function resolveBossMortarHits() {
-  if (!Array.isArray(bossMortarTargets) || bossMortarTargets.length === 0) return;
-
-  // If boss is frozen, cancel all pending boss mortar hits
-  if (isBossFrozen()) {
-    bossMortarTargets = [];
-    return;
-  }
-
-  const hits = bossMortarTargets.slice();
-  bossMortarTargets = [];
-
-  for (const idx of hits) {
-    if (idx === avatarIndex && !playerDead) {
-      const died = await applyPlayerHit(1);
-      if (died) return;
-    }
-  }
-}
-
-function pickRandomTilesFrom(array, count) {
-  const result = [];
-  const pool = array.slice();
-  const max = Math.min(count, pool.length);
-  for (let i = 0; i < max; i++) {
-    const idx = Math.floor(Math.random() * pool.length);
-    result.push(pool[idx]);
-    pool.splice(idx, 1);
-  }
-  return result;
-}
-
-function isTileOccupiedByEnemy(tileIndex) {
-  return enemies.includes(tileIndex) ||
-         fastEnemies.includes(tileIndex) ||
-         trackerEnemies.includes(tileIndex) ||
-         mortarEnemies.includes(tileIndex);
-}
-
 async function moveBossRandomly(stepsMin, stepsMax) {
   if (bossHealth <= 0) return;
 
@@ -579,7 +513,7 @@ async function bossAct() {
   }
 
   // 1) Resolve hits on tiles that are currently marked (icons from last player turn)
-  await resolveBossMortarHits();
+  await resolveBossMortarHitsShared(bossMortarTargets);
   if (playerDead) return;
 
   // If boss is on an icy tile, it does absolutely nothing this turn
@@ -590,7 +524,7 @@ async function bossAct() {
   }
 
   // 2) Pick new tiles to mark
-    const allValidTiles = getAllValidBossTiles();
+    const allValidTiles = getAllValidBossTiles(gridSize, BOSS_MISSING_TILES);
     const bossTileIndex = bossIndex + 1; // 1-based
 
     // Exclude the boss's own tile from mortar targets
