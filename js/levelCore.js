@@ -139,6 +139,16 @@ function addScore(points) {
   redrawScore();
 }
 
+function setupBossForDifficulty(difficulty) {
+  if (difficulty === 10) {
+    setupBossLevelA();
+  } else if (difficulty === 20) {
+    setupBossLevelB();
+  } else {
+    setupBossLevelA();
+  }
+}
+
 // --- DOM ready: core setup ---
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -247,7 +257,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Boss level: skip normal config and use custom setup
   if (difficulty >= 10 && difficulty % 10 === 0) {
     initDarkness(0, []);
-    setupBossLevelA();
+    setupBossForDifficulty(difficulty);
   } else {
     // Normal / post-boss / endless
     const config = getDifficultyConfig(difficulty);

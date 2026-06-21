@@ -13,7 +13,7 @@ function goToLevel() {
   const n = Number(raw);
 
   // Difficulty must be 1–19
-  if (!Number.isInteger(n) || n < 1 || n > 19) {
+  if (!Number.isInteger(n) || n < 1 || n > 20) {
     const rangeModal = document.getElementById('range-modal');
     if (rangeModal) {
       rangeModal.classList.remove('hidden');

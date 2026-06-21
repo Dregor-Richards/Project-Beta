@@ -115,7 +115,15 @@ async function handleMove(event) {
   if (next === avatarIndex) return;
 
   if (isWallTile && isWallTile(next)) {
+    // Real wall: block movement
     return; // do nothing; treat as solid tile
+  }
+
+  if (isFalseWallTile(next)) {
+    // False wall: remove it and allow movement
+    removeFalseWallAtIndex(next);
+    // player can now move into next
+    return;
   }
 
   // Prevent walking into missing tiles on boss level (difficulty 10)

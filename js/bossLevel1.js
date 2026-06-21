@@ -70,7 +70,7 @@ function setupBossLevelA() {
   buildGrid(gridSize);
 
   const cells = getAllCells();
-  markBossMissingTiles(cells, BOSS_MISSING_TILES); // another tiny helper if you like
+  markBossMissingTiles(cells, BOSS_MISSING_TILES); // another tiny helper
 
   avatarIndex = BOSS_PLAYER_SPAWN + 1;
 
@@ -187,39 +187,6 @@ function spawnBossStageEnemies() {
   }
 }
 
-function showBossHealthBar() {
-  const wrapper = document.getElementById('boss-health-wrapper');
-  const pipsContainer = document.getElementById('boss-health-pips');
-  if (!wrapper || !pipsContainer) return;
-  mimicUsingBossBar = false;
-  wrapper.classList.remove('hidden');
-  pipsContainer.innerHTML = '';
-  for (let i = 0; i < bossMaxHealth; i++) {
-    const pip = document.createElement('div');
-    pip.className = 'boss-health-pip' + (i < bossHealth ? ' full' : '');
-    pipsContainer.appendChild(pip);
-  }
-}
-
-function redrawBossHealth() {
-  const pipsContainer = document.getElementById('boss-health-pips');
-  if (!pipsContainer) return;
-  const pips = pipsContainer.querySelectorAll('.boss-health-pip');
-  pips.forEach((pip, index) => {
-    if (index < bossHealth) {
-      pip.classList.add('full');
-    } else {
-      pip.classList.remove('full');
-    }
-  });
-}
-
-function isBossFrozen() {
-  if (bossIndex == null) return false;
-  const bossTileIndex = bossIndex + 1; // 1-based
-  return frozenEnemyTiles.has(bossTileIndex);
-}
-
 /**
  * Called when the player hits the boss (walk or Fire wand).
  * Handles health loss, teleport, and boss respawn.
@@ -300,17 +267,6 @@ function updateBossStage() {
   } else {
     bossStage = 3;
   }
-}
-
-function getAllValidBossTiles() {
-  const size = gridSize;
-  const maxIndex = size * size;
-  const missingSet = new Set(BOSS_MISSING_TILES.map(idx => idx + 1));
-  const valid = [];
-  for (let i = 1; i <= maxIndex; i++) {
-    if (!missingSet.has(i)) valid.push(i);
-  }
-  return valid;
 }
 
 async function moveBossRandomly(stepsMin, stepsMax) {
@@ -474,7 +430,6 @@ async function moveBossTowardsPlayer(stepsMin, stepsMax) {
   bossIndex = bossTileIndex - 1;
 }
 
-
 async function bossAct() {
   if (bossHealth <= 0 || playerDead) return;
 
@@ -551,30 +506,4 @@ async function bossAct() {
 
       redrawBoard();
     }
-}
-
-
-
-
-
-// Debug: instantly kill the boss and trigger win + ring choice
-function killBossDebug() {
-  bossHealth = 0;
-  redrawBossHealth();
-
-  const finalBossScore =
-    bossScoreBase *
-    (bossWyrdScoreMultiplier || 1) *
-    (bossHeartScoreMultiplier || 1);
-
-  addScore(finalBossScore);
-
-  // Optional visual feedback:
-  // spawnParticlesAtCell(bossIndex + 1, 'kill');
-  // playSfx('enemyDeath');
-
-  const rings = getRandomRings(2);
-  openRingChoiceModal(rings, () => {
-    showWinModal();
-  });
 }

@@ -1,7 +1,9 @@
 let wallIndices = [];
+let falseWallIndices = [];  // new: indices of false walls
 
 function placeWallTiles(gridSize, wallPercent) {
   wallIndices = [];
+  falseWallIndices = [];
   if (!wallPercent || wallPercent <= 0) return;
 
   const totalTiles = gridSize * gridSize;
@@ -21,7 +23,6 @@ function placeWallTiles(gridSize, wallPercent) {
     const up = spawn - gridSize;
     const upRight = spawn - gridSize + 1;
 
-    // Bounds checks so we don’t accidentally add off-board indices on small grids
     if (right <= totalTiles && spawn % gridSize !== 0) {
       safetyTiles.add(right);
     }
@@ -49,8 +50,8 @@ function placeWallTiles(gridSize, wallPercent) {
     ...mortarEnemies,
     ...summonerEnemies,
     ...existingWandIndices,
-    ...pickupIndices,   // avoid any existing pickups (wands/stones)
-    ...safetyTiles,     // protect tiles around spawn
+    ...pickupIndices,
+    ...safetyTiles,
   ]);
 
   const candidates = [];
@@ -60,16 +61,29 @@ function placeWallTiles(gridSize, wallPercent) {
     }
   }
 
-  // Shuffle candidates
   for (let i = candidates.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
   }
 
   const count = Math.min(wallTileCount, candidates.length);
+
+  // Spread false walls among real walls: 1 false per 10 real
+  let realCount = 0;
   for (let i = 0; i < count; i++) {
-    wallIndices.push(candidates[i]);
+    realCount++;
+    if (realCount % 10 === 0 && fakeWallSlotsLeft(falseWallIndices.length, realCount, count)) {
+      falseWallIndices.push(candidates[i]);
+    } else {
+      wallIndices.push(candidates[i]);
+    }
   }
+}
+
+function fakeWallSlotsLeft(currentFalseCount, realCountSoFar, totalCount) {
+  // This is a simple heuristic: if we could still fit more false walls, take this one.
+  const targetFalse = Math.floor(realCountSoFar / 10);
+  return currentFalseCount < targetFalse;
 }
 
 function getNeighbors(idx, size, maxIndex) {
@@ -92,14 +106,13 @@ function isLevelReachable(size) {
   const maxIndex = size * size;
 
   const wallSet = new Set(wallIndices || []);
+  // False walls are NOT in wallSet, so they don't block BFS
   const blocked = new Set([...wallSet]);
 
   const visited = new Set();
   const queue = [];
 
-  // Start BFS from player
   if (blocked.has(avatarIndex)) {
-    // Player spawned in a blocked tile? Should never happen, but guard anyway
     return false;
   }
   visited.add(avatarIndex);
@@ -117,37 +130,27 @@ function isLevelReachable(size) {
     }
   }
 
-  // Door must be reachable
   if (doorIndex != null && !visited.has(doorIndex)) {
     return false;
   }
 
-  // Lantern / brazier must be reachable if they exist
   if (typeof lanternTile === 'number' && lanternTile >= 1) {
-    if (!visited.has(lanternTile)) {
-      return false;
-    }
+    if (!visited.has(lanternTile)) return false;
   }
   if (typeof brazierTile === 'number' && brazierTile >= 1) {
-    if (!visited.has(brazierTile)) {
-      return false;
-    }
+    if (!visited.has(brazierTile)) return false;
   }
 
-  // All core enemies must be reachable
   const allEnemyIndices = [
     ...enemies,
     ...fastEnemies,
     ...trackerEnemies,
     ...mortarEnemies,
     ...summonerEnemies,
-    // ...beamerEnemies,
   ];
 
   for (const idx of allEnemyIndices) {
-    if (!visited.has(idx)) {
-      return false;
-    }
+    if (!visited.has(idx)) return false;
   }
 
   return true;
@@ -179,6 +182,10 @@ function isWallTile(index) {
   return wallIndices && wallIndices.includes(index);
 }
 
+function isFalseWallTile(index) {
+  return falseWallIndices && falseWallIndices.includes(index);
+}
+
 function removeWallAtIndex(index) {
   if (!wallIndices || wallIndices.length === 0) return;
 
@@ -187,5 +194,15 @@ function removeWallAtIndex(index) {
 
   wallIndices.splice(pos, 1);  // remove from walls list
   // After changing walls, just redraw the board
+  redrawBoard();
+}
+
+function removeFalseWallAtIndex(index) {
+  if (!falseWallIndices || falseWallIndices.length === 0) return;
+
+  const pos = falseWallIndices.indexOf(index);
+  if (pos === -1) return;
+
+  falseWallIndices.splice(pos, 1);
   redrawBoard();
 }

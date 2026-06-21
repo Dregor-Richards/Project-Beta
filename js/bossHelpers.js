@@ -21,6 +21,14 @@ function getBossMissingSet(missingTiles) {
   return new Set(missingTiles.map(idx => idx + 1));
 }
 
+function markBossMissingTiles(cells, missingTiles) {
+  missingTiles.forEach((idx) => {
+    const cell = cells[idx];
+    if (!cell) return;
+    cell.classList.add('boss-hole');
+  });
+}
+
 function getAllValidBossTiles(gridSize, missingTiles) {
   const maxIndex = gridSize * gridSize;
   const missingSet = getBossMissingSet(missingTiles);
@@ -51,6 +59,40 @@ function resetCommonBossState() {
   stoneType = null;
 }
 
+function showBossHealthBar() {
+  const wrapper = document.getElementById('boss-health-wrapper');
+  const pipsContainer = document.getElementById('boss-health-pips');
+  if (!wrapper || !pipsContainer) return;
+  mimicUsingBossBar = false;
+  wrapper.classList.remove('hidden');
+  pipsContainer.innerHTML = '';
+  for (let i = 0; i < bossMaxHealth; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'boss-health-pip' + (i < bossHealth ? ' full' : '');
+    pipsContainer.appendChild(pip);
+  }
+}
+
+function redrawBossHealth() {
+  const pipsContainer = document.getElementById('boss-health-pips');
+  if (!pipsContainer) return;
+  const pips = pipsContainer.querySelectorAll('.boss-health-pip');
+  pips.forEach((pip, index) => {
+    if (index < bossHealth) {
+      pip.classList.add('full');
+    } else {
+      pip.classList.remove('full');
+    }
+  });
+}
+
+// If a boss is ever immune to freeze, or is handled differently, may need to relocate
+function isBossFrozen() {
+  if (bossIndex == null) return false;
+  const bossTileIndex = bossIndex + 1; // 1-based
+  return frozenEnemyTiles.has(bossTileIndex);
+}
+
 async function resolveBossMortarHitsShared(targetsArray) {
   if (!Array.isArray(targetsArray) || targetsArray.length === 0) return;
 
@@ -68,4 +110,22 @@ async function resolveBossMortarHitsShared(targetsArray) {
       if (died) return;
     }
   }
+}
+
+// Debug: instantly kill the boss and trigger win + ring choice
+function killBossDebug() {
+  bossHealth = 0;
+  redrawBossHealth();
+
+  const finalBossScore =
+    bossScoreBase *
+    (bossWyrdScoreMultiplier || 1) *
+    (bossHeartScoreMultiplier || 1);
+
+  addScore(finalBossScore);
+
+  const rings = getRandomRings(2);
+  openRingChoiceModal(rings, () => {
+    showWinModal();
+  });
 }

@@ -173,7 +173,7 @@ const DIFFICULTY_TABLE = [
 
 function getDifficultyConfig(difficulty) {
   // 20+ treated as endless placeholder
-  if (difficulty >= 20) {
+  if (difficulty >= 21) {
     return {
       gridSize: 20,
       normalCount: randomInt(1, 3),

@@ -1,7 +1,8 @@
+ LEVEL 20 CURRENTLY BROKEN
+ 
  > New Wand Idea: Relocator - Target Enemy, Move Them (And 1-3 other random enemies) To Random Locations [Sprite Present]
      > Make sure they don't end up behind walls
  > Upgrade Crusher Wall Visual Use (Have Sprite Saved)
- > Summoner Score is currently 3, should it be 1?
 
  > Hyllow Stone, Summons Eldritch Horror*
  > *Hyllow eldritch should light 3 tiles on fire (Purple, permeanent), they stay on fire for rest of level (Even after death)
@@ -38,11 +39,13 @@
  <--->                  <--->
 
  <---> For Levels 21-30 <--->
- > Upgraded Fire Enemy, Trails Of Fire That Gradually Disappear, But He Gains More Fire Per Turn, So Hard To Notice
+ > Teleports (Could have some enemies behind walls as long as teleport access)
  > Every 24th LVL, Puzzle Level ???
  > Add Coin on LVL 21+, Chances For Good/Bad Events When Used (Risky, But High Reward)
+     > Enemy That CHases Through Levels
  > Add Scholar on some LVL 21+, add Discovery tab from index.html, to hold bits of lore in books about divines, countients, etc.
  > Fog that moves through the map, disorienting player/enemy movement (Extra effects?)
+ > 10x30 room; Upside down T, |-, H, I, C, U, room shapes (Keep lower left corner unaffected)
 
  <--->                  <--->
 
@@ -50,7 +53,6 @@
  > Mode Select For Challenge & normal
  > Mortar Survival, where the player can't reach the mortars, and is just trying to outlast to get to scoreboard
  > Items to freeze patches for safety, and to reset Mortar fire count for prolonged survival
- > PermaDeath Mode (Start From LVL 1, No Score, No Items)
 
  <--->                  <--->
 
@@ -70,15 +72,11 @@
    - Should also utilize walls (If I get them working), demanding that once the player gets the lantern, they still have to
    navigate around obstacles while being attacked.
    - Perhaps I'll implement a summoner enemy between this boss and the first, so this one can deploy minions as a third element.
-   - While slower than the first boss, they shouldn't move only 1 tile... Perhaps 2-4 moves?
    - Shoots lanes of fire like sniper enemy, but these are purple (Permeant), slowly forcing the player to reach the boss for
    a wave reset, or die in endless flames
    - Mortars should spawn in the teeth, and there should be "spectators" in the middle of the eyes, unaccessible to anything
    (Perhaps fire wand can kill them, for bonus points or such)
 
-So, this is obviously a lot, and very dangerous all at once. In the first boss, there were three stages... 
-The boss would get faster, move with less breaks and more erratically, and the number of summoned minions would increase.
-For this one, I'm thinking three stages works as well:
 - Stage 1, the room is the semi-dark that normal dark missions start on. 
 This foreshadows the coming darkness, while not actually having a penalty 
 (This shading is transparent, does nothing mechanical to the fight). 
@@ -92,25 +90,6 @@ so that the player isn't stuck with trying to find a single location, and with e
 - Stage 3, we add the growing lanes of purple perm fire, to force the player to rush to defeat the boss as we 
 close upon the finish.
 
-In all stages, the boss should remain slower than the first boss (Somewhere around 2-4 moves per turn, rather than the 3-6 that the first boss was pulling by the end), and rely on the ability to overwhelm with sheer numbers (Aided by the player needing to navigate moving walls, acquire light and light braziers, etc.) rather than their own capability (Until that final stage, but if the player has gotten that far, a couple wands would dispatch the boss with ease).
-I'm thinking we up the health from 6 to 7, making Stage 1 & 3 last 2 Hit Points, while stage 2 lasts 3 Hit Points.
-
-% 2. Boss speed and movement
-% You want this boss “slower than boss 1, but not 1‑step slow,” at roughly 2–4 moves per boss turn. 
-% That aligns with your “overwhelm via environment and adds, not raw speed” goal.
-% Some concrete numbers that will probably feel fair:
-% Stage 1: 2–3 steps on movement turns.
-% Stage 2: 2–4 steps.
-% Stage 3: keep 2–4, but maybe change the pattern (e.g., fewer “pause” turns) rather than just raw speed.
-% Given boss 1 topped out at 3–6 and already felt pretty intense with mortars + adds, keeping 
-% ceiling at 4 here seems wise so the complexity comes from walls/darkness/lanes, not chase speed
-
------
-
------
-
- *Boss ? - Centipede
-
 -----
 
 -----
@@ -122,4 +101,3 @@ I'm thinking we up the health from 6 to 7, making Stage 1 & 3 last 2 Hit Points,
      > If specific combo of items (Location doesn't matter) is added to grid, secret recipe button appears, and new item can be made
      > Upgrade/Reroll/Secret all have a number key (1, 2, 3), for keyboard compatible, some letter closes forge
      > To use Forge again, must walk off and back onto the forge tile, can't just reopen
- % Area control boss: Periodically drops zones on the grid that force you to keep moving (safe vs unsafe tiles).

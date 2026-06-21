@@ -65,7 +65,7 @@ function getWalkableNeighbors(idx, size, maxIndex) {
 
   return neighbors.filter(n => {
     if (isBlockedBossTile(n)) return false;
-    if (typeof isWallTile === 'function' && isWallTile(n)) return false;
+    if (typeof isWallTile === 'function' && (isWallTile(n) || isFalseWallTile(n))) return false;
 
     // Do allow walking onto the player; combat is handled separately.
     if (n === avatarIndex) return true;
@@ -203,7 +203,7 @@ async function moveNormalEnemies(size, maxIndex) {
       if (next === idx) continue;
       if (isBlockedBossTile(next)) continue;
 
-      if (typeof isWallTile === 'function' && isWallTile(next)) {
+      if (typeof isWallTile === 'function' && (isWallTile(next) || isFalseWallTile(next))) {
         continue;
       }
 
@@ -281,7 +281,7 @@ async function moveFastEnemies(size, maxIndex) {
         if (next === idx) continue;
         if (isBlockedBossTile(next)) continue;
 
-        if (typeof isWallTile === 'function' && isWallTile(next)) {
+        if (typeof isWallTile === 'function' && (isWallTile(next) || isFalseWallTile(next))) {
           continue;
         }
 
@@ -358,7 +358,7 @@ async function moveTrackerEnemies(size, maxIndex) {
       }
 
       if (isBlockedBossTile(next)) continue;
-      if (typeof isWallTile === 'function' && isWallTile(next)) {
+      if (typeof isWallTile === 'function' && (isWallTile(next) || isFalseWallTile(next))) {
         continue;
       }
 
@@ -470,7 +470,7 @@ async function moveMimic(size, maxIndex) {
     if (next === idx) continue;
     if (isBlockedBossTile(next)) continue;
 
-    if (typeof isWallTile === 'function' && isWallTile(next)) {
+    if (typeof isWallTile === 'function' && (isWallTile(next) || isFalseWallTile(next))) {
       continue;
     }
 
@@ -648,7 +648,9 @@ async function moveSummonerRandomSteps(startIdx, size, maxIndex, steps, summoner
 
       if (next === idx) continue;
       if (isBlockedBossTile(next)) continue;
-      if (typeof isWallTile === 'function' && isWallTile(next)) continue;
+      if (typeof isWallTile === 'function' && (isWallTile(next) || isFalseWallTile(next))) {
+        continue;
+      }
 
       // If they walk into the player, damage and move into tile on kill
       if (next === avatarIndex) {
